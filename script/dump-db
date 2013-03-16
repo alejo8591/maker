@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "-- Dumping database..."
+
+# Dump database
+
+mysqldump -u maker -p maker > sql/mysql-maker-current.sql
+
+# Dump fixtures
+
+python manage.py dumpdata --exclude=auth --exclude=contenttypes --exclude=south > initial_data.json
+

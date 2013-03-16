@@ -1,0 +1,3 @@
+#!/bin/bash
+#cd /srv/vhosts/maker.com/maker/maker
+python manage.py runcron --loglevel=debug --noloop --settings=settings

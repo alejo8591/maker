@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "-- Installing database from backup..."
+
+echo "DROP DATABASE IF EXISTS maker_dev; CREATE DATABASE maker_dev;" | mysql -u maker -p
+mysql -u maker -p maker_dev < sql/mysql-maker-current.sql
+
