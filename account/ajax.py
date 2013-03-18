@@ -100,8 +100,6 @@ def comments_likes(request, target, form, expand=True):
 dajaxice_functions.register(comments_likes)
 
 
-
-
 def tags(request, target, object_id, edit=False, formdata={}):
     dajax = Dajax()
     

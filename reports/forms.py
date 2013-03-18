@@ -21,7 +21,9 @@ from itertools import groupby
 preprocess_form()
 
 class MassActionForm(forms.Form):
-    """ Mass action form for Reports """
+    """ 
+        Mass action form for Reports 
+    """
     
     delete = forms.ChoiceField(label=_("With selected"), choices=(('', '-----'), ('delete', _('Delete Completely')), 
                                                     ('trash', _('Move to Trash'))), required=False)
@@ -52,7 +54,9 @@ class MassActionForm(forms.Form):
                         self.instance.save()
 
 class ObjChoiceForm(forms.Form):
-    """ Choose an Object to Report On """
+    """ 
+        Choose an Object to Report On 
+    """
     
     def __init__(self, user, *args, **kwargs):
         
@@ -62,6 +66,7 @@ class ObjChoiceForm(forms.Form):
         x = ((object_types[i], object_names[i]) for i in range(0, len(object_types)))
         
         super(ObjChoiceForm, self ).__init__(*args, **kwargs)
+        
         self.fields['choice'] = forms.ChoiceField(label=_("Choose an Object to Report on"), choices=(x))       
     
     
@@ -77,7 +82,9 @@ class ReportForm(forms.ModelForm):
 
 
 class SetForm(forms.Form):
-    """ Report Set Form """
+    """ 
+        Report Set Form 
+    """
    
     def __init__(self, user, *args, **kwargs):
         names = kwargs.pop('names')

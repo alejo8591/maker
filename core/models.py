@@ -292,8 +292,6 @@ class User(AccessEntity):
 
         return False
 
-
-
     def has_permission(self, object, mode="r"):
         "Checks permissions on a given object for a given mode"
         if self.is_admin() or not object:
@@ -382,7 +380,6 @@ class User(AccessEntity):
             return False
 
 # User signals
-
 def user_autocreate_handler(sender, instance, created, **kwargs):
     "When a Django User is created, automatically create a Hardtree User"
     if created:
@@ -395,6 +392,7 @@ def user_autocreate_handler(sender, instance, created, **kwargs):
 # Autocreate a Hardtree user when Django user is created
 if getattr(settings, 'HARDTREE_SIGNALS_AUTOCREATE_USER', False):
     models.signals.post_save.connect(user_autocreate_handler, sender=django_auth.User)
+
 
 class Invitation(models.Model):
     "Invitation to register on Hardtree"
@@ -1119,8 +1117,8 @@ class UpdateRecord(models.Model):
                 domain = RequestSite(kwargs['request']).domain
                 html = html.replace('href="', 'href="http://'+domain)
             body = strip_tags(html)
-            signature = "This is an automated message from Tree.io service (http://tree.io). Please do not reply to this e-mail."
-            subject = "[Tree.io%s] %s: %s - %s" % (' #%d' % obj.id if self.record_type != 'delete' else '', unicode(author),
+            signature = "This is an automated message from maker crm service (). Please do not reply to this e-mail."
+            subject = "[maker-crm%s] %s: %s - %s" % (' #%d' % obj.id if self.record_type != 'delete' else '', unicode(author),
                                                         unicode(obj.get_human_type()), unicode(strip_tags(full_message)[:100]))
 
             for recipient in self.recipients.all():

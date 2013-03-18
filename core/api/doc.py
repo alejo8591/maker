@@ -43,9 +43,11 @@ def generate_doc(handler_cls):
     return HandlerDocumentation(handler_cls)
 
 def get_field_data_type(field):
-    """Returns the description for a given field type, if it exists,
-    Fields' descriptions can contain format strings, which will be interpolated
-    against the values of field.__dict__ before being output."""
+    """
+        Returns the description for a given field type, if it exists,
+        Fields' descriptions can contain format strings, which will be interpolated
+        against the values of field.__dict__ before being output.
+    """
 
     return field.description % field.__dict__
 
@@ -199,9 +201,8 @@ class HandlerDocumentation(object):
 
     def get_resource_uri_template(self):
         """
-        URI template processor.
-
-        See http://bitworking.org/projects/URI-Templates/
+            URI template processor.
+            See http://bitworking.org/projects/URI-Templates/
         """
         try:
             resource_uri = self.handler.resource_uri()
@@ -232,7 +233,7 @@ class HandlerDocumentation(object):
 
     def get_resource_uri_index(self):
         """
-        INDEX URI template processor.
+            INDEX URI template processor.
         """
         try:
             resource_uri = self.handler.resource_uri()
@@ -243,7 +244,9 @@ class HandlerDocumentation(object):
                 components[i] = value
 
             lookup_view, args, kwargs = components
-            if args or kwargs:  # else this url will be in get_resource_uri_template
+
+            # else this url will be in get_resource_uri_template
+            if args or kwargs:  
                 lookup_view = get_callable(lookup_view, True)
 
                 possibilities = get_resolver('maker.core.api.urls').reverse_dict.getlist(lookup_view)

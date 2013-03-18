@@ -1,6 +1,4 @@
-# Tree.io Spanish Translation
-# Copyright (C) 2011 Tree.io, Giteso Limited
-# This file is distributed under the same license as the Tree.io package.
+# Inspired and licensed with treeio
 # Alex Berezovskiy <alex@giteso.com>, 2011.
 # 
 msgid ""
@@ -5447,3 +5445,7 @@ msgstr "Conocimiento"
 
 msgid "Sales & Stock"
 msgstr "Ventas & Existencias"
+
+#: templates/html/account/page.html:14
+msgid "My Watchlist"
+msgstr "Lista de Seguimiento"

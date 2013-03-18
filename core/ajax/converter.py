@@ -4,9 +4,8 @@
 # License www.tree.io/license
 
 """
-Converter for AJAX response
-
-Takes HTML rendered response from Django and return JSON-serializable dict
+    Converter for AJAX response
+    Takes HTML rendered response from Django and return JSON-serializable dict
 """
 from django.middleware.csrf import CsrfViewMiddleware as csrf
 from django.http import HttpResponse

@@ -1,16 +1,16 @@
 # encoding: utf-8
 # Copyright 2011 Tree.io Limited
-# This file is part of Treeio.
+# This file is part of maker.
 # License www.tree.io/license
 
 """
 Identities templatetags
 """
 from coffin import template
-from treeio.core.rendering import render_to_string
+from maker.core.rendering import render_to_string
 from jinja2 import contextfunction, Markup
 from django.template import RequestContext
-from treeio.identities.models import ContactField
+from maker.identities.models import ContactField
 
 register = template.Library()
 

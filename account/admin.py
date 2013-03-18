@@ -17,5 +17,5 @@ class NotificationSettingAdmin(admin.ModelAdmin):
     "NotificationSetting backend definition"
     list_display = ('owner', 'ntype',)
 
-admin.site.register(NotificationSetting, NotificationSettingAdmin)
+#admin.site.register(NotificationSetting, NotificationSettingAdmin)
 admin.site.register(Notification, NotificationAdmin)
