@@ -13,4 +13,4 @@ class EventAdmin(admin.ModelAdmin):
     """ Event admin """
     list_display = ('name', 'start', 'end')
 
-admin.site.register(Event, EventAdmin)
+#admin.site.register(Event, EventAdmin)

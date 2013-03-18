@@ -4,7 +4,7 @@
 # License www.tree.io/license
 
 """
-Core Ajax views
+    Core Ajax views
 """
 
 from django.template import RequestContext

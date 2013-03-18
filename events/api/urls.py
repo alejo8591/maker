@@ -22,5 +22,4 @@ urlpatterns = patterns('',
     url(r'^doc$', documentation_view, kwargs={'module': handlers}, name="api_events_doc"),
     url(r'^events$', eventResource, name="api_events"),
     url(r'^event/(?P<object_ptr>\d+)', eventResource, name="api_events"),
-
 )
