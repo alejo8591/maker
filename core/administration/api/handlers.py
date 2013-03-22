@@ -7,7 +7,8 @@
 
 from __future__ import absolute_import, with_statement
 
-__all__ = ['GroupHandler',
+__all__ = [
+           'GroupHandler',
            'UserHandler',
            'ModuleHandler',
            'PerspectiveHandler',

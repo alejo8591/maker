@@ -1,0 +1,802 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sales &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Development" href="../development.html" />
+    <link rel="next" title="Services" href="services.html" />
+    <link rel="prev" title="Projects" href="projects.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="services.html" title="Services"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="projects.html" title="Projects"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-maker.sales.models">
+<span id="sales"></span><h1>Sales<a class="headerlink" href="#module-maker.sales.models" title="Permalink to this headline">¶</a></h1>
+<p>Sales module objects.</p>
+<dl class="class">
+<dt id="maker.sales.models.Lead">
+<em class="property">class </em><tt class="descclassname">maker.sales.models.</tt><tt class="descname">Lead</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Lead"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Lead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Lead</p>
+<dl class="exception">
+<dt id="maker.sales.models.Lead.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.sales.models.Lead.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.sales.models.Lead.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Lead.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.sales.models.Lead.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Lead.access_inherit">
+<tt class="descclassname">Lead.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('contact', '*module', '*user')</em><a class="headerlink" href="#maker.sales.models.Lead.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Lead.assigned">
+<tt class="descclassname">Lead.</tt><tt class="descname">assigned</tt><a class="headerlink" href="#maker.sales.models.Lead.assigned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Lead.contact">
+<tt class="descclassname">Lead.</tt><tt class="descname">contact</tt><a class="headerlink" href="#maker.sales.models.Lead.contact" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Lead.get_absolute_url">
+<tt class="descclassname">Lead.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Lead.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Lead.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Lead.get_contact_method_display">
+<tt class="descclassname">Lead.</tt><tt class="descname">get_contact_method_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.sales.models.Lead.get_contact_method_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Lead.object_ptr">
+<tt class="descclassname">Lead.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.sales.models.Lead.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Lead.objects">
+<tt class="descclassname">Lead.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a6716d0&gt;</em><a class="headerlink" href="#maker.sales.models.Lead.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Lead.opportunity_set">
+<tt class="descclassname">Lead.</tt><tt class="descname">opportunity_set</tt><a class="headerlink" href="#maker.sales.models.Lead.opportunity_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Lead.products_interested">
+<tt class="descclassname">Lead.</tt><tt class="descname">products_interested</tt><a class="headerlink" href="#maker.sales.models.Lead.products_interested" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Lead.source">
+<tt class="descclassname">Lead.</tt><tt class="descname">source</tt><a class="headerlink" href="#maker.sales.models.Lead.source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Lead.status">
+<tt class="descclassname">Lead.</tt><tt class="descname">status</tt><a class="headerlink" href="#maker.sales.models.Lead.status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.sales.models.Opportunity">
+<em class="property">class </em><tt class="descclassname">maker.sales.models.</tt><tt class="descname">Opportunity</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Opportunity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Opportunity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Opportunity</p>
+<dl class="exception">
+<dt id="maker.sales.models.Opportunity.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.sales.models.Opportunity.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.sales.models.Opportunity.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Opportunity.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.sales.models.Opportunity.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.access_inherit">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('lead', 'contact', '*module', '*user')</em><a class="headerlink" href="#maker.sales.models.Opportunity.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.amount_currency">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">amount_currency</tt><a class="headerlink" href="#maker.sales.models.Opportunity.amount_currency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.assigned">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">assigned</tt><a class="headerlink" href="#maker.sales.models.Opportunity.assigned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.contact">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">contact</tt><a class="headerlink" href="#maker.sales.models.Opportunity.contact" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Opportunity.get_absolute_url">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Opportunity.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Opportunity.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.lead">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">lead</tt><a class="headerlink" href="#maker.sales.models.Opportunity.lead" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.object_ptr">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.sales.models.Opportunity.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.objects">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a664710&gt;</em><a class="headerlink" href="#maker.sales.models.Opportunity.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.products_interested">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">products_interested</tt><a class="headerlink" href="#maker.sales.models.Opportunity.products_interested" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.saleorder_set">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">saleorder_set</tt><a class="headerlink" href="#maker.sales.models.Opportunity.saleorder_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.source">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">source</tt><a class="headerlink" href="#maker.sales.models.Opportunity.source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Opportunity.status">
+<tt class="descclassname">Opportunity.</tt><tt class="descname">status</tt><a class="headerlink" href="#maker.sales.models.Opportunity.status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.sales.models.OrderedProduct">
+<em class="property">class </em><tt class="descclassname">maker.sales.models.</tt><tt class="descname">OrderedProduct</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#OrderedProduct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.OrderedProduct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Ordered Product</p>
+<dl class="exception">
+<dt id="maker.sales.models.OrderedProduct.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.sales.models.OrderedProduct.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.sales.models.OrderedProduct.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">OrderedProduct.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.sales.models.OrderedProduct.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.OrderedProduct.access_inherit">
+<tt class="descclassname">OrderedProduct.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('order', '*module', '*user')</em><a class="headerlink" href="#maker.sales.models.OrderedProduct.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.OrderedProduct.get_absolute_url">
+<tt class="descclassname">OrderedProduct.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#OrderedProduct.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.OrderedProduct.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.OrderedProduct.get_total">
+<tt class="descclassname">OrderedProduct.</tt><tt class="descname">get_total</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#OrderedProduct.get_total"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.OrderedProduct.get_total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns total sum for this item</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.OrderedProduct.get_total_display">
+<tt class="descclassname">OrderedProduct.</tt><tt class="descname">get_total_display</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#OrderedProduct.get_total_display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.OrderedProduct.get_total_display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns total sum for this item in the display currency</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.OrderedProduct.object_ptr">
+<tt class="descclassname">OrderedProduct.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.sales.models.OrderedProduct.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.OrderedProduct.objects">
+<tt class="descclassname">OrderedProduct.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a232110&gt;</em><a class="headerlink" href="#maker.sales.models.OrderedProduct.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.OrderedProduct.order">
+<tt class="descclassname">OrderedProduct.</tt><tt class="descname">order</tt><a class="headerlink" href="#maker.sales.models.OrderedProduct.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.OrderedProduct.product">
+<tt class="descclassname">OrderedProduct.</tt><tt class="descname">product</tt><a class="headerlink" href="#maker.sales.models.OrderedProduct.product" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.OrderedProduct.subscription">
+<tt class="descclassname">OrderedProduct.</tt><tt class="descname">subscription</tt><a class="headerlink" href="#maker.sales.models.OrderedProduct.subscription" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.OrderedProduct.tax">
+<tt class="descclassname">OrderedProduct.</tt><tt class="descname">tax</tt><a class="headerlink" href="#maker.sales.models.OrderedProduct.tax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.sales.models.Product">
+<em class="property">class </em><tt class="descclassname">maker.sales.models.</tt><tt class="descname">Product</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Single Product</p>
+<dl class="exception">
+<dt id="maker.sales.models.Product.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.sales.models.Product.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.sales.models.Product.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Product.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.sales.models.Product.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Product.access_inherit">
+<tt class="descclassname">Product.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('parent', '*module', '*user')</em><a class="headerlink" href="#maker.sales.models.Product.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Product.child_set">
+<tt class="descclassname">Product.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.sales.models.Product.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Product.get_absolute_url">
+<tt class="descclassname">Product.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Product.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Product.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Product.get_product_type_display">
+<tt class="descclassname">Product.</tt><tt class="descname">get_product_type_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.sales.models.Product.get_product_type_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Product.get_runout_action_display">
+<tt class="descclassname">Product.</tt><tt class="descname">get_runout_action_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.sales.models.Product.get_runout_action_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Product.lead_set">
+<tt class="descclassname">Product.</tt><tt class="descname">lead_set</tt><a class="headerlink" href="#maker.sales.models.Product.lead_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Product.object_ptr">
+<tt class="descclassname">Product.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.sales.models.Product.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Product.objects">
+<tt class="descclassname">Product.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a72b1d0&gt;</em><a class="headerlink" href="#maker.sales.models.Product.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Product.opportunity_set">
+<tt class="descclassname">Product.</tt><tt class="descname">opportunity_set</tt><a class="headerlink" href="#maker.sales.models.Product.opportunity_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Product.orderedproduct_set">
+<tt class="descclassname">Product.</tt><tt class="descname">orderedproduct_set</tt><a class="headerlink" href="#maker.sales.models.Product.orderedproduct_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Product.parent">
+<tt class="descclassname">Product.</tt><tt class="descname">parent</tt><a class="headerlink" href="#maker.sales.models.Product.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Product.subscription_set">
+<tt class="descclassname">Product.</tt><tt class="descname">subscription_set</tt><a class="headerlink" href="#maker.sales.models.Product.subscription_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Product.supplier">
+<tt class="descclassname">Product.</tt><tt class="descname">supplier</tt><a class="headerlink" href="#maker.sales.models.Product.supplier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.sales.models.SaleOrder">
+<em class="property">class </em><tt class="descclassname">maker.sales.models.</tt><tt class="descname">SaleOrder</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Sale Order</p>
+<dl class="exception">
+<dt id="maker.sales.models.SaleOrder.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.sales.models.SaleOrder.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">SaleOrder.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.access_inherit">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('opportunity', 'client', '*module', '*user')</em><a class="headerlink" href="#maker.sales.models.SaleOrder.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.assigned">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">assigned</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.assigned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.balance_due">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">balance_due</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.balance_due"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.balance_due" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.client">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">client</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.client" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.currency">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">currency</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.currency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.fulfil">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">fulfil</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.fulfil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.fulfil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fulfil</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_absolute_url">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_next_by_datetime">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_next_by_datetime</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.sales.models.SaleOrder.get_next_by_datetime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_next_reference">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_next_reference</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.get_next_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.get_next_reference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_previous_by_datetime">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_previous_by_datetime</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.sales.models.SaleOrder.get_previous_by_datetime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_subtotal">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_subtotal</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.get_subtotal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.get_subtotal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_subtotal_display">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_subtotal_display</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.get_subtotal_display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.get_subtotal_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_taxes">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_taxes</tt><big>(</big><em>base=False</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.get_taxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.get_taxes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_taxes_total">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_taxes_total</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.get_taxes_total"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.get_taxes_total" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_total">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_total</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.get_total"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.get_total" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_total_display">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_total_display</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.get_total_display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.get_total_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.get_total_paid">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">get_total_paid</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.get_total_paid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.get_total_paid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.object_ptr">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.objects">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a50a650&gt;</em><a class="headerlink" href="#maker.sales.models.SaleOrder.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.opportunity">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">opportunity</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.opportunity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.orderedproduct_set">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">orderedproduct_set</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.orderedproduct_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.payment">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">payment</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.payment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.save">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Automatically set order reference</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.source">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">source</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleOrder.status">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">status</tt><a class="headerlink" href="#maker.sales.models.SaleOrder.status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleOrder.update_total">
+<tt class="descclassname">SaleOrder.</tt><tt class="descname">update_total</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleOrder.update_total"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleOrder.update_total" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.sales.models.SaleSource">
+<em class="property">class </em><tt class="descclassname">maker.sales.models.</tt><tt class="descname">SaleSource</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Source of Sale e.g. Search Engine</p>
+<dl class="exception">
+<dt id="maker.sales.models.SaleSource.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.sales.models.SaleSource.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.sales.models.SaleSource.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">SaleSource.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.sales.models.SaleSource.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleSource.get_absolute_url">
+<tt class="descclassname">SaleSource.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleSource.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleSource.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleSource.lead_set">
+<tt class="descclassname">SaleSource.</tt><tt class="descname">lead_set</tt><a class="headerlink" href="#maker.sales.models.SaleSource.lead_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleSource.object_ptr">
+<tt class="descclassname">SaleSource.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.sales.models.SaleSource.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleSource.objects">
+<tt class="descclassname">SaleSource.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a44b810&gt;</em><a class="headerlink" href="#maker.sales.models.SaleSource.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleSource.opportunity_set">
+<tt class="descclassname">SaleSource.</tt><tt class="descname">opportunity_set</tt><a class="headerlink" href="#maker.sales.models.SaleSource.opportunity_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleSource.saleorder_set">
+<tt class="descclassname">SaleSource.</tt><tt class="descname">saleorder_set</tt><a class="headerlink" href="#maker.sales.models.SaleSource.saleorder_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleSource.searchable">
+<tt class="descclassname">SaleSource.</tt><tt class="descname">searchable</tt><em class="property"> = False</em><a class="headerlink" href="#maker.sales.models.SaleSource.searchable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.sales.models.SaleStatus">
+<em class="property">class </em><tt class="descclassname">maker.sales.models.</tt><tt class="descname">SaleStatus</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Status of the Sale</p>
+<dl class="exception">
+<dt id="maker.sales.models.SaleStatus.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.sales.models.SaleStatus.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.sales.models.SaleStatus.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">SaleStatus.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.sales.models.SaleStatus.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.SaleStatus.get_absolute_url">
+<tt class="descclassname">SaleStatus.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#SaleStatus.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.SaleStatus.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleStatus.lead_set">
+<tt class="descclassname">SaleStatus.</tt><tt class="descname">lead_set</tt><a class="headerlink" href="#maker.sales.models.SaleStatus.lead_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleStatus.object_ptr">
+<tt class="descclassname">SaleStatus.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.sales.models.SaleStatus.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleStatus.objects">
+<tt class="descclassname">SaleStatus.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a72ba50&gt;</em><a class="headerlink" href="#maker.sales.models.SaleStatus.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleStatus.opportunity_set">
+<tt class="descclassname">SaleStatus.</tt><tt class="descname">opportunity_set</tt><a class="headerlink" href="#maker.sales.models.SaleStatus.opportunity_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleStatus.saleorder_set">
+<tt class="descclassname">SaleStatus.</tt><tt class="descname">saleorder_set</tt><a class="headerlink" href="#maker.sales.models.SaleStatus.saleorder_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.SaleStatus.searchable">
+<tt class="descclassname">SaleStatus.</tt><tt class="descname">searchable</tt><em class="property"> = False</em><a class="headerlink" href="#maker.sales.models.SaleStatus.searchable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.sales.models.Subscription">
+<em class="property">class </em><tt class="descclassname">maker.sales.models.</tt><tt class="descname">Subscription</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Subscription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Subscription" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Subscription</p>
+<dl class="exception">
+<dt id="maker.sales.models.Subscription.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.sales.models.Subscription.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.sales.models.Subscription.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Subscription.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.sales.models.Subscription.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Subscription.access_inherit">
+<tt class="descclassname">Subscription.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('client', 'product', '*module', '*user')</em><a class="headerlink" href="#maker.sales.models.Subscription.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Subscription.activate">
+<tt class="descclassname">Subscription.</tt><tt class="descname">activate</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Subscription.activate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Subscription.activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Subscription.check_status">
+<tt class="descclassname">Subscription.</tt><tt class="descname">check_status</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Subscription.check_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Subscription.check_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks and sets the state of the subscription</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Subscription.client">
+<tt class="descclassname">Subscription.</tt><tt class="descname">client</tt><a class="headerlink" href="#maker.sales.models.Subscription.client" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Subscription.deactivate">
+<tt class="descclassname">Subscription.</tt><tt class="descname">deactivate</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Subscription.deactivate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Subscription.deactivate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deactivate</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Subscription.get_absolute_url">
+<tt class="descclassname">Subscription.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Subscription.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Subscription.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Subscription.get_cycle_period_display">
+<tt class="descclassname">Subscription.</tt><tt class="descname">get_cycle_period_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.sales.models.Subscription.get_cycle_period_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Subscription.get_cycle_start">
+<tt class="descclassname">Subscription.</tt><tt class="descname">get_cycle_start</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Subscription.get_cycle_start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Subscription.get_cycle_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the cycle start date</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Subscription.get_next_by_start">
+<tt class="descclassname">Subscription.</tt><tt class="descname">get_next_by_start</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.sales.models.Subscription.get_next_by_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Subscription.get_previous_by_start">
+<tt class="descclassname">Subscription.</tt><tt class="descname">get_previous_by_start</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.sales.models.Subscription.get_previous_by_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Subscription.invoice">
+<tt class="descclassname">Subscription.</tt><tt class="descname">invoice</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Subscription.invoice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Subscription.invoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new sale order for self</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Subscription.object_ptr">
+<tt class="descclassname">Subscription.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.sales.models.Subscription.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Subscription.objects">
+<tt class="descclassname">Subscription.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x109c4bf10&gt;</em><a class="headerlink" href="#maker.sales.models.Subscription.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Subscription.orderedproduct_set">
+<tt class="descclassname">Subscription.</tt><tt class="descname">orderedproduct_set</tt><a class="headerlink" href="#maker.sales.models.Subscription.orderedproduct_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.sales.models.Subscription.product">
+<tt class="descclassname">Subscription.</tt><tt class="descname">product</tt><a class="headerlink" href="#maker.sales.models.Subscription.product" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.sales.models.Subscription.renew">
+<tt class="descclassname">Subscription.</tt><tt class="descname">renew</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/sales/models.html#Subscription.renew"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.sales.models.Subscription.renew" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renew</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="projects.html"
+                        title="previous chapter">Projects</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="services.html"
+                        title="next chapter">Services</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/development/sales.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="services.html" title="Services"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="projects.html" title="Projects"
+             >previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

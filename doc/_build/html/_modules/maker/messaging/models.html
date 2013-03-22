@@ -1,0 +1,258 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>maker.messaging.models &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for maker.messaging.models</h1><div class="highlight"><pre>
+<span class="c"># encoding: utf-8</span>
+<span class="c"># Copyright 2011 Tree.io Limited</span>
+<span class="c"># This file is part of maker.</span>
+<span class="c"># License www.tree.io/license</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Messaging models</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">maker.core.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Object</span>
+<span class="kn">from</span> <span class="nn">maker.identities.models</span> <span class="kn">import</span> <span class="n">Contact</span><span class="p">,</span> <span class="n">ContactValue</span>
+<span class="kn">from</span> <span class="nn">maker.messaging.emails</span> <span class="kn">import</span> <span class="n">EmailStream</span><span class="p">,</span> <span class="n">EmailMessage</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">jinja2.filters</span> <span class="kn">import</span> <span class="n">do_striptags</span><span class="p">,</span> <span class="n">do_truncate</span>
+<span class="kn">from</span> <span class="nn">maker.core.templatetags.modules</span> <span class="kn">import</span> <span class="n">htsafe</span>
+<span class="kn">import</span> <span class="nn">re</span>    
+
+<span class="c">#</span>
+<span class="c"># Mailing Lists</span>
+<span class="c">#</span>
+
+<div class="viewcode-block" id="Template"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.Template">[docs]</a><span class="k">class</span> <span class="nc">Template</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="s">&quot;A template for sending emails using template tags&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    </div>
+<div class="viewcode-block" id="MailingList"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.MailingList">[docs]</a><span class="k">class</span> <span class="nc">MailingList</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="s">&quot;A mailling list for mass mailing&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">from_contact</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;from_contact_set&quot;</span><span class="p">)</span>
+    <span class="n">opt_in</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Template</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;members_set&quot;</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Message&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-date_created&#39;</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    
+
+<span class="c">#TODO: Add segment and urltrack models</span>
+
+
+<span class="c"># MessageStream Model</span></div>
+<div class="viewcode-block" id="MessageStream"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.MessageStream">[docs]</a><span class="k">class</span> <span class="nc">MessageStream</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    A Stream that contains a list of messages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+   
+    <span class="n">incoming_server_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">incoming_server_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+                                            <span class="n">choices</span><span class="o">=</span><span class="p">((</span><span class="s">&#39;POP3&#39;</span><span class="p">,</span> <span class="s">&#39;POP3&#39;</span><span class="p">),</span>
+                                                     <span class="p">(</span><span class="s">&#39;POP3-SSL&#39;</span><span class="p">,</span> <span class="s">&#39;POP3-SSL&#39;</span><span class="p">),</span>
+                                                     <span class="p">(</span><span class="s">&#39;IMAP&#39;</span><span class="p">,</span> <span class="s">&#39;IMAP&#39;</span><span class="p">),</span>
+                                                     <span class="p">(</span><span class="s">&#39;IMAP-SSL&#39;</span><span class="p">,</span> <span class="s">&#39;IMAP-SSL&#39;</span><span class="p">),))</span>
+    <span class="n">incoming_server_username</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">incoming_password</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="n">outgoing_email</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">outgoing_server_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">outgoing_server_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                            <span class="n">choices</span><span class="o">=</span><span class="p">((</span><span class="s">&quot;SMTP&quot;</span><span class="p">,</span> <span class="s">&quot;SMTP&quot;</span><span class="p">),</span>
+                                                     <span class="p">(</span><span class="s">&quot;SMTP-SSL&quot;</span><span class="p">,</span> <span class="s">&quot;SMTP-SSL&quot;</span><span class="p">)))</span>
+    <span class="n">outgoing_server_username</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">outgoing_password</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="n">faulty</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">last_checked</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;MessageStream&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;last_updated&#39;</span><span class="p">]</span>
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Stream&quot;</span><span class="p">)</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Streams&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    
+<div class="viewcode-block" id="MessageStream.process_email"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.MessageStream.process_email">[docs]</a>    <span class="k">def</span> <span class="nf">process_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Get email from the email box&quot;</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">EmailStream</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">email</span><span class="o">.</span><span class="n">get_emails</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="MessageStream.get_absolute_url"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.MessageStream.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;messaging_stream_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+
+<span class="c"># Message Model</span></div></div>
+<div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.Message">[docs]</a><span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    A Single Message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">)</span>
+    <span class="n">recipients</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;message_recipients&#39;</span><span class="p">)</span>
+    <span class="n">stream</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">MessageStream</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;stream&#39;</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">reply_to</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;child_set&#39;</span><span class="p">)</span>
+    <span class="n">read_by</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;read_by_user&#39;</span><span class="p">)</span>
+    <span class="n">mlist</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">MailingList</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;mlist&#39;</span><span class="p">)</span>
+    
+    <span class="n">access_inherit</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;stream&#39;</span><span class="p">,</span> <span class="s">&#39;*module&#39;</span><span class="p">,</span> <span class="s">&#39;*user&#39;</span><span class="p">)</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Message&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-date_created&#39;</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+    
+<div class="viewcode-block" id="Message.get_absolute_url"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.Message.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;messaging_message_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        </div>
+<div class="viewcode-block" id="Message.save"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.Message.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="s">&quot;Automatically set message title&quot;</span>
+            
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;&lt;[^&gt;]+?&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">Message</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Message.is_read"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.Message.is_read">[docs]</a>    <span class="k">def</span> <span class="nf">is_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="s">&quot;Checks if the message is read by the given user&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">User</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;The given user is not an instance of core.User&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_by</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    </div>
+<div class="viewcode-block" id="Message.get_stripped_body"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.Message.get_stripped_body">[docs]</a>    <span class="k">def</span> <span class="nf">get_stripped_body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns body without HTML tags and other shit&quot;</span>
+        <span class="k">return</span> <span class="n">do_striptags</span><span class="p">(</span><span class="n">htsafe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">u&quot;</span><span class="se">\u00A0</span><span class="s">&quot;</span><span class="p">,</span><span class="s">&quot; &quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Message.send_email"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.Message.send_email">[docs]</a>    <span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Send email&quot;</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">EmailMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">outgoing_server_name</span><span class="p">:</span>
+            <span class="n">email</span><span class="o">.</span><span class="n">send_email</span><span class="p">()</span>
+        
+        </div>
+<div class="viewcode-block" id="Message.get_original_message_author_email"><a class="viewcode-back" href="../../../development/messaging.html#maker.messaging.models.Message.get_original_message_author_email">[docs]</a>    <span class="k">def</span> <span class="nf">get_original_message_author_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns email of the original message author&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span>
+        <span class="n">contact</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">author</span>
+        
+        <span class="n">email</span> <span class="o">=</span> <span class="n">ContactValue</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">field__field_type</span><span class="o">=</span><span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="n">contact</span><span class="o">=</span><span class="n">contact</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">email</span><span class="p">:</span> 
+            <span class="n">email</span> <span class="o">=</span> <span class="n">email</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            
+        <span class="k">return</span> <span class="n">email</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

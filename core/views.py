@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License 
 
 """
-Core module views
+    Core module views
 """
 
 from django.contrib.auth import authenticate, login, logout
@@ -34,6 +33,7 @@ import random
 
 @handle_response_format
 @maker_login_required
+
 def user_logout(request, response_format='html'):
     "User logout"
     logout(request)
@@ -131,7 +131,6 @@ def user_denied(request, message='', response_format='html'):
 @handle_response_format
 def user_perspective(request, response_format='html'):
     "Change user perspective"
-    
     user = request.user.get_profile()
     if request.POST and 'core_perspective' in request.POST:
         id = request.POST['core_perspective']
@@ -553,8 +552,7 @@ def ajax_upload(request, object_id=None, record=None):
             return HttpResponse(json.dumps(ret_json))
     except Exception, e:
         print e
-
-        
+     
 @maker_login_required
 def ajax_upload_record(request, record_id=None):
     record = UpdateRecord.objects.get(id=record_id)

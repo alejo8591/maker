@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Documents &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Development" href="../development.html" />
+    <link rel="next" title="Events (Calendar)" href="events.html" />
+    <link rel="prev" title="Core" href="core.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="events.html" title="Events (Calendar)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="Core"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="documents">
+<h1>Documents<a class="headerlink" href="#documents" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-maker.documents.models"></span><p>Documents module objects</p>
+<dl class="class">
+<dt id="maker.documents.models.Document">
+<em class="property">class </em><tt class="descclassname">maker.documents.models.</tt><tt class="descname">Document</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.Document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>A readable document, i.e. HTML, which may be rendered directly</p>
+<dl class="exception">
+<dt id="maker.documents.models.Document.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.documents.models.Document.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.documents.models.Document.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Document.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.documents.models.Document.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Document.access_inherit">
+<tt class="descclassname">Document.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('folder', '*module', '*user')</em><a class="headerlink" href="#maker.documents.models.Document.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Document.folder">
+<tt class="descclassname">Document.</tt><tt class="descname">folder</tt><a class="headerlink" href="#maker.documents.models.Document.folder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.documents.models.Document.get_absolute_url">
+<tt class="descclassname">Document.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#Document.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.Document.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Document.object_ptr">
+<tt class="descclassname">Document.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.documents.models.Document.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Document.objects">
+<tt class="descclassname">Document.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x103c9ca50&gt;</em><a class="headerlink" href="#maker.documents.models.Document.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.documents.models.File">
+<em class="property">class </em><tt class="descclassname">maker.documents.models.</tt><tt class="descname">File</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#File"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>A binary or other non-renderable file (i.e. an image)</p>
+<dl class="exception">
+<dt id="maker.documents.models.File.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.documents.models.File.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.documents.models.File.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">File.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.documents.models.File.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.File.access_inherit">
+<tt class="descclassname">File.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('folder', '*module', '*user')</em><a class="headerlink" href="#maker.documents.models.File.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.documents.models.File.can_preview">
+<tt class="descclassname">File.</tt><tt class="descname">can_preview</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#File.can_preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.File.can_preview" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.File.folder">
+<tt class="descclassname">File.</tt><tt class="descname">folder</tt><a class="headerlink" href="#maker.documents.models.File.folder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.documents.models.File.get_absolute_url">
+<tt class="descclassname">File.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#File.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.File.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.documents.models.File.get_file_type">
+<tt class="descclassname">File.</tt><tt class="descname">get_file_type</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#File.get_file_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.File.get_file_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.documents.models.File.get_preview_url">
+<tt class="descclassname">File.</tt><tt class="descname">get_preview_url</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#File.get_preview_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.File.get_preview_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.File.object_ptr">
+<tt class="descclassname">File.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.documents.models.File.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.File.objects">
+<tt class="descclassname">File.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x103c9c550&gt;</em><a class="headerlink" href="#maker.documents.models.File.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.documents.models.Folder">
+<em class="property">class </em><tt class="descclassname">maker.documents.models.</tt><tt class="descname">Folder</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#Folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.Folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Every folder may have a parent folder</p>
+<dl class="exception">
+<dt id="maker.documents.models.Folder.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.documents.models.Folder.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.documents.models.Folder.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Folder.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.documents.models.Folder.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Folder.access_inherit">
+<tt class="descclassname">Folder.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('parent', '*module', '*user')</em><a class="headerlink" href="#maker.documents.models.Folder.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Folder.child_set">
+<tt class="descclassname">Folder.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.documents.models.Folder.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Folder.document_set">
+<tt class="descclassname">Folder.</tt><tt class="descname">document_set</tt><a class="headerlink" href="#maker.documents.models.Folder.document_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Folder.file_set">
+<tt class="descclassname">Folder.</tt><tt class="descname">file_set</tt><a class="headerlink" href="#maker.documents.models.Folder.file_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.documents.models.Folder.get_absolute_url">
+<tt class="descclassname">Folder.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#Folder.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.Folder.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Folder.object_ptr">
+<tt class="descclassname">Folder.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.documents.models.Folder.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Folder.objects">
+<tt class="descclassname">Folder.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x103bb7fd0&gt;</em><a class="headerlink" href="#maker.documents.models.Folder.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Folder.parent">
+<tt class="descclassname">Folder.</tt><tt class="descname">parent</tt><a class="headerlink" href="#maker.documents.models.Folder.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.Folder.weblink_set">
+<tt class="descclassname">Folder.</tt><tt class="descname">weblink_set</tt><a class="headerlink" href="#maker.documents.models.Folder.weblink_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.documents.models.WebLink">
+<em class="property">class </em><tt class="descclassname">maker.documents.models.</tt><tt class="descname">WebLink</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#WebLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.WebLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>A web link</p>
+<dl class="exception">
+<dt id="maker.documents.models.WebLink.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.documents.models.WebLink.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.documents.models.WebLink.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">WebLink.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.documents.models.WebLink.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.WebLink.access_inherit">
+<tt class="descclassname">WebLink.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('folder', '*module', '*user')</em><a class="headerlink" href="#maker.documents.models.WebLink.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.WebLink.folder">
+<tt class="descclassname">WebLink.</tt><tt class="descname">folder</tt><a class="headerlink" href="#maker.documents.models.WebLink.folder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.documents.models.WebLink.get_absolute_url">
+<tt class="descclassname">WebLink.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#WebLink.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.WebLink.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.WebLink.object_ptr">
+<tt class="descclassname">WebLink.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.documents.models.WebLink.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.documents.models.WebLink.objects">
+<tt class="descclassname">WebLink.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x103c9cf90&gt;</em><a class="headerlink" href="#maker.documents.models.WebLink.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.documents.models.generate_filename">
+<tt class="descclassname">maker.documents.models.</tt><tt class="descname">generate_filename</tt><big>(</big><em>instance</em>, <em>old_filename</em><big>)</big><a class="reference internal" href="../_modules/maker/documents/models.html#generate_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.documents.models.generate_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate filename</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="core.html"
+                        title="previous chapter">Core</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="events.html"
+                        title="next chapter">Events (Calendar)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/development/documents.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="events.html" title="Events (Calendar)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="Core"
+             >previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

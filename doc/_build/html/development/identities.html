@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Identities &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Development" href="../development.html" />
+    <link rel="next" title="Infrastructure" href="infrastructure.html" />
+    <link rel="prev" title="Finance" href="finance.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="infrastructure.html" title="Infrastructure"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="finance.html" title="Finance"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-maker.identities.models">
+<span id="identities"></span><h1>Identities<a class="headerlink" href="#module-maker.identities.models" title="Permalink to this headline">¶</a></h1>
+<p>Identities module objects</p>
+<dl class="class">
+<dt id="maker.identities.models.Contact">
+<em class="property">class </em><tt class="descclassname">maker.identities.models.</tt><tt class="descname">Contact</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#Contact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.Contact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Information about a company, group or user. By design allows custom fields defined in ContactField</p>
+<dl class="exception">
+<dt id="maker.identities.models.Contact.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.identities.models.Contact.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.identities.models.Contact.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Contact.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.identities.models.Contact.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.Contact.access_inherit">
+<tt class="descclassname">Contact.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('parent', '*module', '*user')</em><a class="headerlink" href="#maker.identities.models.Contact.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.Contact.child_set">
+<tt class="descclassname">Contact.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.identities.models.Contact.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.Contact.contact_type">
+<tt class="descclassname">Contact.</tt><tt class="descname">contact_type</tt><a class="headerlink" href="#maker.identities.models.Contact.contact_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.Contact.contactvalue_set">
+<tt class="descclassname">Contact.</tt><tt class="descname">contactvalue_set</tt><a class="headerlink" href="#maker.identities.models.Contact.contactvalue_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.identities.models.Contact.get_absolute_url">
+<tt class="descclassname">Contact.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#Contact.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.Contact.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.identities.models.Contact.get_email">
+<tt class="descclassname">Contact.</tt><tt class="descname">get_email</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#Contact.get_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.Contact.get_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the first available e-mail</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.identities.models.Contact.get_or_create_by_email">
+<em class="property">static </em><tt class="descclassname">Contact.</tt><tt class="descname">get_or_create_by_email</tt><big>(</big><em>email</em>, <em>name=None</em>, <em>contact_type=None</em><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#Contact.get_or_create_by_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.Contact.get_or_create_by_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using a given email tries to find an existing Contact or create new one if not found.
+If name is not specified the given email address is used for name instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.identities.models.Contact.get_picture">
+<tt class="descclassname">Contact.</tt><tt class="descname">get_picture</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#Contact.get_picture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.Contact.get_picture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.Contact.object_ptr">
+<tt class="descclassname">Contact.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.identities.models.Contact.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.Contact.objects">
+<tt class="descclassname">Contact.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x1035e52d0&gt;</em><a class="headerlink" href="#maker.identities.models.Contact.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.Contact.parent">
+<tt class="descclassname">Contact.</tt><tt class="descname">parent</tt><a class="headerlink" href="#maker.identities.models.Contact.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.Contact.related_user">
+<tt class="descclassname">Contact.</tt><tt class="descname">related_user</tt><a class="headerlink" href="#maker.identities.models.Contact.related_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.identities.models.ContactField">
+<em class="property">class </em><tt class="descclassname">maker.identities.models.</tt><tt class="descname">ContactField</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#ContactField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.ContactField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Represents a field within a ContentType</p>
+<dl class="exception">
+<dt id="maker.identities.models.ContactField.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.identities.models.ContactField.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.identities.models.ContactField.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">ContactField.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.identities.models.ContactField.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactField.contacttype_set">
+<tt class="descclassname">ContactField.</tt><tt class="descname">contacttype_set</tt><a class="headerlink" href="#maker.identities.models.ContactField.contacttype_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactField.contactvalue_set">
+<tt class="descclassname">ContactField.</tt><tt class="descname">contactvalue_set</tt><a class="headerlink" href="#maker.identities.models.ContactField.contactvalue_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.identities.models.ContactField.get_absolute_url">
+<tt class="descclassname">ContactField.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.identities.models.ContactField.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a URL to the child object, if available</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.identities.models.ContactField.get_field_type_display">
+<tt class="descclassname">ContactField.</tt><tt class="descname">get_field_type_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.identities.models.ContactField.get_field_type_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactField.object_ptr">
+<tt class="descclassname">ContactField.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.identities.models.ContactField.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactField.objects">
+<tt class="descclassname">ContactField.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x1035dbf90&gt;</em><a class="headerlink" href="#maker.identities.models.ContactField.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactField.searchable">
+<tt class="descclassname">ContactField.</tt><tt class="descname">searchable</tt><em class="property"> = False</em><a class="headerlink" href="#maker.identities.models.ContactField.searchable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.identities.models.ContactType">
+<em class="property">class </em><tt class="descclassname">maker.identities.models.</tt><tt class="descname">ContactType</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#ContactType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.ContactType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Defines a type of Contact entities</p>
+<dl class="exception">
+<dt id="maker.identities.models.ContactType.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.identities.models.ContactType.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.identities.models.ContactType.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">ContactType.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.identities.models.ContactType.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactType.contact_set">
+<tt class="descclassname">ContactType.</tt><tt class="descname">contact_set</tt><a class="headerlink" href="#maker.identities.models.ContactType.contact_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactType.fields">
+<tt class="descclassname">ContactType.</tt><tt class="descname">fields</tt><a class="headerlink" href="#maker.identities.models.ContactType.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.identities.models.ContactType.get_absolute_url">
+<tt class="descclassname">ContactType.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#ContactType.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.ContactType.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactType.object_ptr">
+<tt class="descclassname">ContactType.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.identities.models.ContactType.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactType.objects">
+<tt class="descclassname">ContactType.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x1035e3b90&gt;</em><a class="headerlink" href="#maker.identities.models.ContactType.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.identities.models.ContactType.save">
+<tt class="descclassname">ContactType.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#ContactType.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.ContactType.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to auto-set slug</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.identities.models.ContactValue">
+<em class="property">class </em><tt class="descclassname">maker.identities.models.</tt><tt class="descname">ContactValue</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#ContactValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.ContactValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>A value selected for a Contact</p>
+<dl class="exception">
+<dt id="maker.identities.models.ContactValue.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.identities.models.ContactValue.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.identities.models.ContactValue.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">ContactValue.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.identities.models.ContactValue.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactValue.contact">
+<tt class="descclassname">ContactValue.</tt><tt class="descname">contact</tt><a class="headerlink" href="#maker.identities.models.ContactValue.contact" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactValue.field">
+<tt class="descclassname">ContactValue.</tt><tt class="descname">field</tt><a class="headerlink" href="#maker.identities.models.ContactValue.field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.identities.models.ContactValue.name">
+<tt class="descclassname">ContactValue.</tt><tt class="descname">name</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#ContactValue.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.ContactValue.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.identities.models.ContactValue.objects">
+<tt class="descclassname">ContactValue.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x1035e5910&gt;</em><a class="headerlink" href="#maker.identities.models.ContactValue.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.identities.models.contact_autocreate_handler">
+<tt class="descclassname">maker.identities.models.</tt><tt class="descname">contact_autocreate_handler</tt><big>(</big><em>sender</em>, <em>instance</em>, <em>created</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/identities/models.html#contact_autocreate_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.identities.models.contact_autocreate_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a User is created, automatically create a Contact of type Person</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="finance.html"
+                        title="previous chapter">Finance</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="infrastructure.html"
+                        title="next chapter">Infrastructure</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/development/identities.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="infrastructure.html" title="Infrastructure"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="finance.html" title="Finance"
+             >previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

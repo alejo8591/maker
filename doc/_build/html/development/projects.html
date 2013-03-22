@@ -1,0 +1,530 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Projects &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Development" href="../development.html" />
+    <link rel="next" title="Sales" href="sales.html" />
+    <link rel="prev" title="Messaging" href="messaging.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sales.html" title="Sales"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="messaging.html" title="Messaging"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-maker.projects.models">
+<span id="projects"></span><h1>Projects<a class="headerlink" href="#module-maker.projects.models" title="Permalink to this headline">¶</a></h1>
+<p>Project management models</p>
+<dl class="class">
+<dt id="maker.projects.models.Milestone">
+<em class="property">class </em><tt class="descclassname">maker.projects.models.</tt><tt class="descname">Milestone</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Milestone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Milestone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Tasks may have milestones</p>
+<dl class="exception">
+<dt id="maker.projects.models.Milestone.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.projects.models.Milestone.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.projects.models.Milestone.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Milestone.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.projects.models.Milestone.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Milestone.access_inherit">
+<tt class="descclassname">Milestone.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('project', '*module', '*user')</em><a class="headerlink" href="#maker.projects.models.Milestone.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Milestone.get_absolute_url">
+<tt class="descclassname">Milestone.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Milestone.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Milestone.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL for the Milestone</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Milestone.object_ptr">
+<tt class="descclassname">Milestone.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.projects.models.Milestone.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Milestone.objects">
+<tt class="descclassname">Milestone.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a923910&gt;</em><a class="headerlink" href="#maker.projects.models.Milestone.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Milestone.project">
+<tt class="descclassname">Milestone.</tt><tt class="descname">project</tt><a class="headerlink" href="#maker.projects.models.Milestone.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Milestone.save">
+<tt class="descclassname">Milestone.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Milestone.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Milestone.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override save to update all included tickets if Milestone.project changed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Milestone.status">
+<tt class="descclassname">Milestone.</tt><tt class="descname">status</tt><a class="headerlink" href="#maker.projects.models.Milestone.status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Milestone.task_set">
+<tt class="descclassname">Milestone.</tt><tt class="descname">task_set</tt><a class="headerlink" href="#maker.projects.models.Milestone.task_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.projects.models.Project">
+<em class="property">class </em><tt class="descclassname">maker.projects.models.</tt><tt class="descname">Project</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Project model</p>
+<dl class="exception">
+<dt id="maker.projects.models.Project.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.projects.models.Project.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.projects.models.Project.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Project.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.projects.models.Project.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Project.child_set">
+<tt class="descclassname">Project.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.projects.models.Project.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Project.client">
+<tt class="descclassname">Project.</tt><tt class="descname">client</tt><a class="headerlink" href="#maker.projects.models.Project.client" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Project.get_absolute_url">
+<tt class="descclassname">Project.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Project.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Project.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL for the Project</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Project.manager">
+<tt class="descclassname">Project.</tt><tt class="descname">manager</tt><a class="headerlink" href="#maker.projects.models.Project.manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Project.milestone_set">
+<tt class="descclassname">Project.</tt><tt class="descname">milestone_set</tt><a class="headerlink" href="#maker.projects.models.Project.milestone_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Project.object_ptr">
+<tt class="descclassname">Project.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.projects.models.Project.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Project.objects">
+<tt class="descclassname">Project.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a920d90&gt;</em><a class="headerlink" href="#maker.projects.models.Project.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Project.parent">
+<tt class="descclassname">Project.</tt><tt class="descname">parent</tt><a class="headerlink" href="#maker.projects.models.Project.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Project.task_set">
+<tt class="descclassname">Project.</tt><tt class="descname">task_set</tt><a class="headerlink" href="#maker.projects.models.Project.task_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.projects.models.Task">
+<em class="property">class </em><tt class="descclassname">maker.projects.models.</tt><tt class="descname">Task</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Single task</p>
+<dl class="exception">
+<dt id="maker.projects.models.Task.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.projects.models.Task.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.projects.models.Task.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Task.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.projects.models.Task.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.access_inherit">
+<tt class="descclassname">Task.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('parent', 'milestone', 'project', '*module', '*user')</em><a class="headerlink" href="#maker.projects.models.Task.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.assigned">
+<tt class="descclassname">Task.</tt><tt class="descname">assigned</tt><a class="headerlink" href="#maker.projects.models.Task.assigned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.blocked_set">
+<tt class="descclassname">Task.</tt><tt class="descname">blocked_set</tt><a class="headerlink" href="#maker.projects.models.Task.blocked_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.caller">
+<tt class="descclassname">Task.</tt><tt class="descname">caller</tt><a class="headerlink" href="#maker.projects.models.Task.caller" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.child_set">
+<tt class="descclassname">Task.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.projects.models.Task.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.depends">
+<tt class="descclassname">Task.</tt><tt class="descname">depends</tt><a class="headerlink" href="#maker.projects.models.Task.depends" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Task.get_absolute_url">
+<tt class="descclassname">Task.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Task.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Task.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Task.get_estimated_time">
+<tt class="descclassname">Task.</tt><tt class="descname">get_estimated_time</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Task.get_estimated_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Task.get_estimated_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts minutes to Human-friendly time format</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Task.get_priority_display">
+<tt class="descclassname">Task.</tt><tt class="descname">get_priority_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.projects.models.Task.get_priority_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Task.get_total_time">
+<tt class="descclassname">Task.</tt><tt class="descname">get_total_time</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Task.get_total_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Task.get_total_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns total time spent on the task, based on assigned TimeSlots</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Task.get_total_time_string">
+<tt class="descclassname">Task.</tt><tt class="descname">get_total_time_string</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Task.get_total_time_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Task.get_total_time_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns total time as a string with number of full hours and minutes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Task.get_total_time_tuple">
+<tt class="descclassname">Task.</tt><tt class="descname">get_total_time_tuple</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Task.get_total_time_tuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Task.get_total_time_tuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns total time as a tuple with number of full hours and minutes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Task.is_being_done_by">
+<tt class="descclassname">Task.</tt><tt class="descname">is_being_done_by</tt><big>(</big><em>user</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Task.is_being_done_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Task.is_being_done_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if the task is in progress</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.milestone">
+<tt class="descclassname">Task.</tt><tt class="descname">milestone</tt><a class="headerlink" href="#maker.projects.models.Task.milestone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.object_ptr">
+<tt class="descclassname">Task.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.projects.models.Task.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.objects">
+<tt class="descclassname">Task.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a925c90&gt;</em><a class="headerlink" href="#maker.projects.models.Task.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.parent">
+<tt class="descclassname">Task.</tt><tt class="descname">parent</tt><a class="headerlink" href="#maker.projects.models.Task.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Task.priority_human">
+<tt class="descclassname">Task.</tt><tt class="descname">priority_human</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Task.priority_human"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Task.priority_human" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a Human-friendly priority name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.project">
+<tt class="descclassname">Task.</tt><tt class="descname">project</tt><a class="headerlink" href="#maker.projects.models.Task.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.Task.save">
+<tt class="descclassname">Task.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#Task.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.Task.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override save method to check for Milestone-Project links and auto-Status child Tasks</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.status">
+<tt class="descclassname">Task.</tt><tt class="descname">status</tt><a class="headerlink" href="#maker.projects.models.Task.status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.Task.tasktimeslot_set">
+<tt class="descclassname">Task.</tt><tt class="descname">tasktimeslot_set</tt><a class="headerlink" href="#maker.projects.models.Task.tasktimeslot_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.projects.models.TaskStatus">
+<em class="property">class </em><tt class="descclassname">maker.projects.models.</tt><tt class="descname">TaskStatus</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#TaskStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.TaskStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Tasks and milestones have task statuses</p>
+<dl class="exception">
+<dt id="maker.projects.models.TaskStatus.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.projects.models.TaskStatus.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.projects.models.TaskStatus.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">TaskStatus.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.projects.models.TaskStatus.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.TaskStatus.get_absolute_url">
+<tt class="descclassname">TaskStatus.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#TaskStatus.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.TaskStatus.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL for the Task Status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskStatus.milestone_set">
+<tt class="descclassname">TaskStatus.</tt><tt class="descname">milestone_set</tt><a class="headerlink" href="#maker.projects.models.TaskStatus.milestone_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskStatus.object_ptr">
+<tt class="descclassname">TaskStatus.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.projects.models.TaskStatus.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskStatus.objects">
+<tt class="descclassname">TaskStatus.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a923290&gt;</em><a class="headerlink" href="#maker.projects.models.TaskStatus.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskStatus.task_set">
+<tt class="descclassname">TaskStatus.</tt><tt class="descname">task_set</tt><a class="headerlink" href="#maker.projects.models.TaskStatus.task_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.projects.models.TaskTimeSlot">
+<em class="property">class </em><tt class="descclassname">maker.projects.models.</tt><tt class="descname">TaskTimeSlot</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#TaskTimeSlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.TaskTimeSlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Task time slot</p>
+<dl class="exception">
+<dt id="maker.projects.models.TaskTimeSlot.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.projects.models.TaskTimeSlot.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskTimeSlot.access_inherit">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('task', '*module', '*user')</em><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskTimeSlot.attached">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">attached</tt><em class="property"> = True</em><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.attached" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.TaskTimeSlot.get_absolute_url">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#TaskTimeSlot.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.TaskTimeSlot.get_next_by_time_from">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">get_next_by_time_from</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.get_next_by_time_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.TaskTimeSlot.get_previous_by_time_from">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">get_previous_by_time_from</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.get_previous_by_time_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.TaskTimeSlot.get_time">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">get_time</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#TaskTimeSlot.get_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.get_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns time</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.TaskTimeSlot.get_time_secs">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">get_time_secs</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#TaskTimeSlot.get_time_secs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.get_time_secs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return time from epoch</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.TaskTimeSlot.get_time_string">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">get_time_string</tt><big>(</big><em>time=None</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#TaskTimeSlot.get_time_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.get_time_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns time in string format</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.TaskTimeSlot.get_time_tuple">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">get_time_tuple</tt><big>(</big><em>time=None</em><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#TaskTimeSlot.get_time_tuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.get_time_tuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns time as a tuple with number of full hours and minutes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.projects.models.TaskTimeSlot.is_open">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">is_open</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/projects/models.html#TaskTimeSlot.is_open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.is_open" title="Permalink to this definition">¶</a></dt>
+<dd><p>If task is open</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskTimeSlot.object_ptr">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskTimeSlot.objects">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a927690&gt;</em><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskTimeSlot.searchable">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">searchable</tt><em class="property"> = False</em><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.searchable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskTimeSlot.task">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">task</tt><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.task" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.projects.models.TaskTimeSlot.user">
+<tt class="descclassname">TaskTimeSlot.</tt><tt class="descname">user</tt><a class="headerlink" href="#maker.projects.models.TaskTimeSlot.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="messaging.html"
+                        title="previous chapter">Messaging</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sales.html"
+                        title="next chapter">Sales</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/development/projects.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sales.html" title="Sales"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="messaging.html" title="Messaging"
+             >previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

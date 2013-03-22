@@ -29,7 +29,8 @@ def module_content(page, response):
 
     return response
 
-RULESET = [title,
+RULESET = [
+           title,
            module_content,
            ]
 

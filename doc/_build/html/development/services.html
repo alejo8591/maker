@@ -1,0 +1,560 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Services &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Development" href="../development.html" />
+    <link rel="prev" title="Sales" href="sales.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sales.html" title="Sales"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-maker.services.models">
+<span id="services"></span><h1>Services<a class="headerlink" href="#module-maker.services.models" title="Permalink to this headline">¶</a></h1>
+<p>ServiceSupport module objects.</p>
+<p>Depends on: maker.core, maker.identities</p>
+<dl class="class">
+<dt id="maker.services.models.Service">
+<em class="property">class </em><tt class="descclassname">maker.services.models.</tt><tt class="descname">Service</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#Service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.Service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Technical service supported by a company</p>
+<dl class="exception">
+<dt id="maker.services.models.Service.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.services.models.Service.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.services.models.Service.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Service.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.services.models.Service.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Service.access_inherit">
+<tt class="descclassname">Service.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('parent', '*module', '*user')</em><a class="headerlink" href="#maker.services.models.Service.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Service.child_set">
+<tt class="descclassname">Service.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.services.models.Service.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.Service.get_absolute_url">
+<tt class="descclassname">Service.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#Service.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.Service.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Service.object_ptr">
+<tt class="descclassname">Service.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.services.models.Service.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Service.objects">
+<tt class="descclassname">Service.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10ab14f50&gt;</em><a class="headerlink" href="#maker.services.models.Service.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Service.parent">
+<tt class="descclassname">Service.</tt><tt class="descname">parent</tt><a class="headerlink" href="#maker.services.models.Service.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Service.servicelevelagreement_set">
+<tt class="descclassname">Service.</tt><tt class="descname">servicelevelagreement_set</tt><a class="headerlink" href="#maker.services.models.Service.servicelevelagreement_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Service.ticket_set">
+<tt class="descclassname">Service.</tt><tt class="descname">ticket_set</tt><a class="headerlink" href="#maker.services.models.Service.ticket_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Service.ticketqueue_set">
+<tt class="descclassname">Service.</tt><tt class="descname">ticketqueue_set</tt><a class="headerlink" href="#maker.services.models.Service.ticketqueue_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.services.models.ServiceAgent">
+<em class="property">class </em><tt class="descclassname">maker.services.models.</tt><tt class="descname">ServiceAgent</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#ServiceAgent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.ServiceAgent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>User responsible for service support</p>
+<dl class="exception">
+<dt id="maker.services.models.ServiceAgent.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.services.models.ServiceAgent.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.services.models.ServiceAgent.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">ServiceAgent.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.services.models.ServiceAgent.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.ServiceAgent.get_absolute_url">
+<tt class="descclassname">ServiceAgent.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#ServiceAgent.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.ServiceAgent.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceAgent.object_ptr">
+<tt class="descclassname">ServiceAgent.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.services.models.ServiceAgent.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceAgent.objects">
+<tt class="descclassname">ServiceAgent.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10ab9dfd0&gt;</em><a class="headerlink" href="#maker.services.models.ServiceAgent.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceAgent.related_user">
+<tt class="descclassname">ServiceAgent.</tt><tt class="descname">related_user</tt><a class="headerlink" href="#maker.services.models.ServiceAgent.related_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceAgent.ticket_set">
+<tt class="descclassname">ServiceAgent.</tt><tt class="descname">ticket_set</tt><a class="headerlink" href="#maker.services.models.ServiceAgent.ticket_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.services.models.ServiceLevelAgreement">
+<em class="property">class </em><tt class="descclassname">maker.services.models.</tt><tt class="descname">ServiceLevelAgreement</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#ServiceLevelAgreement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Formal terms for service support</p>
+<dl class="exception">
+<dt id="maker.services.models.ServiceLevelAgreement.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.services.models.ServiceLevelAgreement.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">ServiceLevelAgreement.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceLevelAgreement.access_inherit">
+<tt class="descclassname">ServiceLevelAgreement.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('service', '*module', '*user')</em><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceLevelAgreement.client">
+<tt class="descclassname">ServiceLevelAgreement.</tt><tt class="descname">client</tt><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement.client" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.ServiceLevelAgreement.get_absolute_url">
+<tt class="descclassname">ServiceLevelAgreement.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#ServiceLevelAgreement.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceLevelAgreement.object_ptr">
+<tt class="descclassname">ServiceLevelAgreement.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceLevelAgreement.objects">
+<tt class="descclassname">ServiceLevelAgreement.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10ab9d9d0&gt;</em><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceLevelAgreement.provider">
+<tt class="descclassname">ServiceLevelAgreement.</tt><tt class="descname">provider</tt><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement.provider" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceLevelAgreement.service">
+<tt class="descclassname">ServiceLevelAgreement.</tt><tt class="descname">service</tt><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement.service" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.ServiceLevelAgreement.ticket_set">
+<tt class="descclassname">ServiceLevelAgreement.</tt><tt class="descname">ticket_set</tt><a class="headerlink" href="#maker.services.models.ServiceLevelAgreement.ticket_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.services.models.Ticket">
+<em class="property">class </em><tt class="descclassname">maker.services.models.</tt><tt class="descname">Ticket</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#Ticket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.Ticket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Problem or support request ticket</p>
+<dl class="exception">
+<dt id="maker.services.models.Ticket.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.services.models.Ticket.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.services.models.Ticket.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Ticket.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.services.models.Ticket.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Ticket.assigned">
+<tt class="descclassname">Ticket.</tt><tt class="descname">assigned</tt><a class="headerlink" href="#maker.services.models.Ticket.assigned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Ticket.caller">
+<tt class="descclassname">Ticket.</tt><tt class="descname">caller</tt><a class="headerlink" href="#maker.services.models.Ticket.caller" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.Ticket.get_absolute_url">
+<tt class="descclassname">Ticket.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#Ticket.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.Ticket.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.Ticket.get_priority_display">
+<tt class="descclassname">Ticket.</tt><tt class="descname">get_priority_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.services.models.Ticket.get_priority_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.Ticket.get_urgency_display">
+<tt class="descclassname">Ticket.</tt><tt class="descname">get_urgency_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.services.models.Ticket.get_urgency_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Ticket.message">
+<tt class="descclassname">Ticket.</tt><tt class="descname">message</tt><a class="headerlink" href="#maker.services.models.Ticket.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Ticket.object_ptr">
+<tt class="descclassname">Ticket.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.services.models.Ticket.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Ticket.objects">
+<tt class="descclassname">Ticket.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10aba31d0&gt;</em><a class="headerlink" href="#maker.services.models.Ticket.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.Ticket.priority_human">
+<tt class="descclassname">Ticket.</tt><tt class="descname">priority_human</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#Ticket.priority_human"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.Ticket.priority_human" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a Human-friendly priority name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Ticket.queue">
+<tt class="descclassname">Ticket.</tt><tt class="descname">queue</tt><a class="headerlink" href="#maker.services.models.Ticket.queue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.Ticket.save">
+<tt class="descclassname">Ticket.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#Ticket.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.Ticket.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Automatically set ticket reference and send message to caller</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Ticket.service">
+<tt class="descclassname">Ticket.</tt><tt class="descname">service</tt><a class="headerlink" href="#maker.services.models.Ticket.service" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Ticket.sla">
+<tt class="descclassname">Ticket.</tt><tt class="descname">sla</tt><a class="headerlink" href="#maker.services.models.Ticket.sla" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.Ticket.status">
+<tt class="descclassname">Ticket.</tt><tt class="descname">status</tt><a class="headerlink" href="#maker.services.models.Ticket.status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.Ticket.urgency_human">
+<tt class="descclassname">Ticket.</tt><tt class="descname">urgency_human</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#Ticket.urgency_human"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.Ticket.urgency_human" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a Human-friendly urgency name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.services.models.TicketQueue">
+<em class="property">class </em><tt class="descclassname">maker.services.models.</tt><tt class="descname">TicketQueue</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#TicketQueue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.TicketQueue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Queue for incoming tickets</p>
+<dl class="exception">
+<dt id="maker.services.models.TicketQueue.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.services.models.TicketQueue.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.services.models.TicketQueue.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">TicketQueue.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.services.models.TicketQueue.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketQueue.child_set">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.services.models.TicketQueue.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketQueue.default_service">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">default_service</tt><a class="headerlink" href="#maker.services.models.TicketQueue.default_service" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketQueue.default_ticket_status">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">default_ticket_status</tt><a class="headerlink" href="#maker.services.models.TicketQueue.default_ticket_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.TicketQueue.get_absolute_url">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#TicketQueue.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.TicketQueue.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.TicketQueue.get_default_ticket_priority_display">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">get_default_ticket_priority_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.services.models.TicketQueue.get_default_ticket_priority_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketQueue.message_stream">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">message_stream</tt><a class="headerlink" href="#maker.services.models.TicketQueue.message_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketQueue.next_queue">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">next_queue</tt><a class="headerlink" href="#maker.services.models.TicketQueue.next_queue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketQueue.object_ptr">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.services.models.TicketQueue.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketQueue.objects">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10ab9ec10&gt;</em><a class="headerlink" href="#maker.services.models.TicketQueue.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketQueue.parent">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">parent</tt><a class="headerlink" href="#maker.services.models.TicketQueue.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketQueue.previous_set">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">previous_set</tt><a class="headerlink" href="#maker.services.models.TicketQueue.previous_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketQueue.ticket_set">
+<tt class="descclassname">TicketQueue.</tt><tt class="descname">ticket_set</tt><a class="headerlink" href="#maker.services.models.TicketQueue.ticket_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.services.models.TicketRecord">
+<em class="property">class </em><tt class="descclassname">maker.services.models.</tt><tt class="descname">TicketRecord</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#TicketRecord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.TicketRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.UpdateRecord" title="maker.core.models.UpdateRecord"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.UpdateRecord</span></tt></a></p>
+<p>Update for a Ticket</p>
+<dl class="exception">
+<dt id="maker.services.models.TicketRecord.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.services.models.TicketRecord.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.services.models.TicketRecord.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">TicketRecord.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.services.models.TicketRecord.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketRecord.message">
+<tt class="descclassname">TicketRecord.</tt><tt class="descname">message</tt><a class="headerlink" href="#maker.services.models.TicketRecord.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketRecord.objects">
+<tt class="descclassname">TicketRecord.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10aba3790&gt;</em><a class="headerlink" href="#maker.services.models.TicketRecord.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketRecord.updaterecord_ptr">
+<tt class="descclassname">TicketRecord.</tt><tt class="descname">updaterecord_ptr</tt><a class="headerlink" href="#maker.services.models.TicketRecord.updaterecord_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.services.models.TicketStatus">
+<em class="property">class </em><tt class="descclassname">maker.services.models.</tt><tt class="descname">TicketStatus</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#TicketStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.TicketStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>State information about a ticket</p>
+<dl class="exception">
+<dt id="maker.services.models.TicketStatus.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.services.models.TicketStatus.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.services.models.TicketStatus.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">TicketStatus.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.services.models.TicketStatus.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.services.models.TicketStatus.get_absolute_url">
+<tt class="descclassname">TicketStatus.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#TicketStatus.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.TicketStatus.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketStatus.object_ptr">
+<tt class="descclassname">TicketStatus.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.services.models.TicketStatus.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketStatus.objects">
+<tt class="descclassname">TicketStatus.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10ab14b10&gt;</em><a class="headerlink" href="#maker.services.models.TicketStatus.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketStatus.searchable">
+<tt class="descclassname">TicketStatus.</tt><tt class="descname">searchable</tt><em class="property"> = False</em><a class="headerlink" href="#maker.services.models.TicketStatus.searchable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketStatus.ticket_set">
+<tt class="descclassname">TicketStatus.</tt><tt class="descname">ticket_set</tt><a class="headerlink" href="#maker.services.models.TicketStatus.ticket_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.services.models.TicketStatus.ticketqueue_set">
+<tt class="descclassname">TicketStatus.</tt><tt class="descname">ticketqueue_set</tt><a class="headerlink" href="#maker.services.models.TicketStatus.ticketqueue_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.services.models.create_ticket_from_message">
+<tt class="descclassname">maker.services.models.</tt><tt class="descname">create_ticket_from_message</tt><big>(</big><em>sender</em>, <em>instance</em>, <em>created</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#create_ticket_from_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.create_ticket_from_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a signal from messaging.models
+Check if (new) message&#8217;s stream is also assigned to Ticket Queue
+Create a new ticket from that message
+Rename original message title</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.services.models.email_caller_on_new_ticket">
+<tt class="descclassname">maker.services.models.</tt><tt class="descname">email_caller_on_new_ticket</tt><big>(</big><em>sender</em>, <em>instance</em>, <em>created</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/services/models.html#email_caller_on_new_ticket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.services.models.email_caller_on_new_ticket" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a new ticket is created send an email to the caller</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sales.html"
+                        title="previous chapter">Sales</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/development/services.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sales.html" title="Sales"
+             >previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

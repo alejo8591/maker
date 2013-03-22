@@ -12,7 +12,7 @@ from django.template import defaultfilters
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from maker.core.conf import settings
-from maker.core.models import AccessEntity, Object, ModuleSetting
+from maker.core.models import InteractionEntity, Object, ModuleSetting
 from maker.core.decorators import preprocess_form
 from maker.identities.models import Contact, ContactValue, ContactType, ContactField
 from unidecode import unidecode
@@ -250,7 +250,7 @@ class ContactForm(forms.Form):
         if user.is_admin('maker.identities'):
             self.fields['related_user'] = forms.ModelChoiceField(label=_('Attach to User'), 
                                                                  queryset=[], required=False)
-            self.fields['related_user'].queryset = AccessEntity.objects.all()
+            self.fields['related_user'].queryset = InteractionEntity.objects.all()
             self.fields['related_user'].widget.attrs.update({'class': 'autocomplete', 
                                                              'callback': reverse('identities_ajax_access_lookup')})
             self.fields['related_user'].label = _('Related user')

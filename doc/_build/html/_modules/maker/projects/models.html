@@ -1,0 +1,437 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>maker.projects.models &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for maker.projects.models</h1><div class="highlight"><pre>
+<span class="c"># encoding: utf-8</span>
+<span class="c"># Copyright 2011 Tree.io Limited</span>
+<span class="c"># This file is part of maker.</span>
+<span class="c"># License www.tree.io/license</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Project management models</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">maker.core.models</span> <span class="kn">import</span> <span class="n">Object</span><span class="p">,</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">maker.identities.models</span> <span class="kn">import</span> <span class="n">Contact</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="c"># Project Model</span>
+<div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Project model &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;child_set&#39;</span><span class="p">)</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;manager&#39;</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;client&#39;</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Project&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+
+<div class="viewcode-block" id="Project.get_absolute_url"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Project.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL for the Project&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;projects_project_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+
+
+<span class="c"># TaskStatus model</span></div></div>
+<div class="viewcode-block" id="TaskStatus"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.TaskStatus">[docs]</a><span class="k">class</span> <span class="nc">TaskStatus</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Tasks and milestones have task statuses &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">()</span>
+    <span class="n">hidden</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">()</span>
+
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;TaskStatus&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;hidden&#39;</span><span class="p">,</span> <span class="s">&#39;-active&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="TaskStatus.get_absolute_url"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.TaskStatus.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL for the Task Status&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;projects_index_by_status&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+
+<span class="c"># Milestone model</span></div></div>
+<div class="viewcode-block" id="Milestone"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Milestone">[docs]</a><span class="k">class</span> <span class="nc">Milestone</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Tasks may have milestones &quot;&quot;&quot;</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Project</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">TaskStatus</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">start_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">end_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">access_inherit</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;project&#39;</span><span class="p">,</span> <span class="s">&#39;*module&#39;</span><span class="p">,</span> <span class="s">&#39;*user&#39;</span><span class="p">)</span>
+
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Milestone&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;start_date&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="Milestone.save"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Milestone.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="s">&quot;Override save to update all included tickets if Milestone.project changed&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="n">original</span> <span class="o">=</span> <span class="n">Milestone</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Milestone</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">!=</span> <span class="n">original</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">task_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                    <span class="n">task</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+                    <span class="n">task</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Milestone</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Milestone.get_absolute_url"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Milestone.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL for the Milestone&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;projects_milestone_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+
+<span class="c"># Task model</span></div></div>
+<div class="viewcode-block" id="Task"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Task">[docs]</a><span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Single task &quot;&quot;&quot;</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;child_set&#39;</span><span class="p">)</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Project</span><span class="p">)</span>
+    <span class="n">milestone</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Milestone</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">TaskStatus</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">26</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">assigned</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">depends</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Task&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;blocked_set&#39;</span><span class="p">,</span>
+                                <span class="n">limit_choices_to</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;status__hidden&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">})</span>
+    <span class="n">caller</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">start_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">end_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                                   <span class="n">choices</span><span class="o">=</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Highest&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;High&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Normal&#39;</span><span class="p">)),</span>
+                                            <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Low&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Lowest&#39;</span><span class="p">))))</span>
+    <span class="n">estimated_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+    <span class="n">access_inherit</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;parent&#39;</span><span class="p">,</span> <span class="s">&#39;milestone&#39;</span><span class="p">,</span> <span class="s">&#39;project&#39;</span><span class="p">,</span> <span class="s">&#39;*module&#39;</span><span class="p">,</span> <span class="s">&#39;*user&#39;</span><span class="p">)</span>
+
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Task&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;-priority&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="Task.priority_human"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Task.priority_human">[docs]</a>    <span class="k">def</span> <span class="nf">priority_human</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns a Human-friendly priority name&quot;</span>
+        <span class="n">choices</span> <span class="o">=</span> <span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Highest&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;High&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Normal&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Low&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Lowest&#39;</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">choice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">priority</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">choice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Task.get_estimated_time"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Task.get_estimated_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_estimated_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Converts minutes to Human-friendly time format&quot;</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">estimated_time</span><span class="p">)</span>
+        <span class="n">days</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">days</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">seconds</span>
+        <span class="n">hours</span> <span class="o">=</span> <span class="n">days</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">+</span> <span class="p">(</span><span class="n">seconds</span> <span class="o">//</span> <span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
+        <span class="n">seconds</span> <span class="o">%=</span> <span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+        <span class="n">minutes</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">//</span> <span class="mi">60</span>
+        <span class="n">seconds</span> <span class="o">%=</span> <span class="mi">60</span>
+
+        <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">hours</span> <span class="ow">or</span> <span class="n">minutes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">hours</span><span class="p">:</span>
+                <span class="n">string</span> <span class="o">+=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%2i</span><span class="s"> hours &quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">hours</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">minutes</span><span class="p">:</span>
+                <span class="n">string</span> <span class="o">+=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%2i</span><span class="s"> minutes&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">minutes</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Less than 1 minute&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">string</span>
+</div>
+<div class="viewcode-block" id="Task.save"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Task.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="s">&quot;Override save method to check for Milestone-Project links and auto-Status child Tasks&quot;</span>
+
+        <span class="n">original</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="c"># Existing task</span>
+            <span class="n">original</span> <span class="o">=</span> <span class="n">Task</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">!=</span> <span class="n">original</span><span class="o">.</span><span class="n">project_id</span><span class="p">:</span>
+                <span class="c"># Project changed, check milestone is within selected Project</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestone_id</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestone</span><span class="o">.</span><span class="n">project_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">milestone</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestone_id</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestone_id</span> <span class="o">!=</span> <span class="n">original</span><span class="o">.</span><span class="n">milestone_id</span><span class="p">:</span>
+                <span class="c"># Milestone changed, check if it belongs to the selected Project</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestone</span><span class="o">.</span><span class="n">project_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestone</span><span class="o">.</span><span class="n">project_id</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_id</span> <span class="o">!=</span> <span class="n">original</span><span class="o">.</span><span class="n">status_id</span><span class="p">:</span>
+                <span class="c"># Changed status</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">hidden</span><span class="p">:</span>
+                    <span class="c"># Changed to a &#39;hidden&#39; status, perform same for subtasks</span>
+                    <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_set</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">):</span>
+                        <span class="n">task</span><span class="o">.</span><span class="n">status_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_id</span>
+                        <span class="n">task</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="c"># Close any open timeslots</span>
+                    <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasktimeslot_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">time_to__isnull</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+                        <span class="n">slot</span><span class="o">.</span><span class="n">time_to</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+                        <span class="n">slot</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># New task</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestone_id</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestone</span><span class="o">.</span><span class="n">project_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestone</span><span class="o">.</span><span class="n">project_id</span>
+
+        <span class="c"># Inherit Project and Milestone from parent if present</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_id</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">project_id</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">project_id</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">milestone_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">milestone_id</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">milestone_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">milestone_id</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">Task</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+</div>
+<div class="viewcode-block" id="Task.get_absolute_url"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Task.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;projects_task_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="Task.get_total_time"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Task.get_total_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns total time spent on the task, based on assigned TimeSlots&quot;</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasktimeslot_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">slot</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">total</span>
+</div>
+<div class="viewcode-block" id="Task.get_total_time_tuple"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Task.get_total_time_tuple">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_time_tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns total time as a tuple with number of full hours and minutes&quot;</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_total_time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">time</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="n">days</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">days</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">seconds</span>
+        <span class="n">hours</span> <span class="o">=</span> <span class="n">days</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">+</span> <span class="p">(</span><span class="n">seconds</span> <span class="o">//</span> <span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
+        <span class="n">seconds</span> <span class="o">%=</span> <span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+        <span class="n">minutes</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">//</span> <span class="mi">60</span>
+        <span class="n">seconds</span> <span class="o">%=</span> <span class="mi">60</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Task.get_total_time_string"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Task.get_total_time_string">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_time_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns total time as a string with number of full hours and minutes&quot;</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_total_time_tuple</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">time</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;0 minutes&quot;</span><span class="p">)</span>
+        <span class="n">hours</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">minutes</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">hours</span> <span class="ow">or</span> <span class="n">minutes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">hours</span><span class="p">:</span>
+                <span class="n">string</span> <span class="o">+=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%2i</span><span class="s"> hours &quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">hours</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">minutes</span><span class="p">:</span>
+                <span class="n">string</span> <span class="o">+=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%2i</span><span class="s"> minutes&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">minutes</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Less than 1 minute&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">string</span>
+</div>
+<div class="viewcode-block" id="Task.is_being_done_by"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.Task.is_being_done_by">[docs]</a>    <span class="k">def</span> <span class="nf">is_being_done_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="s">&quot;Returns true if the task is in progress&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasktimeslot_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">time_to__isnull</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+
+<span class="c"># TaskTimeSlot model</span></div></div>
+<div class="viewcode-block" id="TaskTimeSlot"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.TaskTimeSlot">[docs]</a><span class="k">class</span> <span class="nc">TaskTimeSlot</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Task time slot &quot;&quot;&quot;</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Task</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    <span class="n">time_from</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">()</span>
+    <span class="n">time_to</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">timezone</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">access_inherit</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;task&#39;</span><span class="p">,</span> <span class="s">&#39;*module&#39;</span><span class="p">,</span> <span class="s">&#39;*user&#39;</span><span class="p">)</span>
+
+    <span class="n">searchable</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">attached</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;TaskTimeSlot&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-date_created&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TaskTimeSlot.get_absolute_url"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.TaskTimeSlot.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;projects_task_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">task_id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="TaskTimeSlot.get_time_secs"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.TaskTimeSlot.get_time_secs">[docs]</a>    <span class="k">def</span> <span class="nf">get_time_secs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Return time from epoch&quot;</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_from</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">days</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">+</span> <span class="n">time</span><span class="o">.</span><span class="n">seconds</span>
+        <span class="k">return</span> <span class="n">seconds</span>
+</div>
+<div class="viewcode-block" id="TaskTimeSlot.get_time"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.TaskTimeSlot.get_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns time&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_from</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_to</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_to</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_from</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">timedelta</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="TaskTimeSlot.get_time_tuple"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.TaskTimeSlot.get_time_tuple">[docs]</a>    <span class="k">def</span> <span class="nf">get_time_tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="s">&quot;Returns time as a tuple with number of full hours and minutes&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">time</span><span class="p">:</span>
+            <span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">time</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="n">days</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">days</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">seconds</span>
+        <span class="n">hours</span> <span class="o">=</span> <span class="n">days</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">+</span> <span class="p">(</span><span class="n">seconds</span> <span class="o">//</span> <span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
+        <span class="n">seconds</span> <span class="o">%=</span> <span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+        <span class="n">minutes</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">//</span> <span class="mi">60</span>
+        <span class="n">seconds</span> <span class="o">%=</span> <span class="mi">60</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TaskTimeSlot.get_time_string"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.TaskTimeSlot.get_time_string">[docs]</a>    <span class="k">def</span> <span class="nf">get_time_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="s">&quot;Returns time in string format&quot;</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_time_tuple</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">time</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_from</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_time_string</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_from</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">time</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="n">hours</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">minutes</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">hours</span> <span class="ow">or</span> <span class="n">minutes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">hours</span><span class="p">:</span>
+                <span class="n">string</span> <span class="o">+=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%2i</span><span class="s"> hours &quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">hours</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">minutes</span><span class="p">:</span>
+                <span class="n">string</span> <span class="o">+=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%2i</span><span class="s"> minutes&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">minutes</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Less than 1 minute&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">string</span>
+</div>
+<div class="viewcode-block" id="TaskTimeSlot.is_open"><a class="viewcode-back" href="../../../development/projects.html#maker.projects.models.TaskTimeSlot.is_open">[docs]</a>    <span class="k">def</span> <span class="nf">is_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;If task is open&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_from</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_to</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

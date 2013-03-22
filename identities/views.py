@@ -4,7 +4,7 @@
 # License www.tree.io/license
 
 """
-Identities module: views
+    Identities module: views
 """
 from maker.identities.identicon import render_identicon
 from django.shortcuts import get_object_or_404
@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.db.models import Q
 from maker.core.rendering import render_to_response
 from maker.core.forms import LocationForm
-from maker.core.models import User, Group, Object, Location, ModuleSetting, IntegrationResource, AccessEntity
+from maker.core.models import User, Group, Object, Location, ModuleSetting, IntegrationResource, InteractionEntity
 from maker.core.views import user_denied
 from maker.core.decorators import maker_login_required, handle_response_format
 from maker.identities.csvapi import ProcessContacts
@@ -96,8 +96,6 @@ def index(request, response_format='html'):
     
     return render_to_response('identities/index', context,
                               context_instance=RequestContext(request), response_format=response_format)
-
-
     
 #
 # ContactTypes
@@ -843,7 +841,7 @@ def ajax_access_lookup(request, response_format='html'):
     
     entities = []
     if request.GET and 'term' in request.GET:
-        entities = AccessEntity.objects.filter(Q(user__name__icontains=request.GET['term']) | 
+        entities = InteractionEntity.objects.filter(Q(user__name__icontains=request.GET['term']) | 
                                                Q(user__contact__name__icontains=request.GET['term']) |
                                                Q(group__name__icontains=request.GET['term']))
         

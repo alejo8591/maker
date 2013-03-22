@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>maker.documents.models &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for maker.documents.models</h1><div class="highlight"><pre>
+<span class="c"># encoding: utf-8</span>
+<span class="c"># Copyright 2011 Tree.io Limited</span>
+<span class="c"># This file is part of maker.</span>
+<span class="c"># License www.tree.io/license</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Documents module objects</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">maker.core.models</span> <span class="kn">import</span> <span class="n">Object</span>
+<span class="kn">from</span> <span class="nn">maker.core.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">maker.documents.files</span> <span class="kn">import</span> <span class="n">FileStorage</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c"># Folder model</span>
+<div class="viewcode-block" id="Folder"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.Folder">[docs]</a><span class="k">class</span> <span class="nc">Folder</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Every folder may have a parent folder &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;child_set&#39;</span><span class="p">)</span>
+
+    <span class="n">access_inherit</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;parent&#39;</span><span class="p">,</span> <span class="s">&#39;*module&#39;</span><span class="p">,</span> <span class="s">&#39;*user&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="Folder.get_absolute_url"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.Folder.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;documents_folder_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+</div></div>
+<div class="viewcode-block" id="generate_filename"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.generate_filename">[docs]</a><span class="k">def</span> <span class="nf">generate_filename</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">old_filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Generate filename &quot;&quot;&quot;</span>
+    <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">old_filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">+</span> <span class="n">extension</span>
+    <span class="k">return</span> <span class="s">&#39;documents/files/&#39;</span> <span class="o">+</span> <span class="n">filename</span>
+
+
+<span class="c"># File model</span></div>
+<div class="viewcode-block" id="File"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.File">[docs]</a><span class="k">class</span> <span class="nc">File</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A binary or other non-renderable file (i.e. an image) &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Folder</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="n">generate_filename</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">FileStorage</span><span class="p">())</span>
+
+    <span class="n">access_inherit</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;folder&#39;</span><span class="p">,</span> <span class="s">&#39;*module&#39;</span><span class="p">,</span> <span class="s">&#39;*user&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="File.get_file_type"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.File.get_file_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_file_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&#39;.*\.(?P&lt;extension&gt;[a-z]+)&#39;</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;extension&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;&#39;</span>
+</div>
+<div class="viewcode-block" id="File.can_preview"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.File.can_preview">[docs]</a>    <span class="k">def</span> <span class="nf">can_preview</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">filetype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_file_type</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;PNG&#39;</span><span class="p">,</span> <span class="s">&#39;JPG&#39;</span><span class="p">,</span> <span class="s">&#39;JPEG&#39;</span><span class="p">,</span> <span class="s">&#39;BMP&#39;</span><span class="p">,</span> <span class="s">&#39;GIF&#39;</span><span class="p">,</span> <span class="s">&#39;SVG&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">filetype</span> <span class="o">==</span> <span class="n">ext</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="File.get_preview_url"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.File.get_preview_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_preview_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;MEDIA_URL&#39;</span><span class="p">,</span> <span class="s">&#39;/static/media/&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</div>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot; File &quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-last_updated&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="File.get_absolute_url"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.File.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;documents_file_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+
+<span class="c"># Document model</span></div></div>
+<div class="viewcode-block" id="Document"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.Document">[docs]</a><span class="k">class</span> <span class="nc">Document</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A readable document, i.e. HTML, which may be rendered directly &quot;&quot;&quot;</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Folder</span><span class="p">)</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">access_inherit</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;folder&#39;</span><span class="p">,</span> <span class="s">&#39;*module&#39;</span><span class="p">,</span> <span class="s">&#39;*user&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot; File &quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-last_updated&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Document.get_absolute_url"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.Document.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;documents_document_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+<span class="c"># WebLink model</span></div></div>
+<div class="viewcode-block" id="WebLink"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.WebLink">[docs]</a><span class="k">class</span> <span class="nc">WebLink</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A web link &quot;&quot;&quot;</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Folder</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+
+    <span class="n">access_inherit</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;folder&#39;</span><span class="p">,</span> <span class="s">&#39;*module&#39;</span><span class="p">,</span> <span class="s">&#39;*user&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot; File &quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-last_updated&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="WebLink.get_absolute_url"><a class="viewcode-back" href="../../../development/documents.html#maker.documents.models.WebLink.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;documents_weblink_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,424 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>maker.services.models &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for maker.services.models</h1><div class="highlight"><pre>
+<span class="c"># encoding: utf-8</span>
+<span class="c"># Copyright 2011 Tree.io Limited</span>
+<span class="c"># This file is part of maker.</span>
+<span class="c"># License www.tree.io/license</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">ServiceSupport module objects.</span>
+
+<span class="sd">Depends on: maker.core, maker.identities</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">signals</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.utils.html</span> <span class="kn">import</span> <span class="n">strip_tags</span>
+<span class="kn">from</span> <span class="nn">maker.core.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">maker.identities.models</span> <span class="kn">import</span> <span class="n">Contact</span>
+<span class="kn">from</span> <span class="nn">maker.core.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Object</span><span class="p">,</span> <span class="n">ModuleSetting</span><span class="p">,</span> <span class="n">UpdateRecord</span>
+<span class="kn">from</span> <span class="nn">maker.core.mail</span> <span class="kn">import</span> <span class="n">BaseEmail</span><span class="p">,</span> <span class="n">SystemEmail</span>
+<span class="kn">from</span> <span class="nn">maker.core.rendering</span> <span class="kn">import</span> <span class="n">render_to_string</span><span class="p">,</span> <span class="n">render_string_template</span>
+<span class="kn">from</span> <span class="nn">maker.messaging.models</span> <span class="kn">import</span> <span class="n">Message</span><span class="p">,</span> <span class="n">MessageStream</span>
+
+<div class="viewcode-block" id="TicketStatus"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.TicketStatus">[docs]</a><span class="k">class</span> <span class="nc">TicketStatus</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="s">&quot;State information about a ticket&quot;</span>
+    <span class="n">name</span>    <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">active</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">hidden</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    
+    <span class="n">searchable</span> <span class="o">=</span> <span class="bp">False</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    
+<div class="viewcode-block" id="TicketStatus.get_absolute_url"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.TicketStatus.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;services_status_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+    </div>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;TicketStatus&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;hidden&#39;</span><span class="p">,</span> <span class="s">&#39;-active&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Service"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.Service">[docs]</a><span class="k">class</span> <span class="nc">Service</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="s">&quot;Technical service supported by a company&quot;</span>
+    <span class="n">name</span>    <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+    <span class="n">parent</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;child_set&#39;</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="n">access_inherit</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;parent&#39;</span><span class="p">,</span> <span class="s">&#39;*module&#39;</span><span class="p">,</span> <span class="s">&#39;*user&#39;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    
+<div class="viewcode-block" id="Service.get_absolute_url"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.Service.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;services_service_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+    </div>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Service&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="ServiceLevelAgreement"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.ServiceLevelAgreement">[docs]</a><span class="k">class</span> <span class="nc">ServiceLevelAgreement</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="s">&quot;Formal terms for service support&quot;</span>
+    <span class="n">name</span>           <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+    <span class="n">service</span>        <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Service</span><span class="p">)</span>
+    <span class="n">default</span>        <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">response_time</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">uptime_rate</span>    <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">available_from</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">available_to</span>   <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">client</span>         <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;client_sla&quot;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">provider</span>       <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;provider_sla&quot;</span><span class="p">)</span>
+    
+    <span class="n">access_inherit</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;service&#39;</span><span class="p">,</span> <span class="s">&#39;*module&#39;</span><span class="p">,</span> <span class="s">&#39;*user&#39;</span><span class="p">)</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;SLA&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;client&#39;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    
+<div class="viewcode-block" id="ServiceLevelAgreement.get_absolute_url"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.ServiceLevelAgreement.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;services_sla_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+</div></div>
+<div class="viewcode-block" id="ServiceAgent"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.ServiceAgent">[docs]</a><span class="k">class</span> <span class="nc">ServiceAgent</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="s">&quot;User responsible for service support&quot;</span>
+    <span class="n">related_user</span>   <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    <span class="n">active</span>         <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">occupied</span>       <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">available_from</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">available_to</span>   <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;ServiceAgent&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;related_user&#39;</span><span class="p">,</span> <span class="s">&#39;-active&#39;</span><span class="p">,</span> <span class="s">&#39;occupied&#39;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">related_user</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="ServiceAgent.get_absolute_url"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.ServiceAgent.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;services_agent_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        
+</div></div>
+<div class="viewcode-block" id="TicketQueue"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.TicketQueue">[docs]</a><span class="k">class</span> <span class="nc">TicketQueue</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="s">&quot;Queue for incoming tickets&quot;</span>
+    <span class="n">name</span>                    <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+    <span class="n">active</span>                  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">parent</span>                  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;child_set&#39;</span><span class="p">)</span>
+    <span class="n">default_ticket_status</span>   <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">TicketStatus</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">default_ticket_priority</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                                                  <span class="n">choices</span><span class="o">=</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="s">&#39;Highest&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&#39;High&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&#39;Normal&#39;</span><span class="p">),</span> 
+                                                           <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#39;Low&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;Lowest&#39;</span><span class="p">)))</span>
+    <span class="n">default_service</span>         <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Service</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">waiting_time</span>            <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">next_queue</span>              <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;previous_set&#39;</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">ticket_code</span>             <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">message_stream</span>          <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">MessageStream</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span> <span class="c"># Messaging integration</span>
+    <span class="n">details</span>                 <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;TicketQueue&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;-active&#39;</span><span class="p">,</span> <span class="s">&#39;ticket_code&#39;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    
+<div class="viewcode-block" id="TicketQueue.get_absolute_url"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.TicketQueue.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;services_queue_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+    </div></div>
+<div class="viewcode-block" id="Ticket"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.Ticket">[docs]</a><span class="k">class</span> <span class="nc">Ticket</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="s">&quot;Problem or support request ticket&quot;</span>
+    <span class="n">reference</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+    <span class="n">name</span>       <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+    <span class="n">caller</span>     <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">urgency</span>    <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                                  <span class="n">choices</span><span class="o">=</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Highest&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;High&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Normal&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Low&#39;</span><span class="p">)),</span> 
+                                           <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Lowest&#39;</span><span class="p">))))</span>
+    <span class="n">priority</span>   <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                                   <span class="n">choices</span><span class="o">=</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Highest&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;High&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Normal&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Low&#39;</span><span class="p">)),</span> 
+                                            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Lowest&#39;</span><span class="p">))))</span>
+    <span class="n">status</span>     <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">TicketStatus</span><span class="p">)</span>
+    <span class="n">service</span>    <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Service</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">sla</span>        <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">ServiceLevelAgreement</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">queue</span>      <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">TicketQueue</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">assigned</span>   <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">ServiceAgent</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">message</span>    <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Message</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span> <span class="c"># Messaging integration</span>
+    <span class="n">details</span>    <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">resolution</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="c">#access_inherit = (&#39;queue&#39;, &#39;*module&#39;, &#39;*user&#39;)</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Ticket&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;-priority&#39;</span><span class="p">,</span> <span class="s">&#39;reference&#39;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    
+<div class="viewcode-block" id="Ticket.priority_human"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.Ticket.priority_human">[docs]</a>    <span class="k">def</span> <span class="nf">priority_human</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns a Human-friendly priority name&quot;</span>
+        <span class="n">choices</span> <span class="o">=</span> <span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Highest&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;High&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Normal&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Low&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Lowest&#39;</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">choice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">priority</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">choice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Ticket.urgency_human"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.Ticket.urgency_human">[docs]</a>    <span class="k">def</span> <span class="nf">urgency_human</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns a Human-friendly urgency name&quot;</span>
+        <span class="n">choices</span> <span class="o">=</span> <span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Highest&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;High&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Normal&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Low&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Lowest&#39;</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">choice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">priority</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">choice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            </div>
+<div class="viewcode-block" id="Ticket.save"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.Ticket.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="s">&quot;Automatically set ticket reference and send message to caller&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Ticket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">ticket_code</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            </div>
+<div class="viewcode-block" id="Ticket.get_absolute_url"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.Ticket.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL of the object&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;services_ticket_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+</div></div>
+<div class="viewcode-block" id="TicketRecord"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.TicketRecord">[docs]</a><span class="k">class</span> <span class="nc">TicketRecord</span><span class="p">(</span><span class="n">UpdateRecord</span><span class="p">):</span>
+    <span class="s">&quot;Update for a Ticket&quot;</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Message</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c"># Messaging integration</span>
+    <span class="n">notify</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+</div>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Service Support signals</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="email_caller_on_new_ticket"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.email_caller_on_new_ticket">[docs]</a><span class="k">def</span> <span class="nf">email_caller_on_new_ticket</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">created</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="s">&quot;When a new ticket is created send an email to the caller&quot;</span>
+    <span class="k">if</span> <span class="n">created</span><span class="p">:</span>
+        <span class="n">send_email_to_caller</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">conf</span> <span class="o">=</span> <span class="n">ModuleSetting</span><span class="o">.</span><span class="n">get_for_module</span><span class="p">(</span><span class="s">&#39;maker.services&#39;</span><span class="p">,</span> <span class="s">&#39;send_email_to_caller&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">send_email_to_caller</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">send_email_to_caller</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;HARDTREE_SEND_EMAIL_TO_CALLER&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">send_email_to_caller</span><span class="p">:</span>
+            <span class="c"># don&#39;t send email to yourself</span>
+            <span class="n">creator_contact</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">creator</span><span class="p">:</span>
+                <span class="n">creator_contact</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">creator</span><span class="o">.</span><span class="n">get_contact</span><span class="p">()</span>
+            
+            <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">caller</span> <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">caller</span> <span class="o">!=</span> <span class="n">creator_contact</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="o">.</span><span class="n">reference</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">queue</span><span class="p">:</span>
+                        <span class="n">instance</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">ticket_code</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">instance</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                    <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">subject</span> <span class="o">=</span> <span class="s">&quot;[#</span><span class="si">%s</span><span class="s">] </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                
+                <span class="c"># Construct context and render to html, body</span>
+                <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;ticket&#39;</span><span class="p">:</span> <span class="n">instance</span><span class="p">}</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">conf</span> <span class="o">=</span> <span class="n">ModuleSetting</span><span class="o">.</span><span class="n">get_for_module</span><span class="p">(</span><span class="s">&#39;maker.services&#39;</span><span class="p">,</span> <span class="s">&#39;send_email_template&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">send_email_template</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">value</span>
+                    <span class="n">html</span> <span class="o">=</span> <span class="n">render_string_template</span><span class="p">(</span><span class="n">send_email_template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">html</span> <span class="o">=</span> <span class="n">render_to_string</span><span class="p">(</span><span class="s">&#39;services/emails/notify_caller&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">)</span>
+                <span class="n">body</span> <span class="o">=</span> <span class="n">strip_tags</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">queue</span> <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">message_stream</span><span class="p">:</span>
+                    <span class="n">stream</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">message_stream</span>
+                    <span class="k">if</span> <span class="n">stream</span><span class="o">.</span><span class="n">outgoing_server_name</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span> 
+                            <span class="n">caller_email</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">caller</span><span class="o">.</span><span class="n">get_email</span><span class="p">()</span>
+                            <span class="k">if</span> <span class="n">caller_email</span><span class="p">:</span> 
+                                <span class="n">toaddr</span> <span class="o">=</span> <span class="n">caller_email</span>
+                                <span class="n">ssl</span> <span class="o">=</span> <span class="bp">False</span>
+                                <span class="k">if</span> <span class="n">stream</span><span class="o">.</span><span class="n">outgoing_server_type</span> <span class="o">==</span> <span class="s">&#39;SMTP-SSL&#39;</span><span class="p">:</span>
+                                    <span class="n">ssl</span> <span class="o">=</span> <span class="bp">True</span>
+                                <span class="n">email</span> <span class="o">=</span> <span class="n">BaseEmail</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">outgoing_server_name</span><span class="p">,</span> 
+                                                  <span class="n">stream</span><span class="o">.</span><span class="n">outgoing_server_username</span><span class="p">,</span>
+                                                  <span class="n">stream</span><span class="o">.</span><span class="n">outgoing_password</span><span class="p">,</span>
+                                                  <span class="n">stream</span><span class="o">.</span><span class="n">outgoing_email</span><span class="p">,</span>
+                                                  <span class="n">toaddr</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">html</span><span class="o">=</span><span class="n">html</span><span class="p">,</span>
+                                                  <span class="n">ssl</span><span class="o">=</span><span class="n">ssl</span><span class="p">)</span>
+                                <span class="n">email</span><span class="o">.</span><span class="n">process_email</span><span class="p">()</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="k">pass</span>
+</div>
+<span class="n">signals</span><span class="o">.</span><span class="n">post_save</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">email_caller_on_new_ticket</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Ticket</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="create_ticket_from_message"><a class="viewcode-back" href="../../../development/services.html#maker.services.models.create_ticket_from_message">[docs]</a><span class="k">def</span> <span class="nf">create_ticket_from_message</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">created</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a signal from messaging.models</span>
+<span class="sd">    Check if (new) message&#39;s stream is also assigned to Ticket Queue</span>
+<span class="sd">    Create a new ticket from that message</span>
+<span class="sd">    Rename original message title</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">created</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s">&#39;auto_notify&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">reply_to</span><span class="p">:</span>
+            <span class="n">tickets</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">reply_to</span><span class="o">.</span><span class="n">ticket_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">ticket</span> <span class="ow">in</span> <span class="n">tickets</span><span class="p">:</span>
+                <span class="n">record</span> <span class="o">=</span> <span class="n">TicketRecord</span><span class="p">()</span>
+                <span class="n">record</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">author</span>
+                <span class="n">record</span><span class="o">.</span><span class="n">record_type</span> <span class="o">=</span> <span class="s">&#39;manual&#39;</span>
+                <span class="n">record</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">body</span>
+                <span class="n">record</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">record</span><span class="o">.</span><span class="n">about</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ticket</span><span class="p">)</span>
+                <span class="n">ticket</span><span class="o">.</span><span class="n">set_last_updated</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stream</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">stream</span>
+            <span class="n">queues</span> <span class="o">=</span> <span class="n">TicketQueue</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">message_stream</span><span class="o">=</span><span class="n">stream</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">stream</span> <span class="ow">and</span> <span class="n">queues</span><span class="p">:</span>
+                <span class="n">queue</span> <span class="o">=</span> <span class="n">queues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">ticket</span> <span class="o">=</span> <span class="n">Ticket</span><span class="p">()</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">conf</span> <span class="o">=</span> <span class="n">ModuleSetting</span><span class="o">.</span><span class="n">get_for_module</span><span class="p">(</span><span class="s">&#39;maker.services&#39;</span><span class="p">,</span> <span class="s">&#39;default_ticket_status&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">ticket</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">TicketStatus</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="nb">long</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">statuses</span> <span class="o">=</span> <span class="n">TicketStatus</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+                    <span class="n">ticket</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">statuses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">ticket</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">queue</span>
+                <span class="n">ticket</span><span class="o">.</span><span class="n">caller</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">author</span>
+                <span class="n">ticket</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">body</span>
+                <span class="n">ticket</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">instance</span>
+                <span class="n">ticket</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">title</span>
+                <span class="n">ticket</span><span class="o">.</span><span class="n">auto_notify</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">ticket</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">stream</span><span class="o">.</span><span class="n">creator</span><span class="p">:</span>
+                        <span class="n">ticket</span><span class="o">.</span><span class="n">set_user</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">creator</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">queue</span><span class="o">.</span><span class="n">creator</span><span class="p">:</span>
+                        <span class="n">ticket</span><span class="o">.</span><span class="n">set_user</span><span class="p">(</span><span class="n">queue</span><span class="o">.</span><span class="n">creator</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">ticket</span><span class="o">.</span><span class="n">copy_permissions</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                
+                <span class="c"># Rename original message title</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;[#&quot;</span> <span class="o">+</span> <span class="n">ticket</span><span class="o">.</span><span class="n">reference</span> <span class="o">+</span> <span class="s">&quot;] &quot;</span> <span class="o">+</span> <span class="n">instance</span><span class="o">.</span><span class="n">title</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        </div>
+<span class="n">signals</span><span class="o">.</span><span class="n">post_save</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">create_ticket_from_message</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Message</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

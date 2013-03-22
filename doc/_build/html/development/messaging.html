@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Messaging &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Development" href="../development.html" />
+    <link rel="next" title="Projects" href="projects.html" />
+    <link rel="prev" title="Knowledge" href="knowledge.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="projects.html" title="Projects"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="knowledge.html" title="Knowledge"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-maker.messaging.models">
+<span id="messaging"></span><h1>Messaging<a class="headerlink" href="#module-maker.messaging.models" title="Permalink to this headline">¶</a></h1>
+<p>Messaging models</p>
+<dl class="class">
+<dt id="maker.messaging.models.MailingList">
+<em class="property">class </em><tt class="descclassname">maker.messaging.models.</tt><tt class="descname">MailingList</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#MailingList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.MailingList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>A mailling list for mass mailing</p>
+<dl class="exception">
+<dt id="maker.messaging.models.MailingList.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.messaging.models.MailingList.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.messaging.models.MailingList.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">MailingList.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.messaging.models.MailingList.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.MailingList.from_contact">
+<tt class="descclassname">MailingList.</tt><tt class="descname">from_contact</tt><a class="headerlink" href="#maker.messaging.models.MailingList.from_contact" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.MailingList.get_absolute_url">
+<tt class="descclassname">MailingList.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.messaging.models.MailingList.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a URL to the child object, if available</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.MailingList.members">
+<tt class="descclassname">MailingList.</tt><tt class="descname">members</tt><a class="headerlink" href="#maker.messaging.models.MailingList.members" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.MailingList.mlist">
+<tt class="descclassname">MailingList.</tt><tt class="descname">mlist</tt><a class="headerlink" href="#maker.messaging.models.MailingList.mlist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.MailingList.object_ptr">
+<tt class="descclassname">MailingList.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.messaging.models.MailingList.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.MailingList.objects">
+<tt class="descclassname">MailingList.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a7fa4d0&gt;</em><a class="headerlink" href="#maker.messaging.models.MailingList.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.MailingList.opt_in">
+<tt class="descclassname">MailingList.</tt><tt class="descname">opt_in</tt><a class="headerlink" href="#maker.messaging.models.MailingList.opt_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.messaging.models.Message">
+<em class="property">class </em><tt class="descclassname">maker.messaging.models.</tt><tt class="descname">Message</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.Message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>A Single Message</p>
+<dl class="exception">
+<dt id="maker.messaging.models.Message.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.messaging.models.Message.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.messaging.models.Message.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Message.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.messaging.models.Message.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Message.access_inherit">
+<tt class="descclassname">Message.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('stream', '*module', '*user')</em><a class="headerlink" href="#maker.messaging.models.Message.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Message.author">
+<tt class="descclassname">Message.</tt><tt class="descname">author</tt><a class="headerlink" href="#maker.messaging.models.Message.author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Message.child_set">
+<tt class="descclassname">Message.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.messaging.models.Message.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.Message.get_absolute_url">
+<tt class="descclassname">Message.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#Message.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.Message.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.Message.get_original_message_author_email">
+<tt class="descclassname">Message.</tt><tt class="descname">get_original_message_author_email</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#Message.get_original_message_author_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.Message.get_original_message_author_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns email of the original message author</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.Message.get_stripped_body">
+<tt class="descclassname">Message.</tt><tt class="descname">get_stripped_body</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#Message.get_stripped_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.Message.get_stripped_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns body without HTML tags and other shit</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.Message.is_read">
+<tt class="descclassname">Message.</tt><tt class="descname">is_read</tt><big>(</big><em>user</em><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#Message.is_read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.Message.is_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the message is read by the given user</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Message.mlist">
+<tt class="descclassname">Message.</tt><tt class="descname">mlist</tt><a class="headerlink" href="#maker.messaging.models.Message.mlist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Message.object_ptr">
+<tt class="descclassname">Message.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.messaging.models.Message.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Message.objects">
+<tt class="descclassname">Message.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a800650&gt;</em><a class="headerlink" href="#maker.messaging.models.Message.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Message.read_by">
+<tt class="descclassname">Message.</tt><tt class="descname">read_by</tt><a class="headerlink" href="#maker.messaging.models.Message.read_by" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Message.recipients">
+<tt class="descclassname">Message.</tt><tt class="descname">recipients</tt><a class="headerlink" href="#maker.messaging.models.Message.recipients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Message.reply_to">
+<tt class="descclassname">Message.</tt><tt class="descname">reply_to</tt><a class="headerlink" href="#maker.messaging.models.Message.reply_to" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.Message.save">
+<tt class="descclassname">Message.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#Message.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.Message.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Automatically set message title</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.Message.send_email">
+<tt class="descclassname">Message.</tt><tt class="descname">send_email</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#Message.send_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.Message.send_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send email</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Message.stream">
+<tt class="descclassname">Message.</tt><tt class="descname">stream</tt><a class="headerlink" href="#maker.messaging.models.Message.stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.messaging.models.MessageStream">
+<em class="property">class </em><tt class="descclassname">maker.messaging.models.</tt><tt class="descname">MessageStream</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#MessageStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.MessageStream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>A Stream that contains a list of messages</p>
+<dl class="exception">
+<dt id="maker.messaging.models.MessageStream.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.messaging.models.MessageStream.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.messaging.models.MessageStream.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">MessageStream.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.messaging.models.MessageStream.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.MessageStream.get_absolute_url">
+<tt class="descclassname">MessageStream.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#MessageStream.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.MessageStream.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.MessageStream.get_incoming_server_type_display">
+<tt class="descclassname">MessageStream.</tt><tt class="descname">get_incoming_server_type_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.messaging.models.MessageStream.get_incoming_server_type_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.MessageStream.get_outgoing_server_type_display">
+<tt class="descclassname">MessageStream.</tt><tt class="descname">get_outgoing_server_type_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.messaging.models.MessageStream.get_outgoing_server_type_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.MessageStream.object_ptr">
+<tt class="descclassname">MessageStream.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.messaging.models.MessageStream.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.MessageStream.objects">
+<tt class="descclassname">MessageStream.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a7faf90&gt;</em><a class="headerlink" href="#maker.messaging.models.MessageStream.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.MessageStream.process_email">
+<tt class="descclassname">MessageStream.</tt><tt class="descname">process_email</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#MessageStream.process_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.MessageStream.process_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get email from the email box</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.MessageStream.stream">
+<tt class="descclassname">MessageStream.</tt><tt class="descname">stream</tt><a class="headerlink" href="#maker.messaging.models.MessageStream.stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.messaging.models.Template">
+<em class="property">class </em><tt class="descclassname">maker.messaging.models.</tt><tt class="descname">Template</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/messaging/models.html#Template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.messaging.models.Template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>A template for sending emails using template tags</p>
+<dl class="exception">
+<dt id="maker.messaging.models.Template.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.messaging.models.Template.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.messaging.models.Template.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Template.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.messaging.models.Template.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.messaging.models.Template.get_absolute_url">
+<tt class="descclassname">Template.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.messaging.models.Template.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a URL to the child object, if available</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Template.mailinglist_set">
+<tt class="descclassname">Template.</tt><tt class="descname">mailinglist_set</tt><a class="headerlink" href="#maker.messaging.models.Template.mailinglist_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Template.object_ptr">
+<tt class="descclassname">Template.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.messaging.models.Template.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.messaging.models.Template.objects">
+<tt class="descclassname">Template.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a7f5790&gt;</em><a class="headerlink" href="#maker.messaging.models.Template.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="knowledge.html"
+                        title="previous chapter">Knowledge</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="projects.html"
+                        title="next chapter">Projects</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/development/messaging.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="projects.html" title="Projects"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="knowledge.html" title="Knowledge"
+             >previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

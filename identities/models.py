@@ -8,7 +8,7 @@ Identities module objects
 """
 
 from django.db import models
-from maker.core.models import AccessEntity, User, Object
+from maker.core.models import InteractionEntity, User, Object
 from django.core.urlresolvers import reverse
 from django.db.models.signals import post_save
 from maker.core.conf import settings 
@@ -75,7 +75,7 @@ class Contact(Object):
     contact_type = models.ForeignKey(ContactType)
     name = models.CharField(max_length=256)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='child_set')
-    related_user = models.ForeignKey(AccessEntity, blank=True, null=True, on_delete=models.SET_NULL)
+    related_user = models.ForeignKey(InteractionEntity, blank=True, null=True, on_delete=models.SET_NULL)
 
     access_inherit = ('parent', '*module', '*user')
 
@@ -109,8 +109,8 @@ class Contact(Object):
     
     def get_or_create_by_email(email, name=None, contact_type=None):
         """
-        Using a given email tries to find an existing Contact or create new one if not found.
-        If name is not specified the given email address is used for name instead.
+            Using a given email tries to find an existing Contact or create new one if not found.
+            If name is not specified the given email address is used for name instead.
         """
         created = False
         if not contact_type:

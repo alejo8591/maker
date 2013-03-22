@@ -1,0 +1,672 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>maker.core.views &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for maker.core.views</h1><div class="highlight"><pre>
+<span class="c"># encoding: utf-8</span>
+<span class="c"># Copyright 2011 Tree.io Limited</span>
+<span class="c"># This file is part of maker.</span>
+<span class="c"># License www.tree.io/license</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Core module views</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">authenticate</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">logout</span>
+<span class="kn">from</span> <span class="nn">django.contrib.sessions.models</span> <span class="kn">import</span> <span class="n">Session</span>
+<span class="kn">from</span> <span class="nn">django.contrib.sites.models</span> <span class="kn">import</span> <span class="n">RequestSite</span>
+<span class="kn">from</span> <span class="nn">django.contrib.csrf.middleware</span> <span class="kn">import</span> <span class="n">CsrfMiddleware</span> <span class="k">as</span> <span class="n">csrf</span>
+<span class="kn">from</span> <span class="nn">django.utils.encoding</span> <span class="kn">import</span> <span class="n">smart_unicode</span>
+<span class="kn">from</span> <span class="nn">django.views.decorators.csrf</span> <span class="kn">import</span> <span class="n">csrf_protect</span>
+<span class="kn">from</span> <span class="nn">django.views.decorators.cache</span> <span class="kn">import</span> <span class="n">cache_control</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">Http404</span><span class="p">,</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseBadRequest</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">maker.core.rendering</span> <span class="kn">import</span> <span class="n">render_to_string</span>
+<span class="kn">from</span> <span class="nn">maker.core.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">maker.core.decorators</span> <span class="kn">import</span> <span class="n">maker_login_required</span><span class="p">,</span> <span class="n">handle_response_format</span>
+<span class="kn">from</span> <span class="nn">maker.core.forms</span> <span class="kn">import</span> <span class="n">LoginForm</span><span class="p">,</span> <span class="n">PasswordResetForm</span><span class="p">,</span> <span class="n">InvitationForm</span><span class="p">,</span> <span class="n">SqlSettingsForm</span>
+<span class="kn">from</span> <span class="nn">maker.core.models</span> <span class="kn">import</span> <span class="n">Object</span><span class="p">,</span> <span class="n">Module</span><span class="p">,</span> <span class="n">ModuleSetting</span><span class="p">,</span> <span class="n">Perspective</span><span class="p">,</span> <span class="n">User</span><span class="p">,</span> <span class="n">Attachment</span><span class="p">,</span> <span class="n">Invitation</span><span class="p">,</span> <span class="n">Tag</span><span class="p">,</span> <span class="n">UpdateRecord</span>
+<span class="kn">from</span> <span class="nn">maker.core.rendering</span> <span class="kn">import</span> <span class="n">render_to_response</span>
+<span class="kn">from</span> <span class="nn">maker.identities.models</span> <span class="kn">import</span> <span class="n">ContactValue</span>
+<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Markup</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">simplejson</span> <span class="kn">as</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">urllib2</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="nd">@handle_response_format</span>
+<span class="nd">@maker_login_required</span>
+
+<span class="k">def</span> <span class="nf">user_logout</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;User logout&quot;</span>
+    <span class="n">logout</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;user_login&#39;</span><span class="p">))</span>
+
+<span class="nd">@handle_response_format</span>
+<span class="k">def</span> <span class="nf">user_login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;User login&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;user_denied&#39;</span><span class="p">))</span>
+    <span class="nb">next</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;next&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">LoginForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span>
+
+        <span class="n">user</span> <span class="o">=</span> <span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;HARDTREE_DISABLE_EVERGREEN_USERS&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span> <span class="ow">and</span> <span class="s">&#39;evergreen_&#39;</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">profile</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">get_profile</span><span class="p">()</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">profile</span> <span class="o">=</span> <span class="bp">None</span>
+                
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">profile</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/user_login&#39;</span><span class="p">,</span> <span class="p">{</span>
+                        <span class="s">&#39;error_message&#39;</span><span class="p">:</span> <span class="s">&#39;Username or password you entered is not valid&#39;</span><span class="p">,</span> <span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">Markup</span><span class="p">(</span><span class="n">form</span><span class="p">)},</span>
+                        <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+                    
+                <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">disabled</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/user_login&#39;</span><span class="p">,</span> <span class="p">{</span>
+                            <span class="s">&#39;error_message&#39;</span><span class="p">:</span> <span class="s">&#39;Your account is disabled.&#39;</span><span class="p">,</span>
+                            <span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">Markup</span><span class="p">(</span><span class="n">form</span><span class="p">)},</span>
+                        <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> 
+                        <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_active</span> <span class="ow">and</span> <span class="n">profile</span><span class="p">:</span>
+                    
+                    <span class="c"># Disable account with overdue payment</span>
+                    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;HARDTREE_SUBSCRIPTION_BLOCKED&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/user_login&#39;</span><span class="p">,</span> <span class="p">{</span>
+                        <span class="s">&#39;error_message&#39;</span><span class="p">:</span> <span class="s">&#39;We are sorry to inform you but your account has been deactivated. Please login to your &lt;a href=&quot;https://www.tree.io/login/&quot;&gt;control panel&lt;/a&gt; to see details.&#39;</span><span class="p">,</span> <span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">Markup</span><span class="p">(</span><span class="n">form</span><span class="p">)},</span>
+                        <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+                    
+                    <span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+                    
+                    <span class="c"># Prevent same user from logging in at 2 different machines</span>
+                    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;HARDTREE_MULTIPLE_LOGINS_DISABLED&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">ses</span> <span class="ow">in</span> <span class="n">Session</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                            <span class="k">if</span> <span class="n">ses</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
+                                <span class="k">try</span><span class="p">:</span>
+                                    <span class="n">data</span> <span class="o">=</span> <span class="n">ses</span><span class="o">.</span><span class="n">get_decoded</span><span class="p">()</span>
+                                    <span class="k">if</span> <span class="s">&#39;_auth_user_id&#39;</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;_auth_user_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                                        <span class="n">ses</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                                    <span class="k">pass</span>
+
+                    <span class="k">if</span> <span class="s">&#39;next&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;next&#39;</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="nb">next</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/user_login_disabled&#39;</span><span class="p">,</span> 
+                                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> 
+                                              <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/user_login&#39;</span><span class="p">,</span> <span class="p">{</span>
+                    <span class="s">&#39;error_message&#39;</span><span class="p">:</span> <span class="s">&#39;Username or password you entered is not valid&#39;</span><span class="p">,</span> <span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">Markup</span><span class="p">(</span><span class="n">form</span><span class="p">)},</span>
+                    <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">user</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/user_login&#39;</span><span class="p">,</span> 
+                    <span class="p">{</span><span class="s">&#39;error_message&#39;</span><span class="p">:</span> <span class="s">&#39;Username or password you entered is not valid&#39;</span><span class="p">,</span> <span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">Markup</span><span class="p">(</span><span class="n">form</span><span class="p">)},</span>
+                    <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/user_login&#39;</span><span class="p">,</span> 
+                    <span class="p">{</span><span class="s">&#39;error_message&#39;</span><span class="p">:</span> <span class="s">&#39;Please re-enter the text from the image&#39;</span><span class="p">,</span> <span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">Markup</span><span class="p">(</span><span class="n">form</span><span class="p">)},</span>
+                    <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/user_login&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">Markup</span><span class="p">(</span><span class="n">form</span><span class="p">)},</span> 
+                                  <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+
+<span class="nd">@handle_response_format</span>
+<span class="k">def</span> <span class="nf">user_denied</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;User denied page&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/user_denied&#39;</span><span class="p">,</span>
+                                 <span class="p">{</span><span class="s">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">},</span>
+                                 <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+    <span class="c">#response.status_code = 403</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+<span class="nd">@maker_login_required</span>
+<span class="nd">@handle_response_format</span>
+<span class="k">def</span> <span class="nf">user_perspective</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Change user perspective&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_profile</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">and</span> <span class="s">&#39;core_perspective&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;core_perspective&#39;</span><span class="p">]</span>
+        <span class="n">perspective</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Perspective</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span><span class="n">perspective</span><span class="p">):</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">set_perspective</span><span class="p">(</span><span class="n">perspective</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;home&#39;</span><span class="p">))</span>
+
+
+<span class="nd">@cache_control</span><span class="p">(</span><span class="n">private</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">must_revalidate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">max_age</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<div class="viewcode-block" id="logo_image"><a class="viewcode-back" href="../../../development/core.html#maker.core.views.logo_image">[docs]</a><span class="k">def</span> <span class="nf">logo_image</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">gif</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Return current logo image&quot;</span>
+    
+    <span class="n">staticpath</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;STATIC_DOC_ROOT&#39;</span><span class="p">,</span> <span class="s">&#39;./static&#39;</span><span class="p">)</span>
+    <span class="n">logopath</span> <span class="o">=</span> <span class="n">staticpath</span> <span class="o">+</span> <span class="s">&#39;/logo&#39;</span>
+    <span class="k">if</span> <span class="n">gif</span><span class="p">:</span>
+        <span class="n">logopath</span> <span class="o">+=</span> <span class="s">&#39;.gif&#39;</span>
+        <span class="n">mimetype</span> <span class="o">=</span> <span class="s">&#39;image/gif&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logopath</span> <span class="o">+=</span> <span class="s">&#39;.png&#39;</span>
+        <span class="n">mimetype</span> <span class="o">=</span> <span class="s">&#39;image/png&#39;</span>
+    
+    <span class="n">customlogo</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conf</span> <span class="o">=</span> <span class="n">ModuleSetting</span><span class="o">.</span><span class="n">get_for_module</span><span class="p">(</span><span class="s">&#39;maker.core&#39;</span><span class="p">,</span> <span class="s">&#39;logopath&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">customlogo</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;MEDIA_ROOT&#39;</span><span class="p">,</span> <span class="s">&#39;./static/media&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">conf</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+    
+    <span class="n">logofile</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">customlogo</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">logofile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">customlogo</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">logofile</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">logofile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">logopath</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">logofile</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">mimetype</span><span class="o">=</span><span class="n">mimetype</span><span class="p">)</span>
+
+    </div>
+<div class="viewcode-block" id="ajax_popup"><a class="viewcode-back" href="../../../development/core.html#maker.core.views.ajax_popup">[docs]</a><span class="k">def</span> <span class="nf">ajax_popup</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">popup_id</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s">&#39;/&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Handles pop up forms and requests, by extracting only the required content from response content&quot;</span>
+    
+    <span class="n">view</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/accounts/login&#39;</span><span class="p">)</span>
+    
+    <span class="n">modules</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">import_name</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">settings</span><span class="o">.</span><span class="n">HARDTREE_MODULE_IDENTIFIER</span>
+            <span class="n">hmodule</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">import_name</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">)])</span>
+            <span class="n">urls</span> <span class="o">=</span> <span class="n">hmodule</span><span class="o">.</span><span class="n">URL_PATTERNS</span>
+            <span class="k">for</span> <span class="n">regexp</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+                    <span class="n">active</span> <span class="o">=</span> <span class="n">module</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    
+    <span class="n">response</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">active</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_profile</span><span class="p">()</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span><span class="n">active</span><span class="p">):</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">user_denied</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;You do not have access to the </span><span class="si">%s</span><span class="s"> module&quot;</span> <span class="o">%</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">active</span><span class="p">),</span> 
+                                   <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;ajax&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">view</span> <span class="o">==</span> <span class="n">ajax_popup</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Http404</span><span class="p">(</span><span class="s">&quot;OMG, I see myself!&quot;</span><span class="p">)</span>
+        
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;request&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;response_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;ajax&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            
+        <span class="n">response</span> <span class="o">=</span> <span class="n">csrf</span><span class="p">()</span><span class="o">.</span><span class="n">process_response</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+    
+    <span class="n">module_inner</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="n">regexp</span> <span class="o">=</span> <span class="s">r&quot;&lt;!-- module_content_inner --&gt;(?P&lt;module_inner&gt;.*?)&lt;!-- /module_content_inner --&gt;&quot;</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+        <span class="n">module_inner</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;module_inner&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    
+    <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="n">regexp</span> <span class="o">=</span> <span class="s">r&quot;&lt;div class=</span><span class="se">\\\&quot;</span><span class="s">title</span><span class="se">\\\&quot;</span><span class="s">&gt;(?P&lt;title&gt;.*?)&lt;/div&gt;&quot;</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;title&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\\</span><span class="s">n&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="s">r&quot;&lt;title&gt;(?P&lt;title&gt;.*?)&lt;/title&gt;&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;title&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\\</span><span class="s">n&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    
+    <span class="n">subtitle</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="n">regexp</span> <span class="o">=</span> <span class="s">r&quot;&lt;div class=</span><span class="se">\\\&quot;</span><span class="s">subtitle-block</span><span class="se">\\\&quot;</span><span class="s">&gt;(?P&lt;subtitle&gt;.*?)&lt;/div&gt;&quot;</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+        <span class="n">subtitle</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;subtitle&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\\</span><span class="s">n&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;content&#39;</span><span class="p">:</span> <span class="n">module_inner</span><span class="p">,</span>
+               <span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+               <span class="s">&#39;subtitle&#39;</span><span class="p">:</span> <span class="n">subtitle</span><span class="p">}</span>
+        
+    <span class="n">context</span><span class="p">[</span><span class="s">&#39;popup_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">popup_id</span>
+    <span class="n">context</span><span class="p">[</span><span class="s">&#39;url&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
+
+    <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">HARDTREE_RESPONSE_FORMATS</span><span class="p">[</span><span class="s">&#39;json&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s">&#39;text/html&#39;</span><span class="p">):</span>
+        <span class="n">new_response</span> <span class="o">=</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/ajax_popup&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span>
+                                          <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">new_response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">&#39;popup&#39;</span><span class="p">:</span> <span class="n">context</span><span class="p">}))</span>
+
+    <span class="n">new_response</span><span class="o">.</span><span class="n">mimetype</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">HARDTREE_RESPONSE_FORMATS</span><span class="p">[</span><span class="s">&#39;json&#39;</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">jsonresponse</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&#39;redirect&#39;</span> <span class="ow">in</span> <span class="n">jsonresponse</span><span class="p">:</span>
+            <span class="n">new_response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">=</span> <span class="mi">302</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">new_response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+    
+    
+    <span class="k">return</span> <span class="n">new_response</span>
+
+</div>
+<div class="viewcode-block" id="mobile_view"><a class="viewcode-back" href="../../../development/core.html#maker.core.views.mobile_view">[docs]</a><span class="k">def</span> <span class="nf">mobile_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s">&#39;/&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Returns the same page in mobile view&quot;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span>
+    
+    <span class="n">view</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">view</span> <span class="o">==</span> <span class="n">mobile_view</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span><span class="p">(</span><span class="s">&quot;OMG, I see myself!&quot;</span><span class="p">)</span>
+     
+    <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;request&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span>
+    <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;response_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    
+    <span class="n">response</span> <span class="o">=</span> <span class="n">csrf</span><span class="p">()</span><span class="o">.</span><span class="n">process_response</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;Location&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;/m&#39;</span><span class="p">:</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&#39;Location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;/m&#39;</span> <span class="o">+</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;Location&#39;</span><span class="p">]</span>  
+    
+    <span class="k">return</span> <span class="n">response</span>
+    
+</div>
+<div class="viewcode-block" id="iframe_close"><a class="viewcode-back" href="../../../development/core.html#maker.core.views.iframe_close">[docs]</a><span class="k">def</span> <span class="nf">iframe_close</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;For third-party resources, when returned back to Hardtree, close iframe&quot;</span>
+    
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/iframe_close&#39;</span><span class="p">,</span> <span class="p">{},</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span>
+                              <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+</div>
+<span class="nd">@handle_response_format</span>
+<span class="k">def</span> <span class="nf">database_setup</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">sql_form</span> <span class="o">=</span> <span class="n">SqlSettingsForm</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sql_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                <span class="n">sql_form</span><span class="o">.</span><span class="n">create_database</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">sql_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sql_form</span> <span class="o">=</span> <span class="n">SqlSettingsForm</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/database_setup&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;sql_form&#39;</span><span class="p">:</span> <span class="n">sql_form</span><span class="p">},</span>
+                                  <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+
+<span class="nd">@maker_login_required</span>
+<span class="k">def</span> <span class="nf">help_page</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Returns a Help page from Evergreen&quot;</span>
+    
+    <span class="n">source</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;HARDTREE_HELP_SOURCE&#39;</span><span class="p">,</span> <span class="s">&#39;http://127.0.0.1:7000/help&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span>
+    
+    <span class="n">body</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">source</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">&#39;?domain=&#39;</span> <span class="o">+</span> <span class="n">RequestSite</span><span class="p">(</span><span class="n">request</span><span class="p">)</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+    
+    <span class="n">regexp</span> <span class="o">=</span> <span class="s">r&quot;&lt;!-- module_content_inner --&gt;(?P&lt;module_inner&gt;.*?)&lt;!-- /module_content_inner --&gt;&quot;</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">smart_unicode</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;module_inner&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/help_page&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;body&#39;</span><span class="p">:</span> <span class="n">body</span><span class="p">},</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span>
+                              <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+
+
+<span class="c">#</span>
+<span class="c"># AJAX lookups </span>
+<span class="c">#</span>
+<span class="nd">@maker_login_required</span>
+<span class="k">def</span> <span class="nf">ajax_object_lookup</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Returns a list of matching objects&quot;</span>
+    
+    <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="ow">and</span> <span class="s">&#39;term&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">Object</span><span class="o">.</span><span class="n">filter_permitted</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_profile</span><span class="p">(),</span> 
+                                          <span class="n">Object</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">object_name__icontains</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;term&#39;</span><span class="p">]),</span> 
+                                          <span class="n">mode</span><span class="o">=</span><span class="s">&#39;x&#39;</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/ajax_object_lookup&#39;</span><span class="p">,</span>
+                              <span class="p">{</span><span class="s">&#39;objects&#39;</span><span class="p">:</span> <span class="n">objects</span><span class="p">},</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span>
+                              <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+
+
+<span class="nd">@maker_login_required</span>
+<span class="k">def</span> <span class="nf">ajax_tag_lookup</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Returns a list of matching tags&quot;</span>
+    
+    <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="ow">and</span> <span class="s">&#39;term&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="n">Tag</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name__icontains</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;term&#39;</span><span class="p">])</span>        
+    
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/ajax_tag_lookup&#39;</span><span class="p">,</span>
+                              <span class="p">{</span><span class="s">&#39;tags&#39;</span><span class="p">:</span> <span class="n">tags</span><span class="p">},</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span>
+                              <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+
+<span class="c">#</span>
+<span class="c"># Widgets</span>
+<span class="c">#</span>
+
+<span class="nd">@maker_login_required</span>
+<span class="k">def</span> <span class="nf">widget_welcome</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Quick start widget, which users see when they first log in&quot;</span>
+    
+    <span class="n">trial</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;HARDTREE_SUBSCRIPTION_USER_LIMIT&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">trial</span> <span class="o">=</span> <span class="bp">True</span>
+        
+    <span class="n">customization</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;HARDTREE_SUBSCRIPTION_CUSTOMIZATION&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/widgets/welcome&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;trial&#39;</span><span class="p">:</span> <span class="n">trial</span><span class="p">,</span> <span class="s">&#39;customization&#39;</span><span class="p">:</span> <span class="n">customization</span><span class="p">},</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+
+
+<span class="c">#</span>
+<span class="c"># Passwords</span>
+<span class="c">#</span>
+<span class="nd">@csrf_protect</span>
+<div class="viewcode-block" id="password_reset"><a class="viewcode-back" href="../../../development/core.html#maker.core.views.password_reset">[docs]</a><span class="k">def</span> <span class="nf">password_reset</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Password_reset sends the email with the new password&quot;</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">PasswordResetForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;password_reset_done&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">PasswordResetForm</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/password_reset_form&#39;</span><span class="p">,</span>
+                              <span class="p">{</span><span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">},</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span>
+                              <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="password_reset_done"><a class="viewcode-back" href="../../../development/core.html#maker.core.views.password_reset_done">[docs]</a><span class="k">def</span> <span class="nf">password_reset_done</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Shows success message&quot;</span>
+    
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/password_reset_done&#39;</span><span class="p">,</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span>
+                              <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="invitation_retrieve"><a class="viewcode-back" href="../../../development/core.html#maker.core.views.invitation_retrieve">[docs]</a><span class="k">def</span> <span class="nf">invitation_retrieve</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Retrieve invitation and create account&quot;</span>
+    
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+    
+    <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">email</span> <span class="ow">and</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">invitation</span> <span class="o">=</span> <span class="n">Invitation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Http404</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span>
+    
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">InvitationForm</span><span class="p">(</span><span class="n">invitation</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">profile</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+                <span class="n">invitation</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                <span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">InvitationForm</span><span class="p">(</span><span class="n">invitation</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;core/invitation_retrieve&#39;</span><span class="p">,</span>
+                              <span class="p">{</span><span class="s">&#39;invitation&#39;</span><span class="p">:</span> <span class="n">invitation</span><span class="p">,</span>
+                               <span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">},</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">),</span>
+                              <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">)</span>
+
+
+</div>
+<div class="viewcode-block" id="save_upload"><a class="viewcode-back" href="../../../development/core.html#maker.core.views.save_upload">[docs]</a><span class="k">def</span> <span class="nf">save_upload</span><span class="p">(</span> <span class="n">uploaded</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">raw_data</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    raw_data: if True, uploaded is an HttpRequest object with the file being</span>
+<span class="sd">              the raw post data</span>
+<span class="sd">              if False, uploaded has been submitted via the basic form</span>
+<span class="sd">              submission and is a regular Django UploadedFile in request.FILES</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">FileIO</span><span class="p">,</span> <span class="n">BufferedWriter</span>
+
+        <span class="k">with</span> <span class="n">BufferedWriter</span><span class="p">(</span><span class="n">FileIO</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;wb&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">dest</span><span class="p">:</span>
+            <span class="c"># if the &quot;advanced&quot; upload, read directly from the HTTP request</span>
+            <span class="c"># with the Django 1.3 functionality</span>
+            <span class="k">if</span> <span class="n">raw_data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">uploaded</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+                    <span class="n">dest</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">uploaded</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">foo</span> <span class="o">=</span> <span class="n">uploaded</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+                    <span class="k">while</span> <span class="n">foo</span><span class="p">:</span>
+                        <span class="n">dest</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+                        <span class="n">foo</span> <span class="o">=</span> <span class="n">uploaded</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+            <span class="c"># if not raw, it was a form upload so read in the normal Django chunks fashion</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">uploaded</span><span class="o">.</span><span class="n">chunks</span><span class="p">():</span>
+                    <span class="n">dest</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                <span class="c"># got through saving the upload, report success</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="c"># could not open the file most likely</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="bp">False</span>
+</div>
+<span class="nd">@maker_login_required</span>
+<span class="k">def</span> <span class="nf">ajax_upload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">object_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">record</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">object</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">is_ajax</span><span class="p">():</span>
+                <span class="c"># the file is stored raw in the request</span>
+                <span class="n">upload</span> <span class="o">=</span> <span class="n">request</span>
+                <span class="n">is_raw</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="c"># AJAX Upload will pass the filename in the querystring if it is the &quot;advanced&quot; ajax upload</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">filename</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;qqfile&#39;</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s">&quot;AJAX request not valid&quot;</span><span class="p">)</span>
+            <span class="c"># not an ajax upload, so it was the &quot;basic&quot; iframe version with submission via form</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">is_raw</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="c"># FILES is a dictionary in Django but Ajax Upload gives the uploaded file an</span>
+                    <span class="c"># ID based on a random number, so it cannot be guessed here in the code.</span>
+                    <span class="c"># Rather than editing Ajax Upload to pass the ID in the querystring,</span>
+                    <span class="c"># observer that each upload is a separate request,</span>
+                    <span class="c"># so FILES should only have one entry.</span>
+                    <span class="c"># Thus, we can just grab the first (and only) value in the dict.</span>
+                    <span class="n">upload</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">Http404</span><span class="p">(</span><span class="s">&quot;Bad Upload&quot;</span><span class="p">)</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">name</span>
+
+            <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
+            <span class="n">filehash</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
+
+            <span class="n">savefile</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;MEDIA_ROOT&#39;</span><span class="p">),</span> <span class="s">&#39;attachments&#39;</span><span class="p">,</span> <span class="n">filehash</span><span class="p">)</span>
+
+            <span class="c"># save the file</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="n">save_upload</span><span class="p">(</span><span class="n">upload</span><span class="p">,</span> <span class="n">savefile</span><span class="p">,</span> <span class="n">is_raw</span><span class="p">)</span>
+
+            <span class="n">attachment</span> <span class="o">=</span> <span class="n">Attachment</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
+                                    <span class="n">mimetype</span><span class="o">=</span><span class="n">upload</span><span class="o">.</span><span class="n">content_type</span><span class="p">,</span>
+                                    <span class="n">uploaded_by</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_profile</span><span class="p">(),</span>
+                                    <span class="n">attached_file</span><span class="o">=</span><span class="n">filehash</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">record</span><span class="p">:</span>
+                <span class="n">attachment</span><span class="o">.</span><span class="n">attached_record</span><span class="o">=</span><span class="n">record</span>
+                <span class="n">about</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">about</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">about</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
+                    <span class="n">attachment</span><span class="o">.</span><span class="n">attached_object</span><span class="o">=</span><span class="n">about</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="nb">object</span> <span class="o">=</span> <span class="n">attachment</span><span class="o">.</span><span class="n">attached_object</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">object</span> <span class="o">=</span> <span class="n">Object</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">object_id</span><span class="p">)</span>
+                <span class="n">attachment</span><span class="o">.</span><span class="n">attached_object</span><span class="o">=</span><span class="nb">object</span>
+
+            <span class="n">attachment</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="nb">object</span><span class="p">:</span>
+                <span class="nb">object</span><span class="o">.</span><span class="n">set_last_updated</span><span class="p">()</span>
+
+            <span class="c">#TODO: smart markup and return as string, and object id, different classnames,id or attribute for update records and objects</span>
+
+            <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+                <span class="n">ret_json</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="n">success</span><span class="p">,</span>
+                            <span class="s">&#39;object_id&#39;</span><span class="p">:</span> <span class="nb">object</span><span class="o">.</span><span class="n">id</span> <span class="k">if</span> <span class="nb">object</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+                            <span class="s">&#39;update_id&#39;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span> <span class="k">if</span> <span class="n">record</span> <span class="k">else</span> <span class="bp">None</span><span class="p">}</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ret_json</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+                            <span class="s">&#39;object_id&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+                            <span class="s">&#39;update_id&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">ret_json</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">e</span>
+
+        
+<span class="nd">@maker_login_required</span>
+<span class="k">def</span> <span class="nf">ajax_upload_record</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">record_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">UpdateRecord</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">record_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ajax_upload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
+
+<span class="nd">@maker_login_required</span>
+<span class="k">def</span> <span class="nf">attachment_download</span><span class="p">(</span><span class="n">request</span><span class="p">,</span>  <span class="n">attachment_id</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">attachment</span> <span class="o">=</span> <span class="n">Attachment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">attachment_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Attachment</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span><span class="p">()</span>
+
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;MEDIA_ROOT&#39;</span><span class="p">),</span> <span class="s">&#39;attachments&#39;</span><span class="p">,</span> <span class="n">attachment</span><span class="o">.</span><span class="n">attached_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span><span class="p">()</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">attachment</span><span class="o">.</span><span class="n">mimetype</span><span class="p">)</span>
+    <span class="n">response</span><span class="p">[</span><span class="s">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;filename=&quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="n">smart_unicode</span><span class="p">(</span><span class="n">attachment</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

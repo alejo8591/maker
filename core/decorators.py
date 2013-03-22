@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
+# Copyright 2013 maker
 # This file is part of maker.
 # License www.tree.io/license
 
 """
-Hardtree Core decorators for views
+    maker Core decorators for views
 """
 
 from django.http import HttpResponseRedirect, HttpResponse, Http404

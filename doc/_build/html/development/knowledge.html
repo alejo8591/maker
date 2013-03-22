@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Knowledge &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Development" href="../development.html" />
+    <link rel="next" title="Messaging" href="messaging.html" />
+    <link rel="prev" title="Infrastructure" href="infrastructure.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="messaging.html" title="Messaging"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="infrastructure.html" title="Infrastructure"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-maker.knowledge.models">
+<span id="knowledge"></span><h1>Knowledge<a class="headerlink" href="#module-maker.knowledge.models" title="Permalink to this headline">¶</a></h1>
+<p>Knowledge base module objects</p>
+<dl class="class">
+<dt id="maker.knowledge.models.KnowledgeCategory">
+<em class="property">class </em><tt class="descclassname">maker.knowledge.models.</tt><tt class="descname">KnowledgeCategory</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeCategory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeCategory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Knowledge Category that contains Knowledge Items</p>
+<dl class="exception">
+<dt id="maker.knowledge.models.KnowledgeCategory.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeCategory.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.knowledge.models.KnowledgeCategory.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">KnowledgeCategory.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeCategory.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.knowledge.models.KnowledgeCategory.by_path">
+<em class="property">static </em><tt class="descclassname">KnowledgeCategory.</tt><tt class="descname">by_path</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeCategory.by_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeCategory.by_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a Knowledge Category instance matching the given treepath</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.knowledge.models.KnowledgeCategory.get_absolute_url">
+<tt class="descclassname">KnowledgeCategory.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeCategory.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeCategory.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeCategory.knowledgeitem_set">
+<tt class="descclassname">KnowledgeCategory.</tt><tt class="descname">knowledgeitem_set</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeCategory.knowledgeitem_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeCategory.object_ptr">
+<tt class="descclassname">KnowledgeCategory.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeCategory.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeCategory.objects">
+<tt class="descclassname">KnowledgeCategory.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a1b0b90&gt;</em><a class="headerlink" href="#maker.knowledge.models.KnowledgeCategory.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.knowledge.models.KnowledgeCategory.save">
+<tt class="descclassname">KnowledgeCategory.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeCategory.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeCategory.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden save() method to compute treepath and full names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.knowledge.models.KnowledgeCategory.treewalk">
+<tt class="descclassname">KnowledgeCategory.</tt><tt class="descname">treewalk</tt><big>(</big><em>save=True</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeCategory.treewalk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeCategory.treewalk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Walks up the tree to construct Category</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.knowledge.models.KnowledgeFolder">
+<em class="property">class </em><tt class="descclassname">maker.knowledge.models.</tt><tt class="descname">KnowledgeFolder</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeFolder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>KnowledgeFolder</p>
+<dl class="exception">
+<dt id="maker.knowledge.models.KnowledgeFolder.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.knowledge.models.KnowledgeFolder.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeFolder.access_inherit">
+<tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('parent', '*module', '*user')</em><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.knowledge.models.KnowledgeFolder.by_path">
+<em class="property">static </em><tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">by_path</tt><big>(</big><em>treePath</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeFolder.by_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.by_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a KnowledgeFolder instance matching the given treepath</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeFolder.child_set">
+<tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.knowledge.models.KnowledgeFolder.get_absolute_url">
+<tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeFolder.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeFolder.knowledgeitem_set">
+<tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">knowledgeitem_set</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.knowledgeitem_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeFolder.object_ptr">
+<tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeFolder.objects">
+<tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a1b0550&gt;</em><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeFolder.parent">
+<tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">parent</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.knowledge.models.KnowledgeFolder.save">
+<tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeFolder.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden save() method to compute treepath and full names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.knowledge.models.KnowledgeFolder.treewalk">
+<tt class="descclassname">KnowledgeFolder.</tt><tt class="descname">treewalk</tt><big>(</big><em>save=True</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeFolder.treewalk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeFolder.treewalk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Walks up the tree to construct Type treepath</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.knowledge.models.KnowledgeItem">
+<em class="property">class </em><tt class="descclassname">maker.knowledge.models.</tt><tt class="descname">KnowledgeItem</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>&#8221; A readable piece of knowledge</p>
+<dl class="exception">
+<dt id="maker.knowledge.models.KnowledgeItem.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.knowledge.models.KnowledgeItem.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">KnowledgeItem.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeItem.access_inherit">
+<tt class="descclassname">KnowledgeItem.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('folder', '*module', '*user')</em><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.knowledge.models.KnowledgeItem.by_path">
+<em class="property">static </em><tt class="descclassname">KnowledgeItem.</tt><tt class="descname">by_path</tt><big>(</big><em>treePath</em>, <em>itemPath</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeItem.by_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.by_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a Knowledge Item instance matching the given treepath</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeItem.category">
+<tt class="descclassname">KnowledgeItem.</tt><tt class="descname">category</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeItem.folder">
+<tt class="descclassname">KnowledgeItem.</tt><tt class="descname">folder</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.folder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.knowledge.models.KnowledgeItem.get_absolute_url">
+<tt class="descclassname">KnowledgeItem.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeItem.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeItem.object_ptr">
+<tt class="descclassname">KnowledgeItem.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.knowledge.models.KnowledgeItem.objects">
+<tt class="descclassname">KnowledgeItem.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10a44b3d0&gt;</em><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.knowledge.models.KnowledgeItem.save">
+<tt class="descclassname">KnowledgeItem.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeItem.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden save() method to compute treepath and full names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.knowledge.models.KnowledgeItem.treewalk">
+<tt class="descclassname">KnowledgeItem.</tt><tt class="descname">treewalk</tt><big>(</big><em>save=True</em><big>)</big><a class="reference internal" href="../_modules/maker/knowledge/models.html#KnowledgeItem.treewalk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.knowledge.models.KnowledgeItem.treewalk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Walks up the tree to construct both Item treepath and item.name from database</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="infrastructure.html"
+                        title="previous chapter">Infrastructure</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="messaging.html"
+                        title="next chapter">Messaging</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/development/knowledge.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="messaging.html" title="Messaging"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="infrastructure.html" title="Infrastructure"
+             >previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
+# Copyright 2012 maker
 # This file is part of maker.
-# License www.tree.io/license
+# License
 
 """
-Hardtree Core system objects
+    maker Core system objects
 """
 
 from django.contrib import messages
@@ -35,8 +35,9 @@ import hashlib
 import string
 
 
-class AccessEntity(models.Model):
-    "Generic model for both User and Group"
+class InteractionEntity(models.Model):
+    "Generic model for both User and Group: only stores the last update, along with the user or group decision"
+
     last_updated = models.DateTimeField(auto_now=True)
 
     def get_entity(self):
@@ -68,7 +69,7 @@ class AccessEntity(models.Model):
             return ''
 
 
-class Group(AccessEntity):
+class Group(InteractionEntity):
     "Group record"
     name = models.CharField(max_length=256)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='child_set')
@@ -92,9 +93,9 @@ class Group(AccessEntity):
 
     def get_root(self):
         "Get the root Group"
-
         root = self
-        stack = [self] # keep track of items we've looked at to avoid infinite looping
+        # keep track of items we've looked at to avoid infinite looping
+        stack = [self]
         while getattr(root, 'parent', None):
             root = getattr(root, 'parent')
             if root in stack:
@@ -105,7 +106,6 @@ class Group(AccessEntity):
 
     def get_tree_path(self, skipself=False):
         "Get tree path as a list() starting with root Group"
-
         if skipself:
             path = []
         else:
@@ -168,7 +168,7 @@ class Group(AccessEntity):
                     perspective = Perspective.objects.all()[0]
                     ModuleSetting.set_for_module('default_perspective', perspective.id, 'maker.core', group=self)
                 except:
-                    raise Perspective.DoesNotExist('No Perspective exists')
+                    raise Perspective.DoesNotExist(_('No Perspective exists'))
         return perspective
 
     def set_perspective(self, perspective):
@@ -192,7 +192,7 @@ class Group(AccessEntity):
 
 
 
-class User(AccessEntity):
+class User(InteractionEntity):
     "A record about a user registered within the system"
     name = models.CharField(max_length=256)
     user = models.ForeignKey(django_auth.User)
@@ -435,10 +435,10 @@ class Comment(models.Model):
         return self.body
 
 class Object(models.Model):
-    "Generic Hardtree object"
+    "Generic maker object"
     creator = models.ForeignKey(User, blank=True, null=True, related_name='objects_created', on_delete=models.SET_NULL)
-    read_access = models.ManyToManyField(AccessEntity, blank=True, null=True, related_name='objects_read_access')
-    full_access = models.ManyToManyField(AccessEntity, blank=True, null=True, related_name='objects_full_access')
+    read_access = models.ManyToManyField(InteractionEntity, blank=True, null=True, related_name='objects_read_access')
+    full_access = models.ManyToManyField(InteractionEntity, blank=True, null=True, related_name='objects_full_access')
 
     object_name = models.CharField(max_length=512, blank=True, null=True)
     object_type = models.CharField(max_length=512, blank=True, null=True)
@@ -714,7 +714,7 @@ class Object(models.Model):
                     notification.set_format_strings([self.get_human_type(translate=False), updated_text])
                     notification.save()
                     for obj in kwargs['updated']:
-                        if isinstance(obj, AccessEntity) or isinstance(obj, User):
+                        if isinstance(obj, InteractionEntity) or isinstance(obj, User):
                             notification.recipients.add(obj)
                             self.subscribers.add(obj)
                             try:
@@ -899,7 +899,7 @@ class Object(models.Model):
         # process assigned fields to give auto-permissions to assignees
         if hasattr(self, 'assigned'):
             for obj in self.assigned.all():
-                if isinstance(obj, AccessEntity) or isinstance(obj, User):
+                if isinstance(obj, InteractionEntity) or isinstance(obj, User):
                     try:
                         if not obj.has_permission(self, mode='w'):
                             self.full_access.add(obj)
@@ -996,8 +996,8 @@ class RevisionField(models.Model):
     value = models.TextField(null=True, blank=True)
     value_key = models.ForeignKey(Object, null=True, blank=True, related_name='revisionfield_key', on_delete=models.SET_NULL)
     value_m2m = models.ManyToManyField(Object, related_name='revisionfield_m2m')
-    value_key_acc = models.ForeignKey(AccessEntity, null=True, blank=True, related_name='revisionfield_key_acc', on_delete=models.SET_NULL)
-    value_m2m_acc = models.ManyToManyField(AccessEntity, related_name='revisionfield_m2m_acc')
+    value_key_acc = models.ForeignKey(InteractionEntity, null=True, blank=True, related_name='revisionfield_key_acc', on_delete=models.SET_NULL)
+    value_m2m_acc = models.ManyToManyField(InteractionEntity, related_name='revisionfield_m2m_acc')
 
 
 class UpdateRecord(models.Model):
@@ -1005,7 +1005,7 @@ class UpdateRecord(models.Model):
     author = models.ForeignKey(User, blank=True, null=True, related_name="sent_updates")
     sender = models.ForeignKey(Object, blank=True, null=True, related_name="sent_updates", on_delete=models.SET_NULL)
     about = models.ManyToManyField(Object, blank=True, null=True, related_name="updates")
-    recipients = models.ManyToManyField(AccessEntity, blank=True, null=True, related_name="received_updates")
+    recipients = models.ManyToManyField(InteractionEntity, blank=True, null=True, related_name="received_updates")
     #recipients_outside = models.ManyToManyField(Contact, blank=True, null=True, related_name="outside_received_updates")
     record_type = models.CharField(max_length=32,
                                    choices=(('create', 'create'), ('update', 'update'),

@@ -1,0 +1,416 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>maker.finance.models &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for maker.finance.models</h1><div class="highlight"><pre>
+<span class="c"># encoding: utf-8</span>
+<span class="c"># Copyright 2011 Tree.io Limited</span>
+<span class="c"># This file is part of maker.</span>
+<span class="c"># License www.tree.io/license</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Finance module objects</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">maker.core.models</span> <span class="kn">import</span> <span class="n">Object</span>
+<span class="kn">from</span> <span class="nn">maker.identities.models</span> <span class="kn">import</span> <span class="n">Contact</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="Currency"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Currency">[docs]</a><span class="k">class</span> <span class="nc">Currency</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="s">&quot;Currency Object&quot;</span>
+    
+    <span class="n">code</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;code&#39;</span><span class="p">),</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">),</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">symbol</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;symbol&#39;</span><span class="p">),</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;If no symbol is entered, the 3 letter code will be used.&#39;</span><span class="p">))</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;factor&#39;</span><span class="p">),</span> <span class="n">max_digits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Specifies the ratio to the base currency, e.g. 1.324&#39;</span><span class="p">),</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">is_active</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;The currency will be updated with daily exchange rates.&#39;</span><span class="p">))</span>
+    <span class="n">is_default</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;default&#39;</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Make this the default currency.&#39;</span><span class="p">))</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;currency&#39;</span><span class="p">)</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;currencies&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#return self.code</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">    </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">  </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        
+    
+<div class="viewcode-block" id="Currency.save"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Currency.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">default_currency</span> <span class="o">=</span> <span class="n">Currency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">is_default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_default</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">default_currency</span><span class="p">:</span>
+                <span class="n">default_currency</span><span class="o">.</span><span class="n">is_default</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">default_currency</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Currency</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="Tax"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Tax">[docs]</a><span class="k">class</span> <span class="nc">Tax</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Tax model &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">compound</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#return self in unicode</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Category"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Category">[docs]</a><span class="k">class</span> <span class="nc">Category</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Category model &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="n">revenue</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">expense</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Asset"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Asset">[docs]</a><span class="k">class</span> <span class="nc">Asset</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Asset model &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+    <span class="n">asset_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+                                  <span class="n">choices</span><span class="o">=</span><span class="p">((</span><span class="s">&#39;fixed&#39;</span><span class="p">,</span> <span class="s">&#39;Fixed&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;intangible&#39;</span><span class="p">,</span> <span class="s">&#39;Intangible&#39;</span><span class="p">)),</span>
+                                  <span class="n">default</span><span class="o">=</span><span class="s">&#39;fixed&#39;</span><span class="p">)</span>
+    <span class="n">initial_value</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">lifetime</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">endlife_value</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">depreciation_rate</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">depreciation_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                         <span class="n">choices</span><span class="o">=</span><span class="p">((</span><span class="s">&#39;straight&#39;</span><span class="p">,</span> <span class="s">&#39;Straight Line&#39;</span><span class="p">),</span> 
+                                                  <span class="p">(</span><span class="s">&#39;reducing&#39;</span><span class="p">,</span> <span class="s">&#39;Reducing balance&#39;</span><span class="p">)),</span>
+                                         <span class="n">default</span><span class="o">=</span><span class="s">&#39;straight&#39;</span><span class="p">)</span>
+    <span class="n">purchase_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">current_value</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Event&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-purchase_date&#39;</span><span class="p">]</span>
+    
+<div class="viewcode-block" id="Asset.check_depreciate"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Asset.check_depreciate">[docs]</a>    <span class="k">def</span> <span class="nf">check_depreciate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Check Depreciate&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">purchase_date</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">endlife_value</span><span class="o">!=</span><span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifetime</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+    </div>
+<div class="viewcode-block" id="Asset.get_depreciation"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Asset.get_depreciation">[docs]</a>    <span class="k">def</span> <span class="nf">get_depreciation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Get Depreciation&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_depreciate</span><span class="p">():</span> <span class="c"># Edited by Renat</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_rate</span><span class="p">()</span>
+            
+            <span class="n">from_purchase</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">purchase_date</span>
+            <span class="n">days_from_purchase</span> <span class="o">=</span> <span class="n">from_purchase</span><span class="o">.</span><span class="n">days</span>     
+            
+            <span class="k">if</span> <span class="n">days_from_purchase</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">*</span> <span class="mi">365</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">endlife_value</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;.01&#39;</span><span class="p">),</span> <span class="n">rounding</span> <span class="o">=</span> <span class="n">ROUND_UP</span><span class="p">)</span>
+            
+            <span class="n">straight</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="o">-</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">endlife_value</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">lifetime</span><span class="o">*</span><span class="mi">365</span><span class="p">))</span> <span class="o">*</span>
+                                <span class="n">days_from_purchase</span><span class="p">))</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;.01&#39;</span><span class="p">),</span> <span class="n">rounding</span> <span class="o">=</span> <span class="n">ROUND_UP</span><span class="p">)</span>
+
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">depreciation_type</span> <span class="o">==</span> <span class="s">&#39;reducing&#39;</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span>
+                <span class="n">daily_depreciation_rate</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">endlife_value</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span><span class="p">),</span> 
+                                                       <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lifetime</span><span class="o">*</span><span class="mi">365</span><span class="p">)))))</span>
+                <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">days_from_purchase</span><span class="p">):</span>
+                    <span class="n">i</span> <span class="o">-=</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">daily_depreciation_rate</span><span class="p">)</span>
+                <span class="n">reducing</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="o">-</span> <span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">reducing</span> <span class="o">&gt;</span> <span class="n">straight</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">reducing</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;.01&#39;</span><span class="p">),</span> <span class="n">rounding</span> <span class="o">=</span> <span class="n">ROUND_UP</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">straight</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;.01&#39;</span><span class="p">),</span> <span class="n">rounding</span> <span class="o">=</span> <span class="n">ROUND_UP</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">depreciation_type</span> <span class="o">==</span> <span class="s">&#39;straight&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">straight</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;.01&#39;</span><span class="p">),</span> <span class="n">rounding</span> <span class="o">=</span> <span class="n">ROUND_UP</span><span class="p">)</span>
+            
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.00&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.00&#39;</span><span class="p">)</span>
+    </div>
+<div class="viewcode-block" id="Asset.set_rate"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Asset.set_rate">[docs]</a>    <span class="k">def</span> <span class="nf">set_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Set Rate&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">depreciation_type</span> <span class="o">==</span> <span class="s">&#39;straight&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifetime</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depreciation_rate</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span> <span class="o">/</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">lifetime</span><span class="p">)</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;00.01&#39;</span><span class="p">),</span> <span class="n">rounding</span> <span class="o">=</span> <span class="n">ROUND_UP</span><span class="p">)</span>
+        
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">depreciation_type</span> <span class="o">==</span> <span class="s">&#39;reducing&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_depreciate</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.00&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depreciation_rate</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">100</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span>
+                                      <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">endlife_value</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span><span class="p">),</span>
+                                               <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">lifetime</span><span class="p">)))))</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;00.01&#39;</span><span class="p">),</span> <span class="n">rounding</span> <span class="o">=</span> <span class="n">ROUND_UP</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;0.00&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">depreciation_rate</span> <span class="o">==</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;100.00&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depreciation_rate</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;99.99&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    </div>
+<div class="viewcode-block" id="Asset.set_current_value"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Asset.set_current_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_current_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Set current value&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_depreciate</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_depreciation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_value</span>
+        </div>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  
+    
+<div class="viewcode-block" id="Asset.get_absolute_url"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Asset.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;finance_asset_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+    
+</div></div>
+<div class="viewcode-block" id="Account"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Account">[docs]</a><span class="k">class</span> <span class="nc">Account</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Account model &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">)</span>
+    <span class="n">balance</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">balance_currency</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Currency</span><span class="p">)</span>
+    <span class="n">balance_display</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Event&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+        
+<div class="viewcode-block" id="Account.get_balance"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Account.get_balance">[docs]</a>    <span class="k">def</span> <span class="nf">get_balance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns balance&quot;</span>
+        <span class="n">bal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">balance</span>
+        <span class="n">transactions</span> <span class="o">=</span> <span class="n">Transaction</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">account</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">transaction</span> <span class="ow">in</span> <span class="n">transactions</span><span class="p">:</span>
+            <span class="n">bal</span> <span class="o">+=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">get_relative_value</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">bal</span>
+    </div>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  
+    
+<div class="viewcode-block" id="Account.get_absolute_url"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Account.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;finance_account_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+    
+</div></div>
+<div class="viewcode-block" id="Equity"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Equity">[docs]</a><span class="k">class</span> <span class="nc">Equity</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Equity model &quot;&quot;&quot;</span>
+    <span class="n">equity_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+                                   <span class="n">choices</span><span class="o">=</span><span class="p">((</span><span class="s">&#39;share&#39;</span><span class="p">,</span> <span class="s">&#39;Ordinary Share&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;preferred&#39;</span><span class="p">,</span> <span class="s">&#39;Preferred&#39;</span><span class="p">),</span> 
+                                            <span class="p">(</span><span class="s">&#39;warrant&#39;</span><span class="p">,</span> <span class="s">&#39;Warrant&#39;</span><span class="p">)),</span>
+                                   <span class="n">default</span><span class="o">=</span><span class="s">&#39;share&#39;</span><span class="p">)</span>
+    <span class="n">issue_price</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">sell_price</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">issuer</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;finance_equity_issued&#39;</span><span class="p">)</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;finance_equity_owned&#39;</span><span class="p">)</span>
+    <span class="n">amount</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">purchase_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Event&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-purchase_date&#39;</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">issuer</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; (&quot;</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">equity_type</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">)</span> 
+    
+<div class="viewcode-block" id="Equity.get_absolute_url"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Equity.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;finance_equity_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+    
+    </div></div>
+<div class="viewcode-block" id="Liability"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Liability">[docs]</a><span class="k">class</span> <span class="nc">Liability</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Liability model, used for both Liabilities and Receivables &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;finance_liability_source&#39;</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;finance_liability_target&#39;</span><span class="p">)</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Account</span><span class="p">)</span>
+    <span class="n">due_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">value_currency</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Currency</span><span class="p">)</span>
+    <span class="n">value_display</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Event&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-due_date&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  
+    
+<div class="viewcode-block" id="Liability.get_absolute_url"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Liability.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;finance_liability_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+    </div>
+<div class="viewcode-block" id="Liability.is_receivable"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Liability.is_receivable">[docs]</a>    <span class="k">def</span> <span class="nf">is_receivable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns True if self is receivable relative to self.account&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">owner</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span>
+        
+    </div></div>
+<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Transaction model &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;finance_transaction_source&#39;</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;finance_transaction_target&#39;</span><span class="p">)</span>
+    <span class="n">liability</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Liability</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">)</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Account</span><span class="p">)</span>
+    <span class="n">datetime</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">value_currency</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Currency</span><span class="p">)</span>
+    <span class="n">value_display</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_digits</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="s">&quot;Event&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-datetime&#39;</span><span class="p">]</span>
+        
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  
+    
+<div class="viewcode-block" id="Transaction.get_relative_value"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Transaction.get_relative_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_relative_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Get Relative Value&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trash</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">owner_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">owner_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_id</span><span class="p">:</span> 
+            <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    </div>
+<div class="viewcode-block" id="Transaction.get_absolute_url"><a class="viewcode-back" href="../../../development/finance.html#maker.finance.models.Transaction.get_absolute_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns absolute URL&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;finance_transaction_view&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+    </div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

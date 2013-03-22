@@ -1,0 +1,1800 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Core &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Development" href="../development.html" />
+    <link rel="next" title="Documents" href="documents.html" />
+    <link rel="prev" title="Development" href="../development.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="documents.html" title="Documents"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../development.html" title="Development"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="core">
+<h1>Core<a class="headerlink" href="#core" title="Permalink to this headline">¶</a></h1>
+<p>maker is at the heart of the project. It provides a set of generic models, such as Object,
+which is extended by many other entities in Maker.</p>
+<p>The Core also handles automatic module insertion and provides many routines for module manipulation.</p>
+<div class="section" id="models">
+<h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-maker.core.models"></span><p>maker Core system objects</p>
+<dl class="class">
+<dt id="maker.core.models.Attachment">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Attachment</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Attachment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Attachment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Attachment object to upload and reference a file</p>
+<dl class="exception">
+<dt id="maker.core.models.Attachment.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Attachment.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Attachment.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Attachment.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Attachment.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Attachment.attached_object">
+<tt class="descclassname">Attachment.</tt><tt class="descname">attached_object</tt><a class="headerlink" href="#maker.core.models.Attachment.attached_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Attachment.attached_record">
+<tt class="descclassname">Attachment.</tt><tt class="descname">attached_record</tt><a class="headerlink" href="#maker.core.models.Attachment.attached_record" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Attachment.can_preview">
+<tt class="descclassname">Attachment.</tt><tt class="descname">can_preview</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Attachment.can_preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Attachment.can_preview" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Attachment.delete">
+<tt class="descclassname">Attachment.</tt><tt class="descname">delete</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Attachment.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Attachment.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Attachment.get_file_type">
+<tt class="descclassname">Attachment.</tt><tt class="descname">get_file_type</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Attachment.get_file_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Attachment.get_file_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Attachment.get_icon">
+<tt class="descclassname">Attachment.</tt><tt class="descname">get_icon</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Attachment.get_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Attachment.get_icon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Attachment.get_next_by_created">
+<tt class="descclassname">Attachment.</tt><tt class="descname">get_next_by_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Attachment.get_next_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Attachment.get_previous_by_created">
+<tt class="descclassname">Attachment.</tt><tt class="descname">get_previous_by_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Attachment.get_previous_by_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Attachment.objects">
+<tt class="descclassname">Attachment.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f4d810&gt;</em><a class="headerlink" href="#maker.core.models.Attachment.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Attachment.uploaded_by">
+<tt class="descclassname">Attachment.</tt><tt class="descname">uploaded_by</tt><a class="headerlink" href="#maker.core.models.Attachment.uploaded_by" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Comment">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Comment</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Comment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Comment on any Object</p>
+<dl class="exception">
+<dt id="maker.core.models.Comment.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Comment.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Comment.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Comment.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Comment.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Comment.author">
+<tt class="descclassname">Comment.</tt><tt class="descname">author</tt><a class="headerlink" href="#maker.core.models.Comment.author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Comment.comments">
+<tt class="descclassname">Comment.</tt><tt class="descname">comments</tt><a class="headerlink" href="#maker.core.models.Comment.comments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Comment.comments_on_updates">
+<tt class="descclassname">Comment.</tt><tt class="descname">comments_on_updates</tt><a class="headerlink" href="#maker.core.models.Comment.comments_on_updates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Comment.dislikes">
+<tt class="descclassname">Comment.</tt><tt class="descname">dislikes</tt><a class="headerlink" href="#maker.core.models.Comment.dislikes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Comment.get_next_by_date_created">
+<tt class="descclassname">Comment.</tt><tt class="descname">get_next_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Comment.get_next_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Comment.get_previous_by_date_created">
+<tt class="descclassname">Comment.</tt><tt class="descname">get_previous_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Comment.get_previous_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Comment.likes">
+<tt class="descclassname">Comment.</tt><tt class="descname">likes</tt><a class="headerlink" href="#maker.core.models.Comment.likes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Comment.objects">
+<tt class="descclassname">Comment.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f17150&gt;</em><a class="headerlink" href="#maker.core.models.Comment.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.ConfigSetting">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">ConfigSetting</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ConfigSetting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ConfigSetting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Config setting to be activated dynamically from the database on request</p>
+<dl class="exception">
+<dt id="maker.core.models.ConfigSetting.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.ConfigSetting.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.ConfigSetting.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">ConfigSetting.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.ConfigSetting.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.ConfigSetting.dumps">
+<tt class="descclassname">ConfigSetting.</tt><tt class="descname">dumps</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ConfigSetting.dumps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ConfigSetting.dumps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pickle a ModuleSetting value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.ConfigSetting.get_next_by_last_updated">
+<tt class="descclassname">ConfigSetting.</tt><tt class="descname">get_next_by_last_updated</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.ConfigSetting.get_next_by_last_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.ConfigSetting.get_previous_by_last_updated">
+<tt class="descclassname">ConfigSetting.</tt><tt class="descname">get_previous_by_last_updated</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.ConfigSetting.get_previous_by_last_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.ConfigSetting.loads">
+<tt class="descclassname">ConfigSetting.</tt><tt class="descname">loads</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ConfigSetting.loads"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ConfigSetting.loads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unpickle a ModuleSetting value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.ConfigSetting.objects">
+<tt class="descclassname">ConfigSetting.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f4a290&gt;</em><a class="headerlink" href="#maker.core.models.ConfigSetting.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.ConfigSetting.save">
+<tt class="descclassname">ConfigSetting.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ConfigSetting.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ConfigSetting.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Group">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Group</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#maker.core.models.InteractionEntity" title="maker.core.models.InteractionEntity"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.InteractionEntity</span></tt></a></p>
+<p>Group record</p>
+<dl class="exception">
+<dt id="maker.core.models.Group.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Group.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Group.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Group.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Group.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Group.child_set">
+<tt class="descclassname">Group.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.core.models.Group.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Group.default_user_set">
+<tt class="descclassname">Group.</tt><tt class="descname">default_user_set</tt><a class="headerlink" href="#maker.core.models.Group.default_user_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Group.get_absolute_url">
+<tt class="descclassname">Group.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Group.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Group.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the Group</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Group.get_contact">
+<tt class="descclassname">Group.</tt><tt class="descname">get_contact</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Group.get_contact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Group.get_contact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns first available Contact</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Group.get_fullname">
+<tt class="descclassname">Group.</tt><tt class="descname">get_fullname</tt><big>(</big><em>save=True</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Group.get_fullname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Group.get_fullname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the full name with parent(s) separated by slashes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Group.get_perspective">
+<tt class="descclassname">Group.</tt><tt class="descname">get_perspective</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Group.get_perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Group.get_perspective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns currently set Perspective for the Group</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Group.get_root">
+<tt class="descclassname">Group.</tt><tt class="descname">get_root</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Group.get_root"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Group.get_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the root Group</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Group.get_tree_path">
+<tt class="descclassname">Group.</tt><tt class="descname">get_tree_path</tt><big>(</big><em>skipself=False</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Group.get_tree_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Group.get_tree_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get tree path as a list() starting with root Group</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Group.has_contact">
+<tt class="descclassname">Group.</tt><tt class="descname">has_contact</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Group.has_contact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Group.has_contact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if any Contacts exist for this Group</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Group.interactionentity_ptr">
+<tt class="descclassname">Group.</tt><tt class="descname">interactionentity_ptr</tt><a class="headerlink" href="#maker.core.models.Group.interactionentity_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Group.invitation_set">
+<tt class="descclassname">Group.</tt><tt class="descname">invitation_set</tt><a class="headerlink" href="#maker.core.models.Group.invitation_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Group.modulesetting_set">
+<tt class="descclassname">Group.</tt><tt class="descname">modulesetting_set</tt><a class="headerlink" href="#maker.core.models.Group.modulesetting_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Group.objects">
+<tt class="descclassname">Group.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f0b3d0&gt;</em><a class="headerlink" href="#maker.core.models.Group.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Group.parent">
+<tt class="descclassname">Group.</tt><tt class="descname">parent</tt><a class="headerlink" href="#maker.core.models.Group.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Group.set_perspective">
+<tt class="descclassname">Group.</tt><tt class="descname">set_perspective</tt><big>(</big><em>perspective</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Group.set_perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Group.set_perspective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Perspective for the Group</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Group.user_set">
+<tt class="descclassname">Group.</tt><tt class="descname">user_set</tt><a class="headerlink" href="#maker.core.models.Group.user_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.IntegrationResource">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">IntegrationResource</tt><big>(</big><em>nuvius_id</em>, <em>resource_id</em>, <em>resource_name</em>, <em>services=''</em>, <em>role='slave'</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#IntegrationResource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.IntegrationResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resource set for integration via Nuvius</p>
+<p>nuvius_id     = &lt;ID of the user on Nuvius (may be obtained via JSONP call&gt;
+resource_id   = &lt;Application ID, i.e. 1 for Facebook&gt;
+resource_name = &lt;Application name, i.e. Google Contacts&gt;
+services      = &lt;Data points ID on Nuvius, e.g. for /services/news/ ID is 37rw to read/write&gt;
+role          = &lt;Usually master or slave&gt;</p>
+<dl class="attribute">
+<dt id="maker.core.models.IntegrationResource.nuvius_id">
+<tt class="descname">nuvius_id</tt><em class="property"> = 0</em><a class="headerlink" href="#maker.core.models.IntegrationResource.nuvius_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.IntegrationResource.resource_id">
+<tt class="descname">resource_id</tt><em class="property"> = 0</em><a class="headerlink" href="#maker.core.models.IntegrationResource.resource_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.IntegrationResource.resource_name">
+<tt class="descname">resource_name</tt><em class="property"> = ''</em><a class="headerlink" href="#maker.core.models.IntegrationResource.resource_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.IntegrationResource.role">
+<tt class="descname">role</tt><em class="property"> = 'slave'</em><a class="headerlink" href="#maker.core.models.IntegrationResource.role" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.IntegrationResource.service">
+<tt class="descname">service</tt><em class="property"> = ''</em><a class="headerlink" href="#maker.core.models.IntegrationResource.service" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.InteractionEntity">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">InteractionEntity</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.InteractionEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Generic model for both User and Group: only stores the last update, along with the user or group decision</p>
+<dl class="exception">
+<dt id="maker.core.models.InteractionEntity.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.InteractionEntity.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.InteractionEntity.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">InteractionEntity.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.InteractionEntity.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.InteractionEntity.get_absolute_url">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.InteractionEntity.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.InteractionEntity.get_entity">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">get_entity</tt><big>(</big><big>)</big><a class="headerlink" href="#maker.core.models.InteractionEntity.get_entity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.InteractionEntity.get_next_by_last_updated">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">get_next_by_last_updated</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.InteractionEntity.get_next_by_last_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.InteractionEntity.get_previous_by_last_updated">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">get_previous_by_last_updated</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.InteractionEntity.get_previous_by_last_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.InteractionEntity.group">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">group</tt><a class="headerlink" href="#maker.core.models.InteractionEntity.group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.InteractionEntity.is_user">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">is_user</tt><big>(</big><big>)</big><a class="headerlink" href="#maker.core.models.InteractionEntity.is_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.InteractionEntity.objects">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102efce10&gt;</em><a class="headerlink" href="#maker.core.models.InteractionEntity.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.InteractionEntity.objects_full_access">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">objects_full_access</tt><a class="headerlink" href="#maker.core.models.InteractionEntity.objects_full_access" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.InteractionEntity.objects_read_access">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">objects_read_access</tt><a class="headerlink" href="#maker.core.models.InteractionEntity.objects_read_access" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.InteractionEntity.received_updates">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">received_updates</tt><a class="headerlink" href="#maker.core.models.InteractionEntity.received_updates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.InteractionEntity.revisionfield_key_acc">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">revisionfield_key_acc</tt><a class="headerlink" href="#maker.core.models.InteractionEntity.revisionfield_key_acc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.InteractionEntity.revisionfield_m2m_acc">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">revisionfield_m2m_acc</tt><a class="headerlink" href="#maker.core.models.InteractionEntity.revisionfield_m2m_acc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.InteractionEntity.user">
+<tt class="descclassname">InteractionEntity.</tt><tt class="descname">user</tt><a class="headerlink" href="#maker.core.models.InteractionEntity.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Invitation">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Invitation</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Invitation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Invitation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Invitation to register on Hardtree</p>
+<dl class="exception">
+<dt id="maker.core.models.Invitation.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Invitation.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Invitation.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Invitation.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Invitation.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Invitation.default_group">
+<tt class="descclassname">Invitation.</tt><tt class="descname">default_group</tt><a class="headerlink" href="#maker.core.models.Invitation.default_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Invitation.get_next_by_date_created">
+<tt class="descclassname">Invitation.</tt><tt class="descname">get_next_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Invitation.get_next_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Invitation.get_previous_by_date_created">
+<tt class="descclassname">Invitation.</tt><tt class="descname">get_previous_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Invitation.get_previous_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Invitation.objects">
+<tt class="descclassname">Invitation.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102efcb90&gt;</em><a class="headerlink" href="#maker.core.models.Invitation.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Invitation.sender">
+<tt class="descclassname">Invitation.</tt><tt class="descname">sender</tt><a class="headerlink" href="#maker.core.models.Invitation.sender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Location">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Location</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Location for users, assets, etc.</p>
+<dl class="exception">
+<dt id="maker.core.models.Location.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Location.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Location.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Location.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Location.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Location.child_set">
+<tt class="descclassname">Location.</tt><tt class="descname">child_set</tt><a class="headerlink" href="#maker.core.models.Location.child_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Location.get_absolute_url">
+<tt class="descclassname">Location.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Location.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Location.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Location.object_ptr">
+<tt class="descclassname">Location.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.core.models.Location.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Location.objects">
+<tt class="descclassname">Location.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f39550&gt;</em><a class="headerlink" href="#maker.core.models.Location.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Location.parent">
+<tt class="descclassname">Location.</tt><tt class="descname">parent</tt><a class="headerlink" href="#maker.core.models.Location.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Module">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Module</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Record of a module (application) existing within the system</p>
+<dl class="exception">
+<dt id="maker.core.models.Module.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Module.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Module.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Module.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Module.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Module.get_absolute_url">
+<tt class="descclassname">Module.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Module.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Module.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Module.modulesetting_set">
+<tt class="descclassname">Module.</tt><tt class="descname">modulesetting_set</tt><a class="headerlink" href="#maker.core.models.Module.modulesetting_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Module.object_ptr">
+<tt class="descclassname">Module.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.core.models.Module.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Module.objects">
+<tt class="descclassname">Module.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f42c10&gt;</em><a class="headerlink" href="#maker.core.models.Module.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Module.perspective_set">
+<tt class="descclassname">Module.</tt><tt class="descname">perspective_set</tt><a class="headerlink" href="#maker.core.models.Module.perspective_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Module.searcheable">
+<tt class="descclassname">Module.</tt><tt class="descname">searcheable</tt><em class="property"> = False</em><a class="headerlink" href="#maker.core.models.Module.searcheable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.ModuleSetting">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">ModuleSetting</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ModuleSetting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ModuleSetting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Free-type Module setting</p>
+<dl class="exception">
+<dt id="maker.core.models.ModuleSetting.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.ModuleSetting.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.ModuleSetting.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">ModuleSetting.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.ModuleSetting.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.core.models.ModuleSetting.add">
+<em class="property">static </em><tt class="descclassname">ModuleSetting.</tt><tt class="descname">add</tt><big>(</big><em>name</em>, <em>value</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ModuleSetting.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ModuleSetting.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a ModuleSetting</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.core.models.ModuleSetting.add_for_module">
+<em class="property">static </em><tt class="descclassname">ModuleSetting.</tt><tt class="descname">add_for_module</tt><big>(</big><em>name</em>, <em>value</em>, <em>module_name</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ModuleSetting.add_for_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ModuleSetting.add_for_module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a ModuleSetting per module</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.ModuleSetting.dumps">
+<tt class="descclassname">ModuleSetting.</tt><tt class="descname">dumps</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ModuleSetting.dumps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ModuleSetting.dumps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pickle a ModuleSetting value</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.core.models.ModuleSetting.get">
+<em class="property">static </em><tt class="descclassname">ModuleSetting.</tt><tt class="descname">get</tt><big>(</big><em>name=''</em>, <em>strict=False</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ModuleSetting.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ModuleSetting.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setting getter</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.core.models.ModuleSetting.get_for_module">
+<em class="property">static </em><tt class="descclassname">ModuleSetting.</tt><tt class="descname">get_for_module</tt><big>(</big><em>module_name</em>, <em>name=''</em>, <em>strict=False</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ModuleSetting.get_for_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ModuleSetting.get_for_module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a setting per module</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.ModuleSetting.group">
+<tt class="descclassname">ModuleSetting.</tt><tt class="descname">group</tt><a class="headerlink" href="#maker.core.models.ModuleSetting.group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.ModuleSetting.loads">
+<tt class="descclassname">ModuleSetting.</tt><tt class="descname">loads</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ModuleSetting.loads"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ModuleSetting.loads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unpickle a ModuleSetting value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.ModuleSetting.module">
+<tt class="descclassname">ModuleSetting.</tt><tt class="descname">module</tt><a class="headerlink" href="#maker.core.models.ModuleSetting.module" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.ModuleSetting.objects">
+<tt class="descclassname">ModuleSetting.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f47f50&gt;</em><a class="headerlink" href="#maker.core.models.ModuleSetting.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.ModuleSetting.perspective">
+<tt class="descclassname">ModuleSetting.</tt><tt class="descname">perspective</tt><a class="headerlink" href="#maker.core.models.ModuleSetting.perspective" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.ModuleSetting.save">
+<tt class="descclassname">ModuleSetting.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ModuleSetting.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ModuleSetting.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to set label from name if undefined</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.core.models.ModuleSetting.set">
+<em class="property">static </em><tt class="descclassname">ModuleSetting.</tt><tt class="descname">set</tt><big>(</big><em>name</em>, <em>value</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ModuleSetting.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ModuleSetting.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a ModuleSetting</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.core.models.ModuleSetting.set_for_module">
+<em class="property">static </em><tt class="descclassname">ModuleSetting.</tt><tt class="descname">set_for_module</tt><big>(</big><em>name</em>, <em>value</em>, <em>module_name</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#ModuleSetting.set_for_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.ModuleSetting.set_for_module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a ModuleSetting per module</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.ModuleSetting.user">
+<tt class="descclassname">ModuleSetting.</tt><tt class="descname">user</tt><a class="headerlink" href="#maker.core.models.ModuleSetting.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Object">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Object</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Generic maker object</p>
+<dl class="exception">
+<dt id="maker.core.models.Object.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Object.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Object.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Object.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Object.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.access_inherit">
+<tt class="descclassname">Object.</tt><tt class="descname">access_inherit</tt><em class="property"> = ('*module', '*user')</em><a class="headerlink" href="#maker.core.models.Object.access_inherit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.add_nuvius_resource">
+<tt class="descclassname">Object.</tt><tt class="descname">add_nuvius_resource</tt><big>(</big><em>resource_id</em>, <em>key=None</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.add_nuvius_resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.add_nuvius_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a Nuvius resource to self.nuvius_resource</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.attachment_set">
+<tt class="descclassname">Object.</tt><tt class="descname">attachment_set</tt><a class="headerlink" href="#maker.core.models.Object.attachment_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.comments">
+<tt class="descclassname">Object.</tt><tt class="descname">comments</tt><a class="headerlink" href="#maker.core.models.Object.comments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.copy_permissions">
+<tt class="descclassname">Object.</tt><tt class="descname">copy_permissions</tt><big>(</big><em>object</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.copy_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.copy_permissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies all permissions from object. Existing permissions will NOT be removed or dropped</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.create_notification">
+<tt class="descclassname">Object.</tt><tt class="descname">create_notification</tt><big>(</big><em>action='update'</em>, <em>author=None</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.create_notification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.create_notification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an UpdateRecord to be submitted to all subscribers of an Object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.creator">
+<tt class="descclassname">Object.</tt><tt class="descname">creator</tt><a class="headerlink" href="#maker.core.models.Object.creator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.dislikes">
+<tt class="descclassname">Object.</tt><tt class="descname">dislikes</tt><a class="headerlink" href="#maker.core.models.Object.dislikes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.core.models.Object.filter_by_request">
+<em class="property">static </em><tt class="descclassname">Object.</tt><tt class="descname">filter_by_request</tt><big>(</big><em>request</em>, <em>manager</em>, <em>mode='r'</em>, <em>filter_trash=True</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.filter_by_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.filter_by_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns Objects the current user is allowed to access, depending on mode - read(r), write(w) or execute(x)</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="maker.core.models.Object.filter_permitted">
+<em class="property">static </em><tt class="descclassname">Object.</tt><tt class="descname">filter_permitted</tt><big>(</big><em>user</em>, <em>manager</em>, <em>mode='r'</em>, <em>filter_trash=True</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.filter_permitted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.filter_permitted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns Objects the given user is allowed to access, depending on mode - read(r), write(w) or execute(x)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.full_access">
+<tt class="descclassname">Object.</tt><tt class="descname">full_access</tt><a class="headerlink" href="#maker.core.models.Object.full_access" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_absolute_url">
+<tt class="descclassname">Object.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a URL to the child object, if available</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_field_names">
+<tt class="descclassname">Object.</tt><tt class="descname">get_field_names</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_field_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of field names for given object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_field_value">
+<tt class="descclassname">Object.</tt><tt class="descname">get_field_value</tt><big>(</big><em>field_name</em>, <em>default=None</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_field_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value of a given field</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_fields">
+<tt class="descclassname">Object.</tt><tt class="descname">get_fields</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of fields for given object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_human_type">
+<tt class="descclassname">Object.</tt><tt class="descname">get_human_type</tt><big>(</big><em>translate=True</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_human_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_human_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns prettified name of the object type</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_next_by_date_created">
+<tt class="descclassname">Object.</tt><tt class="descname">get_next_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Object.get_next_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_next_by_last_updated">
+<tt class="descclassname">Object.</tt><tt class="descname">get_next_by_last_updated</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Object.get_next_by_last_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_nuvius_resources">
+<tt class="descclassname">Object.</tt><tt class="descname">get_nuvius_resources</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_nuvius_resources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_nuvius_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of items generated from self.nuvius_resource</p>
+<p>The convention used is:
+Each item is specified as &#8216;#id.key#&#8217; separated by commas
+Returns items as tuples (id, key) from self.nuvius_resource</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_object_module">
+<tt class="descclassname">Object.</tt><tt class="descname">get_object_module</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_object_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_object_module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the module for this object, e.g. &#8216;projects&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_previous_by_date_created">
+<tt class="descclassname">Object.</tt><tt class="descname">get_previous_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Object.get_previous_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_previous_by_last_updated">
+<tt class="descclassname">Object.</tt><tt class="descname">get_previous_by_last_updated</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Object.get_previous_by_last_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_related_object">
+<tt class="descclassname">Object.</tt><tt class="descname">get_related_object</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_related_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_related_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a child object which inherits from self, if exists</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_root">
+<tt class="descclassname">Object.</tt><tt class="descname">get_root</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_root"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the root element, for objects implementing a tree-like structure via .parent</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_search_item">
+<tt class="descclassname">Object.</tt><tt class="descname">get_search_item</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_search_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_search_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constucts a search item as a dictionary with title, content and URL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.get_tree_path">
+<tt class="descclassname">Object.</tt><tt class="descname">get_tree_path</tt><big>(</big><em>skipself=False</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.get_tree_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.get_tree_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get tree path as a list() starting with root element,
+for objects implementing a tree-like structure via .parent</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.is_attached">
+<tt class="descclassname">Object.</tt><tt class="descname">is_attached</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.is_attached"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.is_attached" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if item is attached to some other Object and serves as a part of it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.is_searchable">
+<tt class="descclassname">Object.</tt><tt class="descname">is_searchable</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.is_searchable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.is_searchable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the item should be included in Search index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.likes">
+<tt class="descclassname">Object.</tt><tt class="descname">likes</tt><a class="headerlink" href="#maker.core.models.Object.likes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.links">
+<tt class="descclassname">Object.</tt><tt class="descname">links</tt><a class="headerlink" href="#maker.core.models.Object.links" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.location">
+<tt class="descclassname">Object.</tt><tt class="descname">location</tt><a class="headerlink" href="#maker.core.models.Object.location" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.module">
+<tt class="descclassname">Object.</tt><tt class="descname">module</tt><a class="headerlink" href="#maker.core.models.Object.module" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.objects">
+<tt class="descclassname">Object.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f2b250&gt;</em><a class="headerlink" href="#maker.core.models.Object.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.page">
+<tt class="descclassname">Object.</tt><tt class="descname">page</tt><a class="headerlink" href="#maker.core.models.Object.page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.pagefolder">
+<tt class="descclassname">Object.</tt><tt class="descname">pagefolder</tt><a class="headerlink" href="#maker.core.models.Object.pagefolder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.perspective">
+<tt class="descclassname">Object.</tt><tt class="descname">perspective</tt><a class="headerlink" href="#maker.core.models.Object.perspective" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.read_access">
+<tt class="descclassname">Object.</tt><tt class="descname">read_access</tt><a class="headerlink" href="#maker.core.models.Object.read_access" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.revision_set">
+<tt class="descclassname">Object.</tt><tt class="descname">revision_set</tt><a class="headerlink" href="#maker.core.models.Object.revision_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.revisionfield_key">
+<tt class="descclassname">Object.</tt><tt class="descname">revisionfield_key</tt><a class="headerlink" href="#maker.core.models.Object.revisionfield_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.revisionfield_m2m">
+<tt class="descclassname">Object.</tt><tt class="descname">revisionfield_m2m</tt><a class="headerlink" href="#maker.core.models.Object.revisionfield_m2m" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.save">
+<tt class="descclassname">Object.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to auto-detect object type and set default user if unset</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.sent_updates">
+<tt class="descclassname">Object.</tt><tt class="descname">sent_updates</tt><a class="headerlink" href="#maker.core.models.Object.sent_updates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.set_default_user">
+<tt class="descclassname">Object.</tt><tt class="descname">set_default_user</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.set_default_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.set_default_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the user defined in settings.HARDTREE_DEFAULT_USER_ID and default mode</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.set_field_value">
+<tt class="descclassname">Object.</tt><tt class="descname">set_field_value</tt><big>(</big><em>field_name</em>, <em>value</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.set_field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.set_field_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of a given field</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.set_last_updated">
+<tt class="descclassname">Object.</tt><tt class="descname">set_last_updated</tt><big>(</big><em>last_updated=datetime.datetime(2013</em>, <em>3</em>, <em>21</em>, <em>18</em>, <em>48</em>, <em>5</em>, <em>894585)</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.set_last_updated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.set_last_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.set_user">
+<tt class="descclassname">Object.</tt><tt class="descname">set_user</tt><big>(</big><em>user</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.set_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.set_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets owner of the Object to the given user</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Object.set_user_from_request">
+<tt class="descclassname">Object.</tt><tt class="descname">set_user_from_request</tt><big>(</big><em>request</em>, <em>mode=None</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Object.set_user_from_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Object.set_user_from_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the user to the current in request and default mode for the user</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.subscribers">
+<tt class="descclassname">Object.</tt><tt class="descname">subscribers</tt><a class="headerlink" href="#maker.core.models.Object.subscribers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.tags">
+<tt class="descclassname">Object.</tt><tt class="descname">tags</tt><a class="headerlink" href="#maker.core.models.Object.tags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Object.updates">
+<tt class="descclassname">Object.</tt><tt class="descname">updates</tt><a class="headerlink" href="#maker.core.models.Object.updates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Page">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Page</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Static page</p>
+<dl class="exception">
+<dt id="maker.core.models.Page.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Page.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Page.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Page.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Page.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Page.folder">
+<tt class="descclassname">Page.</tt><tt class="descname">folder</tt><a class="headerlink" href="#maker.core.models.Page.folder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Page.get_absolute_url">
+<tt class="descclassname">Page.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Page.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Page.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Page.object_ptr">
+<tt class="descclassname">Page.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.core.models.Page.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Page.objects">
+<tt class="descclassname">Page.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f4aa50&gt;</em><a class="headerlink" href="#maker.core.models.Page.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Page.searchable">
+<tt class="descclassname">Page.</tt><tt class="descname">searchable</tt><em class="property"> = False</em><a class="headerlink" href="#maker.core.models.Page.searchable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.PageFolder">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">PageFolder</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#PageFolder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.PageFolder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Folder for static Pages</p>
+<dl class="exception">
+<dt id="maker.core.models.PageFolder.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.PageFolder.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.PageFolder.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">PageFolder.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.PageFolder.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.PageFolder.get_absolute_url">
+<tt class="descclassname">PageFolder.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#PageFolder.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.PageFolder.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.PageFolder.object_ptr">
+<tt class="descclassname">PageFolder.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.core.models.PageFolder.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.PageFolder.objects">
+<tt class="descclassname">PageFolder.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x1024950d0&gt;</em><a class="headerlink" href="#maker.core.models.PageFolder.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.PageFolder.page_set">
+<tt class="descclassname">PageFolder.</tt><tt class="descname">page_set</tt><a class="headerlink" href="#maker.core.models.PageFolder.page_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.PageFolder.searchable">
+<tt class="descclassname">PageFolder.</tt><tt class="descname">searchable</tt><em class="property"> = False</em><a class="headerlink" href="#maker.core.models.PageFolder.searchable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Perspective">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Perspective</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Perspective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#maker.core.models.Object" title="maker.core.models.Object"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.Object</span></tt></a></p>
+<p>Defines a set of modules enabled for a given user</p>
+<dl class="exception">
+<dt id="maker.core.models.Perspective.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Perspective.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Perspective.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Perspective.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Perspective.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Perspective.get_absolute_url">
+<tt class="descclassname">Perspective.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Perspective.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Perspective.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Perspective.get_modules">
+<tt class="descclassname">Perspective.</tt><tt class="descname">get_modules</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Perspective.get_modules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Perspective.get_modules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Modules</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Perspective.modules">
+<tt class="descclassname">Perspective.</tt><tt class="descname">modules</tt><a class="headerlink" href="#maker.core.models.Perspective.modules" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Perspective.modulesetting_set">
+<tt class="descclassname">Perspective.</tt><tt class="descname">modulesetting_set</tt><a class="headerlink" href="#maker.core.models.Perspective.modulesetting_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Perspective.object_ptr">
+<tt class="descclassname">Perspective.</tt><tt class="descname">object_ptr</tt><a class="headerlink" href="#maker.core.models.Perspective.object_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Perspective.objects">
+<tt class="descclassname">Perspective.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f47690&gt;</em><a class="headerlink" href="#maker.core.models.Perspective.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Perspective.widget_set">
+<tt class="descclassname">Perspective.</tt><tt class="descname">widget_set</tt><a class="headerlink" href="#maker.core.models.Perspective.widget_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Revision">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Revision</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Revision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Revision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Revision(id, previous_id, object_id, change_type, date_created)</p>
+<dl class="exception">
+<dt id="maker.core.models.Revision.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Revision.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Revision.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Revision.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Revision.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Revision.get_next_by_date_created">
+<tt class="descclassname">Revision.</tt><tt class="descname">get_next_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Revision.get_next_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Revision.get_previous_by_date_created">
+<tt class="descclassname">Revision.</tt><tt class="descname">get_previous_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Revision.get_previous_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Revision.next">
+<tt class="descclassname">Revision.</tt><tt class="descname">next</tt><a class="headerlink" href="#maker.core.models.Revision.next" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Revision.object">
+<tt class="descclassname">Revision.</tt><tt class="descname">object</tt><a class="headerlink" href="#maker.core.models.Revision.object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Revision.objects">
+<tt class="descclassname">Revision.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f2bb50&gt;</em><a class="headerlink" href="#maker.core.models.Revision.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Revision.previous">
+<tt class="descclassname">Revision.</tt><tt class="descname">previous</tt><a class="headerlink" href="#maker.core.models.Revision.previous" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Revision.revisionfield_set">
+<tt class="descclassname">Revision.</tt><tt class="descname">revisionfield_set</tt><a class="headerlink" href="#maker.core.models.Revision.revisionfield_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.RevisionField">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">RevisionField</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#RevisionField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.RevisionField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>RevisionField(id, revision_id, field_type, field, value, value_key_id, value_key_acc_id)</p>
+<dl class="exception">
+<dt id="maker.core.models.RevisionField.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.RevisionField.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.RevisionField.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">RevisionField.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.RevisionField.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.RevisionField.objects">
+<tt class="descclassname">RevisionField.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f35350&gt;</em><a class="headerlink" href="#maker.core.models.RevisionField.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.RevisionField.revision">
+<tt class="descclassname">RevisionField.</tt><tt class="descname">revision</tt><a class="headerlink" href="#maker.core.models.RevisionField.revision" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.RevisionField.value_key">
+<tt class="descclassname">RevisionField.</tt><tt class="descname">value_key</tt><a class="headerlink" href="#maker.core.models.RevisionField.value_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.RevisionField.value_key_acc">
+<tt class="descclassname">RevisionField.</tt><tt class="descname">value_key_acc</tt><a class="headerlink" href="#maker.core.models.RevisionField.value_key_acc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.RevisionField.value_m2m">
+<tt class="descclassname">RevisionField.</tt><tt class="descname">value_m2m</tt><a class="headerlink" href="#maker.core.models.RevisionField.value_m2m" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.RevisionField.value_m2m_acc">
+<tt class="descclassname">RevisionField.</tt><tt class="descname">value_m2m_acc</tt><a class="headerlink" href="#maker.core.models.RevisionField.value_m2m_acc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Tag">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Tag</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Model for Global Tagging</p>
+<dl class="exception">
+<dt id="maker.core.models.Tag.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Tag.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Tag.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Tag.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Tag.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Tag.get_next_by_date_created">
+<tt class="descclassname">Tag.</tt><tt class="descname">get_next_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Tag.get_next_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.Tag.get_previous_by_date_created">
+<tt class="descclassname">Tag.</tt><tt class="descname">get_previous_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.Tag.get_previous_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Tag.object_set">
+<tt class="descclassname">Tag.</tt><tt class="descname">object_set</tt><a class="headerlink" href="#maker.core.models.Tag.object_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Tag.objects">
+<tt class="descclassname">Tag.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f0fe10&gt;</em><a class="headerlink" href="#maker.core.models.Tag.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.UpdateRecord">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">UpdateRecord</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#UpdateRecord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.UpdateRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Update of an Object</p>
+<dl class="exception">
+<dt id="maker.core.models.UpdateRecord.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.UpdateRecord.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">UpdateRecord.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.UpdateRecord.about">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">about</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.about" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.UpdateRecord.attachment_set">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">attachment_set</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.attachment_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.UpdateRecord.author">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">author</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.UpdateRecord.comments">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">comments</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.comments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.UpdateRecord.dislikes">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">dislikes</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.dislikes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.UpdateRecord.extend_format_strings">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">extend_format_strings</tt><big>(</big><em>strings</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#UpdateRecord.extend_format_strings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.UpdateRecord.extend_format_strings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extends existing format strings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.UpdateRecord.full_message">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">full_message</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.full_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return full message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.UpdateRecord.get_format_message">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">get_format_message</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#UpdateRecord.get_format_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.UpdateRecord.get_format_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns translatable message in the current language with all attributes applied</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.UpdateRecord.get_format_strings">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">get_format_strings</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#UpdateRecord.get_format_strings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.UpdateRecord.get_format_strings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets format_strings as a list of strings</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.UpdateRecord.get_full_message">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">get_full_message</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#UpdateRecord.get_full_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.UpdateRecord.get_full_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return full message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.UpdateRecord.get_next_by_date_created">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">get_next_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.UpdateRecord.get_next_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.UpdateRecord.get_previous_by_date_created">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">get_previous_by_date_created</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.UpdateRecord.get_previous_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.UpdateRecord.get_record_type_display">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">get_record_type_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.UpdateRecord.get_record_type_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.UpdateRecord.likes">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">likes</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.likes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.UpdateRecord.notify_subscribers">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">notify_subscribers</tt><big>(</big><em>obj</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#UpdateRecord.notify_subscribers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.UpdateRecord.notify_subscribers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.UpdateRecord.objects">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f42410&gt;</em><a class="headerlink" href="#maker.core.models.UpdateRecord.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.UpdateRecord.recipients">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">recipients</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.recipients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.UpdateRecord.sender">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">sender</tt><a class="headerlink" href="#maker.core.models.UpdateRecord.sender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.UpdateRecord.set_format_strings">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">set_format_strings</tt><big>(</big><em>strings</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#UpdateRecord.set_format_strings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.UpdateRecord.set_format_strings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets format_strings to the list of strings</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.UpdateRecord.set_user_from_request">
+<tt class="descclassname">UpdateRecord.</tt><tt class="descname">set_user_from_request</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#UpdateRecord.set_user_from_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.UpdateRecord.set_user_from_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets .author to current user and .sender to user&#8217;s Contact (if available)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.User">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">User</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#maker.core.models.InteractionEntity" title="maker.core.models.InteractionEntity"><tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.InteractionEntity</span></tt></a></p>
+<p>A record about a user registered within the system</p>
+<dl class="exception">
+<dt id="maker.core.models.User.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.User.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.DoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.User.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">User.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.User.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">maker.core.models.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.attachment_set">
+<tt class="descclassname">User.</tt><tt class="descname">attachment_set</tt><a class="headerlink" href="#maker.core.models.User.attachment_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.comment_set">
+<tt class="descclassname">User.</tt><tt class="descname">comment_set</tt><a class="headerlink" href="#maker.core.models.User.comment_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.comments_disliked">
+<tt class="descclassname">User.</tt><tt class="descname">comments_disliked</tt><a class="headerlink" href="#maker.core.models.User.comments_disliked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.comments_liked">
+<tt class="descclassname">User.</tt><tt class="descname">comments_liked</tt><a class="headerlink" href="#maker.core.models.User.comments_liked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.default_group">
+<tt class="descclassname">User.</tt><tt class="descname">default_group</tt><a class="headerlink" href="#maker.core.models.User.default_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.delete">
+<tt class="descclassname">User.</tt><tt class="descname">delete</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.generate_new_password">
+<tt class="descclassname">User.</tt><tt class="descname">generate_new_password</tt><big>(</big><em>size=8</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.generate_new_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.generate_new_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new password and sets it to the user</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.get_absolute_url">
+<tt class="descclassname">User.</tt><tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.get_absolute_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute URL of the User</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.get_contact">
+<tt class="descclassname">User.</tt><tt class="descname">get_contact</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.get_contact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.get_contact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns first available Contact</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.get_groups">
+<tt class="descclassname">User.</tt><tt class="descname">get_groups</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.get_groups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.get_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of all groups the user belongs to</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.get_next_by_last_access">
+<tt class="descclassname">User.</tt><tt class="descname">get_next_by_last_access</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.User.get_next_by_last_access" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.get_perspective">
+<tt class="descclassname">User.</tt><tt class="descname">get_perspective</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.get_perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.get_perspective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns currently set Perspective for the User</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.get_previous_by_last_access">
+<tt class="descclassname">User.</tt><tt class="descname">get_previous_by_last_access</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#maker.core.models.User.get_previous_by_last_access" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.get_username">
+<tt class="descclassname">User.</tt><tt class="descname">get_username</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.get_username"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.get_username" title="Permalink to this definition">¶</a></dt>
+<dd><p>String username, picked up from attached Django User or self.name string otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.has_contact">
+<tt class="descclassname">User.</tt><tt class="descname">has_contact</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.has_contact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.has_contact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if any Contacts exist for this User</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.has_permission">
+<tt class="descclassname">User.</tt><tt class="descname">has_permission</tt><big>(</big><em>object</em>, <em>mode='r'</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.has_permission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.has_permission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks permissions on a given object for a given mode</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.interactionentity_ptr">
+<tt class="descclassname">User.</tt><tt class="descname">interactionentity_ptr</tt><a class="headerlink" href="#maker.core.models.User.interactionentity_ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.invitation_set">
+<tt class="descclassname">User.</tt><tt class="descname">invitation_set</tt><a class="headerlink" href="#maker.core.models.User.invitation_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.is_admin">
+<tt class="descclassname">User.</tt><tt class="descname">is_admin</tt><big>(</big><em>module_name=''</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.is_admin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.is_admin" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the user has write permissions on the given module</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.modulesetting_set">
+<tt class="descclassname">User.</tt><tt class="descname">modulesetting_set</tt><a class="headerlink" href="#maker.core.models.User.modulesetting_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.objects">
+<tt class="descclassname">User.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f0f550&gt;</em><a class="headerlink" href="#maker.core.models.User.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.objects_created">
+<tt class="descclassname">User.</tt><tt class="descname">objects_created</tt><a class="headerlink" href="#maker.core.models.User.objects_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.objects_disliked">
+<tt class="descclassname">User.</tt><tt class="descname">objects_disliked</tt><a class="headerlink" href="#maker.core.models.User.objects_disliked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.objects_liked">
+<tt class="descclassname">User.</tt><tt class="descname">objects_liked</tt><a class="headerlink" href="#maker.core.models.User.objects_liked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.other_groups">
+<tt class="descclassname">User.</tt><tt class="descname">other_groups</tt><a class="headerlink" href="#maker.core.models.User.other_groups" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.save">
+<tt class="descclassname">User.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to automatically set User.name from attached Django User</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.sent_updates">
+<tt class="descclassname">User.</tt><tt class="descname">sent_updates</tt><a class="headerlink" href="#maker.core.models.User.sent_updates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maker.core.models.User.set_perspective">
+<tt class="descclassname">User.</tt><tt class="descname">set_perspective</tt><big>(</big><em>perspective</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#User.set_perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.User.set_perspective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Perspective for the User</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.subscriptions">
+<tt class="descclassname">User.</tt><tt class="descname">subscriptions</tt><a class="headerlink" href="#maker.core.models.User.subscriptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.updates_disliked">
+<tt class="descclassname">User.</tt><tt class="descname">updates_disliked</tt><a class="headerlink" href="#maker.core.models.User.updates_disliked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.updates_liked">
+<tt class="descclassname">User.</tt><tt class="descname">updates_liked</tt><a class="headerlink" href="#maker.core.models.User.updates_liked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.user">
+<tt class="descclassname">User.</tt><tt class="descname">user</tt><a class="headerlink" href="#maker.core.models.User.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.User.widget_set">
+<tt class="descclassname">User.</tt><tt class="descname">widget_set</tt><a class="headerlink" href="#maker.core.models.User.widget_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maker.core.models.Widget">
+<em class="property">class </em><tt class="descclassname">maker.core.models.</tt><tt class="descname">Widget</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#Widget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.Widget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Widget object to remember the set and order of Widget for a user</p>
+<dl class="exception">
+<dt id="maker.core.models.Widget.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#maker.core.models.Widget.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="maker.core.models.Widget.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Widget.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#maker.core.models.Widget.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Widget.objects">
+<tt class="descclassname">Widget.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x102f4d050&gt;</em><a class="headerlink" href="#maker.core.models.Widget.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Widget.perspective">
+<tt class="descclassname">Widget.</tt><tt class="descname">perspective</tt><a class="headerlink" href="#maker.core.models.Widget.perspective" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="maker.core.models.Widget.user">
+<tt class="descclassname">Widget.</tt><tt class="descname">user</tt><a class="headerlink" href="#maker.core.models.Widget.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.core.models.user_autocreate_handler">
+<tt class="descclassname">maker.core.models.</tt><tt class="descname">user_autocreate_handler</tt><big>(</big><em>sender</em>, <em>instance</em>, <em>created</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/models.html#user_autocreate_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.models.user_autocreate_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a Django User is created, automatically create a Hardtree User</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-maker.account.views">
+<span id="account"></span><h2>Account<a class="headerlink" href="#module-maker.account.views" title="Permalink to this headline">¶</a></h2>
+<p>Core module views</p>
+</div>
+<div class="section" id="module-maker.core.administration.views">
+<span id="administration"></span><h2>Administration<a class="headerlink" href="#module-maker.core.administration.views" title="Permalink to this headline">¶</a></h2>
+<p>Core module views</p>
+</div>
+<div class="section" id="module-maker.core.dashboard.views">
+<span id="dashboard"></span><h2>Dashboard<a class="headerlink" href="#module-maker.core.dashboard.views" title="Permalink to this headline">¶</a></h2>
+<p>Core module Dashboard views</p>
+</div>
+<div class="section" id="module-maker.core.trash.views">
+<span id="trash"></span><h2>Trash<a class="headerlink" href="#module-maker.core.trash.views" title="Permalink to this headline">¶</a></h2>
+<p>Core module: Trash views</p>
+</div>
+<div class="section" id="module-maker.core.views">
+<span id="views-core"></span><h2>Views:Core<a class="headerlink" href="#module-maker.core.views" title="Permalink to this headline">¶</a></h2>
+<p>Core module views</p>
+<dl class="function">
+<dt id="maker.core.views.ajax_popup">
+<tt class="descclassname">maker.core.views.</tt><tt class="descname">ajax_popup</tt><big>(</big><em>request</em>, <em>popup_id=''</em>, <em>url='/'</em><big>)</big><a class="reference internal" href="../_modules/maker/core/views.html#ajax_popup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.views.ajax_popup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles pop up forms and requests, by extracting only the required content from response content</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.core.views.iframe_close">
+<tt class="descclassname">maker.core.views.</tt><tt class="descname">iframe_close</tt><big>(</big><em>request</em>, <em>response_format='html'</em><big>)</big><a class="reference internal" href="../_modules/maker/core/views.html#iframe_close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.views.iframe_close" title="Permalink to this definition">¶</a></dt>
+<dd><p>For third-party resources, when returned back to Hardtree, close iframe</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.core.views.invitation_retrieve">
+<tt class="descclassname">maker.core.views.</tt><tt class="descname">invitation_retrieve</tt><big>(</big><em>request</em>, <em>response_format='html'</em><big>)</big><a class="reference internal" href="../_modules/maker/core/views.html#invitation_retrieve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.views.invitation_retrieve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve invitation and create account</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.core.views.logo_image">
+<tt class="descclassname">maker.core.views.</tt><tt class="descname">logo_image</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kw</em><big>)</big><a class="reference internal" href="../_modules/maker/core/views.html#logo_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.views.logo_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return current logo image</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.core.views.mobile_view">
+<tt class="descclassname">maker.core.views.</tt><tt class="descname">mobile_view</tt><big>(</big><em>request</em>, <em>url='/'</em><big>)</big><a class="reference internal" href="../_modules/maker/core/views.html#mobile_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.views.mobile_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the same page in mobile view</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.core.views.password_reset">
+<tt class="descclassname">maker.core.views.</tt><tt class="descname">password_reset</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/maker/core/views.html#password_reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.views.password_reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Password_reset sends the email with the new password</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.core.views.password_reset_done">
+<tt class="descclassname">maker.core.views.</tt><tt class="descname">password_reset_done</tt><big>(</big><em>request</em>, <em>response_format='html'</em><big>)</big><a class="reference internal" href="../_modules/maker/core/views.html#password_reset_done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.views.password_reset_done" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows success message</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="maker.core.views.save_upload">
+<tt class="descclassname">maker.core.views.</tt><tt class="descname">save_upload</tt><big>(</big><em>uploaded</em>, <em>filename</em>, <em>raw_data</em><big>)</big><a class="reference internal" href="../_modules/maker/core/views.html#save_upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maker.core.views.save_upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>raw_data: if True, uploaded is an HttpRequest object with the file being
+the raw post data
+if False, uploaded has been submitted via the basic form
+submission and is a regular Django UploadedFile in request.FILES</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Core</a><ul>
+<li><a class="reference internal" href="#models">Models</a></li>
+<li><a class="reference internal" href="#module-maker.account.views">Account</a></li>
+<li><a class="reference internal" href="#module-maker.core.administration.views">Administration</a></li>
+<li><a class="reference internal" href="#module-maker.core.dashboard.views">Dashboard</a></li>
+<li><a class="reference internal" href="#module-maker.core.trash.views">Trash</a></li>
+<li><a class="reference internal" href="#module-maker.core.views">Views:Core</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../development.html"
+                        title="previous chapter">Development</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="documents.html"
+                        title="next chapter">Documents</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/development/core.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="documents.html" title="Documents"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../development.html" title="Development"
+             >previous</a> |</li>
+        <li><a href="../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../development.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
