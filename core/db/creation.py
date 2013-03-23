@@ -1,11 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 #-*- encoding: utf-8 -*-
 """
-Database creator
+    Database creator
 """
 __author__ = 'Kirill Yakovenko, crystalnix'
 __email__ = 'kirill.yakovenko@gmail.com'

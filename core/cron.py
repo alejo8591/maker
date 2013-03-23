@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Core Cron jobs
+    Core Cron jobs
 """
 
 import re
@@ -87,5 +87,5 @@ class EmailReplier(EmailReceiver):
 def email_reply():
     "Fetches emails"
     from maker.core.mail import IMAP_SERVER, EMAIL_USERNAME, EMAIL_PASSWORD
-    emailreplier = EmailReplier('IMAP-SSL', IMAP_SERVER, EMAIL_USERNAME, EMAIL_PASSWORD, getattr(settings, 'HARDTREE_MESSAGING_IMAP_DEFAULT_FOLDER_NAME', 'UNSEEN'))
+    emailreplier = EmailReplier('IMAP-SSL', IMAP_SERVER, EMAIL_USERNAME, EMAIL_PASSWORD, getattr(settings, 'MAKER_MESSAGING_IMAP_DEFAULT_FOLDER_NAME', 'UNSEEN'))
     emailreplier.get_emails()

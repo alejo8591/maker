@@ -1,12 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
-
+# Copyright 2013 maker
+# License
 """
-Projects integration with Events module
-
-Provides Tasks and Milestones as EventRenderer instances
+    Projects integration with Events module
+    Provides Tasks and Milestones as EventRenderer instances
 """
 
 from maker.projects.models import Task, Milestone

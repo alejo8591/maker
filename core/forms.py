@@ -1,7 +1,6 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
 Core module forms
@@ -202,7 +201,7 @@ class InvitationForm(forms.Form):
         if existing:
             raise forms.ValidationError(_("User with username %s already exists.") % data)
         # Check Hardtree Subscription user limit
-        user_limit = getattr(settings, 'HARDTREE_SUBSCRIPTION_USER_LIMIT', 0)
+        user_limit = getattr(settings, 'MAKER_SUBSCRIPTION_USER_LIMIT', 0)
         if user_limit > 0:
             user_number = User.objects.filter(disabled=False).count()
             if user_number >= user_limit:
@@ -335,7 +334,7 @@ class SqlSettingsForm(forms.Form):
             #save database settings
             settings.DATABASES[router.db_for_read(ConfigSetting)] = database
             connections._connections.clear()
-            if not getattr(settings, 'HARDTREE_MULTITENANCY', False):
+            if not getattr(settings, 'MAKER_MULTITENANCY', False):
                 settings_filepath = sys.modules[ os.environ['DJANGO_SETTINGS_MODULE'] ].__file__
                 if settings_filepath.endswith('.pyc'):
                     settings_filepath = settings_filepath[:-1]

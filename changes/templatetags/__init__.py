@@ -4,5 +4,5 @@
 # License www.tree.io/license
 
 """
-Changes templatetags docstring
+	Changes templatetags docstring
 """

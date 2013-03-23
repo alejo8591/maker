@@ -1,9 +1,4 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
-
-# encoding: utf-8
 import datetime
 from south.db import db
 from south.v2 import DataMigration

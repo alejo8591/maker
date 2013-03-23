@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Compression middleware
+    Compression middleware
 """
 from django.utils.html import strip_spaces_between_tags as short
 from maker.core.conf import settings
@@ -20,6 +20,6 @@ class SpacelessMiddleware(object):
         "Process response"
         if 'text/html' in response['Content-Type']:
             response.content = short(response.content)
-        if settings.HARDTREE_MINIFY_JSON and settings.HARDTREE_RESPONSE_FORMATS['json'] in response['Content-Type']:
+        if settings.MAKER_MINIFY_JSON and settings.MAKER_RESPONSE_FORMATS['json'] in response['Content-Type']:
             response.content = _minify_json(response.content)
         return response

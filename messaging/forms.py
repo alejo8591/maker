@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Messaging model forms
+    Messaging model forms
 """
 from django import forms
 from django.utils.translation import ugettext as _
@@ -18,7 +17,9 @@ from maker.identities.models import ContactType, Contact
 preprocess_form()
 
 class SettingsForm(forms.Form):
-    """ Administration settings form """
+    """ 
+        Administration settings form 
+    """
     
     default_contact_type = forms.ModelChoiceField(label='Default Contact Type', queryset=[])
     default_imap_folder = forms.ChoiceField(label='Default IMAP Folder', choices=(('ALL', 'ALL'),
@@ -48,7 +49,7 @@ class SettingsForm(forms.Form):
                                                 user=user)[0]
             self.fields['default_imap_folder'].initial = conf.value
         except:
-            self.fields['default_imap_folder'].initial = settings.HARDTREE_MESSAGING_IMAP_DEFAULT_FOLDER_NAME
+            self.fields['default_imap_folder'].initial = settings.MAKER_MESSAGING_IMAP_DEFAULT_FOLDER_NAME
         
         
         self.fields['signature'].label = _('Signature')

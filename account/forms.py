@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Core forms
+    Core forms
 """
 import simplejson as json
 
@@ -124,8 +123,8 @@ class SettingsForm(forms.Form):
         except:
             pass
         
-        self.fields['default_timezone'].choices = getattr(settings, 'HARDTREE_SERVER_TIMEZONE')
-        timezone = settings.HARDTREE_SERVER_DEFAULT_TIMEZONE
+        self.fields['default_timezone'].choices = getattr(settings, 'MAKER_SERVER_TIMEZONE')
+        timezone = settings.MAKER_SERVER_DEFAULT_TIMEZONE
         try:
             conf = ModuleSetting.get('default_timezone', user=user)[0]
             timezone = conf.value
@@ -133,8 +132,8 @@ class SettingsForm(forms.Form):
             pass
         self.fields['default_timezone'].initial = timezone
         
-        self.fields['language'].choices = getattr(settings, 'HARDTREE_LANGUAGES', [('en', 'English')])
-        language = getattr(settings, 'HARDTREE_LANGUAGES_DEFAULT', '')
+        self.fields['language'].choices = getattr(settings, 'MAKER_LANGUAGES', [('es', 'Spanish')])
+        language = getattr(settings, 'MAKER_LANGUAGES_DEFAULT', '')
         try:
             conf = ModuleSetting.get('language', user=user)[0]
             language = conf.value
@@ -146,7 +145,7 @@ class SettingsForm(forms.Form):
             conf = ModuleSetting.get('email_notifications', user=user)[0]
             self.fields['email_notifications'].initial = conf.value
         except:
-            self.fields['email_notifications'].initial = settings.HARDTREE_ALLOW_EMAIL_NOTIFICATIONS
+            self.fields['email_notifications'].initial = settings.MAKER_ALLOW_EMAIL_NOTIFICATIONS
 
         perspective = user.get_perspective()
 

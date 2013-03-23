@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Knowledge base module objects
+    Knowledge base module objects
 """
 from django.db import models
 from maker.core.models import Object
@@ -14,7 +13,9 @@ from unidecode import unidecode
 
 # KnowledgeFolder model
 class KnowledgeFolder(Object):
-    """ KnowledgeFolder """
+    """ 
+        KnowledgeFolder 
+    """
     name = models.CharField(max_length=255)
     details = models.TextField(max_length=255, null=True, blank=True)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='child_set')

@@ -1,7 +1,7 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 from django.core.management.base import BaseCommand, CommandError
 from maker.core.conf import settings
@@ -11,7 +11,7 @@ from os import path
 import sys
 
 PROJECT_ROOT = getattr(settings, 'PROJECT_ROOT')
-HARDTREE_DB_SETTINGS_FILE = path.join(PROJECT_ROOT, 'core/db/dbsettings.json')
+MAKER_DB_SETTINGS_FILE = path.join(PROJECT_ROOT, 'core/db/dbsettings.json')
 
 class Command(BaseCommand):
     args = ''
@@ -55,14 +55,14 @@ class Command(BaseCommand):
         self.stdout.write('\n-- Installing database...\n')
         self.stdout.flush()
 
-        f = open(HARDTREE_DB_SETTINGS_FILE, 'w')
+        f = open(MAKER_DB_SETTINGS_FILE, 'w')
         json.dump({'default': db}, f)
         f.close()
 
         exit_code = subprocess.call([sys.executable, 'manage.py', 'syncdb', '--all', '--noinput'])
         if not exit_code == 0:
             self.stdout.flush()
-            f = open(HARDTREE_DB_SETTINGS_FILE, 'w')
+            f = open(MAKER_DB_SETTINGS_FILE, 'w')
             json.dump({'default': initial_db}, f)
             f.close()
             raise CommandError('Failed to install database.')

@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>maker.core.decorators &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for maker.core.decorators</h1><div class="highlight"><pre>
+<span class="c"># encoding: utf-8</span>
+<span class="c"># Copyright 2013 maker</span>
+<span class="c"># This file is part of maker.</span>
+<span class="c"># License www.tree.io/license</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    maker Core decorators for views</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">Http404</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span><span class="p">,</span> <span class="n">NoReverseMatch</span>
+<span class="kn">from</span> <span class="nn">maker.core.conf</span> <span class="kn">import</span> <span class="n">settings</span> 
+<span class="kn">from</span> <span class="nn">django.utils.html</span> <span class="kn">import</span> <span class="n">escape</span>
+<span class="kn">from</span> <span class="nn">jinja2.loaders</span> <span class="kn">import</span> <span class="n">TemplateNotFound</span>
+<span class="kn">from</span> <span class="nn">maker.core.models</span> <span class="kn">import</span> <span class="n">Module</span>
+<span class="kn">from</span> <span class="nn">maker.core.rss</span> <span class="kn">import</span> <span class="n">verify_secret_key</span>
+<span class="kn">import</span> <span class="nn">simplejson</span> <span class="kn">as</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<div class="viewcode-block" id="maker_login_required"><a class="viewcode-back" href="../../../development/core.html#maker.core.decorators.maker_login_required">[docs]</a><span class="k">def</span> <span class="nf">maker_login_required</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Check that the user has write access to the maker.core module &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="s">&quot;Wrap&quot;</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">():</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_profile</span><span class="p">()</span>
+            <span class="n">user_modules</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">get_perspective</span><span class="p">()</span><span class="o">.</span><span class="n">get_modules</span><span class="p">()</span>
+            <span class="n">all_modules</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="n">active</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">all_modules</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">import_name</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">settings</span><span class="o">.</span><span class="n">HARDTREE_MODULE_IDENTIFIER</span>
+                    <span class="n">hmodule</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">import_name</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">)])</span>
+                    <span class="n">urls</span> <span class="o">=</span> <span class="n">hmodule</span><span class="o">.</span><span class="n">URL_PATTERNS</span>
+                    <span class="k">for</span> <span class="n">regexp</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+                            <span class="n">active</span> <span class="o">=</span> <span class="n">module</span>
+                <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+            <span class="k">if</span> <span class="n">active</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">active</span> <span class="ow">in</span> <span class="n">user_modules</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span><span class="n">active</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;/m/&#39;</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/m/user/denied&#39;</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/user/denied&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;/m/&#39;</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/m/user/denied&#39;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/user/denied&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;/m/&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/m/accounts/login&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s">&#39;response_format&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;response_format&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;rss&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s">&#39;secret&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="ow">and</span> <span class="n">verify_secret_key</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/accounts/login&#39;</span><span class="p">)</span>
+    
+    <span class="n">wrap</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__doc__</span>
+    <span class="n">wrap</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__name__</span>
+    
+    <span class="k">return</span> <span class="n">wrap</span>
+</div>
+<div class="viewcode-block" id="module_admin_required"><a class="viewcode-back" href="../../../development/core.html#maker.core.decorators.module_admin_required">[docs]</a><span class="k">def</span> <span class="nf">module_admin_required</span><span class="p">(</span><span class="n">module_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Check that the user has write access to the maker.core module &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">module_name</span><span class="p">:</span>
+        <span class="n">module_name</span> <span class="o">=</span> <span class="s">&#39;maker.core&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="s">&quot;Wrap&quot;</span>
+        <span class="k">def</span> <span class="nf">wrapped_f</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="s">&quot;Wrapped&quot;</span>
+            
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_profile</span><span class="p">()</span><span class="o">.</span><span class="n">is_admin</span><span class="p">(</span><span class="n">module_name</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;user_denied&#39;</span><span class="p">))</span>
+    
+        <span class="n">wrapped_f</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__doc__</span>
+        <span class="n">wrapped_f</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__name__</span>
+        
+        <span class="k">return</span> <span class="n">wrapped_f</span>
+    
+    <span class="k">return</span> <span class="n">wrap</span>
+</div>
+<span class="k">def</span> <span class="nf">_is_full_redirect</span><span class="p">(</span><span class="n">redirect_url</span><span class="p">):</span>
+    <span class="s">&quot;Returns True if this page requires full reload with AJAX enabled&quot;</span>
+    <span class="n">redirect_views</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;HARDTREE_AJAX_RELOAD_ON_REDIRECT&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;user_login&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">view</span> <span class="ow">in</span> <span class="n">redirect_views</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NoReverseMatch</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">url</span> <span class="ow">and</span> <span class="n">url</span> <span class="o">==</span> <span class="n">redirect_url</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+    
+
+<div class="viewcode-block" id="handle_response_format"><a class="viewcode-back" href="../../../development/core.html#maker.core.decorators.handle_response_format">[docs]</a><span class="k">def</span> <span class="nf">handle_response_format</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Handle response format for a view &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="s">&quot;Wrap&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s">&#39;response_format&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">response_format</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;response_format&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">response_format</span><span class="p">:</span>
+                    <span class="n">response_format</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span>
+                    <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;response_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_format</span>
+                    
+                <span class="n">response</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">response_format</span> <span class="o">==</span> <span class="s">&#39;ajax&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">__class__</span> <span class="o">==</span> <span class="n">HttpResponseRedirect</span><span class="p">:</span>
+                        <span class="n">location</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;Location&#39;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_full_redirect</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+                            <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">&#39;redirect&#39;</span><span class="p">:</span> <span class="n">location</span><span class="p">}),</span> 
+                                                    <span class="n">mimetype</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">HARDTREE_RESPONSE_FORMATS</span><span class="p">[</span><span class="s">&#39;ajax&#39;</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="s">&#39;.ajax&#39;</span> <span class="ow">in</span> <span class="n">location</span><span class="p">:</span>
+                                <span class="n">location</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">location</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.ajax&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+                            <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">&#39;redirect_out&#39;</span><span class="p">:</span> <span class="n">location</span><span class="p">}),</span> 
+                                                    <span class="n">mimetype</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">HARDTREE_RESPONSE_FORMATS</span><span class="p">[</span><span class="s">&#39;ajax&#39;</span><span class="p">])</span>
+                    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;redirect&#39;</span><span class="p">):</span>
+                        <span class="n">location</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">redirect</span>
+                        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">&#39;redirect&#39;</span><span class="p">:</span> <span class="n">location</span><span class="p">}),</span> 
+                                                <span class="n">mimetype</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">HARDTREE_RESPONSE_FORMATS</span><span class="p">[</span><span class="s">&#39;ajax&#39;</span><span class="p">])</span>
+                    <span class="k">elif</span> <span class="s">&#39;Content-Disposition&#39;</span> <span class="ow">in</span> <span class="n">response</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">HARDTREE_RESPONSE_FORMATS</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                        <span class="n">location</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_full_path</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="s">&#39;.ajax&#39;</span> <span class="ow">in</span> <span class="n">location</span><span class="p">:</span>
+                            <span class="n">location</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">location</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.ajax&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+                        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">&#39;redirect_out&#39;</span><span class="p">:</span> <span class="n">location</span><span class="p">}),</span> 
+                                                <span class="n">mimetype</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">HARDTREE_RESPONSE_FORMATS</span><span class="p">[</span><span class="s">&#39;ajax&#39;</span><span class="p">])</span>
+                        
+                 
+                <span class="k">return</span> <span class="n">response</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">TemplateNotFound</span><span class="p">:</span>
+            <span class="n">response_format</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="s">&#39;response_format&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">response_format</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;response_format&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">response_format</span><span class="p">:</span>
+                <span class="n">response_format</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;response_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_format</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">raise</span> <span class="n">Http404</span><span class="p">(</span><span class="s">&#39;This page is not available in &#39;</span> <span class="o">+</span> <span class="n">response_format</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#39; format&#39;</span><span class="p">)</span>
+    
+    <span class="n">wrap</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__doc__</span>
+    <span class="n">wrap</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__name__</span>
+    
+    <span class="k">return</span> <span class="n">wrap</span>
+
+
+<span class="c"># Forms pre-processing</span>
+</div>
+<span class="kn">from</span> <span class="nn">django.forms.forms</span> <span class="kn">import</span> <span class="n">BoundField</span>
+
+<div class="viewcode-block" id="add_required_label_tag"><a class="viewcode-back" href="../../../development/core.html#maker.core.decorators.add_required_label_tag">[docs]</a><span class="k">def</span> <span class="nf">add_required_label_tag</span><span class="p">(</span><span class="n">original_function</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adds the &#39;required&#39; CSS class and an asterisks to required field labels.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">required_label_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contents</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="s">&quot;Required label tag&quot;</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">contents</span> <span class="ow">or</span> <span class="n">escape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">required</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot; *&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">+=</span> <span class="s">&quot; *&quot;</span>
+                <span class="n">contents</span> <span class="o">+=</span> <span class="s">&quot; *&quot;</span>
+            <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;class&#39;</span><span class="p">:</span> <span class="s">&#39;required&#39;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">original_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contents</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">required_label_tag</span>
+
+</div>
+<div class="viewcode-block" id="preprocess_form"><a class="viewcode-back" href="../../../development/core.html#maker.core.decorators.preprocess_form">[docs]</a><span class="k">def</span> <span class="nf">preprocess_form</span><span class="p">():</span>
+    <span class="s">&quot;Add Asterisk To Field Labels&quot;</span>
+    <span class="n">BoundField</span><span class="o">.</span><span class="n">label_tag</span> <span class="o">=</span> <span class="n">add_required_label_tag</span><span class="p">(</span><span class="n">BoundField</span><span class="o">.</span><span class="n">label_tag</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

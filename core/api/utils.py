@@ -1,7 +1,6 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 import time
 from django.http import HttpResponseNotAllowed, HttpResponseForbidden, HttpResponse, HttpResponseBadRequest
@@ -28,7 +27,7 @@ def format_error(error):
 
 class rc_factory(object):
     """
-    Status codes.
+        Status codes.
     """
     CODES = dict(ALL_OK = ('OK', 200),
                  CREATED = ('Created', 201),
@@ -44,9 +43,9 @@ class rc_factory(object):
 
     def __getattr__(self, attr):
         """
-        Returns a fresh `HttpResponse` when getting 
-        an "attribute". This is backwards compatible
-        with 0.2, which is important.
+            Returns a fresh `HttpResponse` when getting 
+            an "attribute". This is backwards compatible
+            with 0.2, which is important.
         """
         try:
             (r, c) = self.CODES.get(attr)
@@ -55,17 +54,17 @@ class rc_factory(object):
 
         class HttpResponseWrapper(HttpResponse):
             """
-            Wrap HttpResponse and make sure that the internal _is_string 
-            flag is updated when the _set_content method (via the content 
-            property) is called
+                Wrap HttpResponse and make sure that the internal _is_string 
+                flag is updated when the _set_content method (via the content 
+                property) is called
             """
             def _set_content(self, content):
                 """
-                Set the _container and _is_string properties based on the 
-                type of the value parameter. This logic is in the construtor
-                for HttpResponse, but doesn't get repeated when setting 
-                HttpResponse.content although this bug report (feature request)
-                suggests that it should: http://code.djangoproject.com/ticket/9403 
+                    Set the _container and _is_string properties based on the 
+                    type of the value parameter. This logic is in the construtor
+                    for HttpResponse, but doesn't get repeated when setting 
+                    HttpResponse.content although this bug report (feature request)
+                    suggests that it should: http://code.djangoproject.com/ticket/9403 
                 """
                 if not isinstance(content, basestring) and hasattr(content, '__iter__'):
                     self._container = content
@@ -102,16 +101,16 @@ def validate(v_form, operation='POST'):
 
 def throttle(max_requests, timeout=60*60, extra=''):
     """
-    Simple throttling decorator, caches
-    the amount of requests made in cache.
-    
-    If used on a view where users are required to
-    log in, the username is used, otherwise the
-    IP address of the originating request is used.
-    
-    Parameters::
-     - `max_requests`: The maximum number of requests
-     - `timeout`: The timeout for the cache entry (default: 1 hour)
+        Simple throttling decorator, caches
+        the amount of requests made in cache.
+        
+        If used on a view where users are required to
+        log in, the username is used, otherwise the
+        IP address of the originating request is used.
+        
+        Parameters::
+         - `max_requests`: The maximum number of requests
+         - `timeout`: The timeout for the cache entry (default: 1 hour)
     """
     @decorator
     def wrap(f, self, request, *args, **kwargs):
@@ -122,19 +121,19 @@ def throttle(max_requests, timeout=60*60, extra=''):
     
         if hasattr(request, 'throttle_extra'):
             """
-            Since we want to be able to throttle on a per-
-            application basis, it's important that we realize
-            that `throttle_extra` might be set on the request
-            object. If so, append the identifier name with it.
+                Since we want to be able to throttle on a per-
+                application basis, it's important that we realize
+                that `throttle_extra` might be set on the request
+                object. If so, append the identifier name with it.
             """
             ident += ':%s' % str(request.throttle_extra)
         
         if ident:
             """
-            Preferrably we'd use incr/decr here, since they're
-            atomic in memcached, but it's in django-trunk so we
-            can't use it yet. If someone sees this after it's in
-            stable, you can change it here.
+                Preferrably we'd use incr/decr here, since they're
+                atomic in memcached, but it's in django-trunk so we
+                can't use it yet. If someone sees this after it's in
+                stable, you can change it here.
             """
             ident += ':%s' % extra
     
@@ -158,13 +157,13 @@ def throttle(max_requests, timeout=60*60, extra=''):
 
 def coerce_put_post(request):
     """
-    Django doesn't particularly understand REST.
-    In case we send data over PUT, Django won't
-    actually look at the data and load it. We need
-    to twist its arm here.
-    
-    The try/except abominiation here is due to a bug
-    in mod_python. This should fix it.
+        Django doesn't particularly understand REST.
+        In case we send data over PUT, Django won't
+        actually look at the data and load it. We need
+        to twist its arm here.
+        
+        The try/except abominiation here is due to a bug
+        in mod_python. This should fix it.
     """
     if request.method == "PUT":
         # Bug fix: if _load_post_and_files has already been called, for
@@ -195,7 +194,7 @@ def coerce_put_post(request):
 
 class MimerDataException(Exception):
     """
-    Raised if the content_type and data don't match
+        Raised if the content_type and data don't match
     """
     pass
 
@@ -215,8 +214,8 @@ class Mimer(object):
 
     def loader_for_type(self, ctype):
         """
-        Gets a function ref to deserialize content
-        for a certain mimetype.
+            Gets a function ref to deserialize content
+            for a certain mimetype.
         """
         for loadee, mimes in Mimer.TYPES.iteritems():
             for mime in mimes:
@@ -225,8 +224,8 @@ class Mimer(object):
                     
     def content_type(self):
         """
-        Returns the content type of the request in all cases where it is
-        different than a submitted form - application/x-www-form-urlencoded
+            Returns the content type of the request in all cases where it is
+            different than a submitted form - application/x-www-form-urlencoded
         """
         type_formencoded = "application/x-www-form-urlencoded"
 
@@ -239,16 +238,16 @@ class Mimer(object):
 
     def translate(self):
         """
-        Will look at the `Content-type` sent by the client, and maybe
-        deserialize the contents into the format they sent. This will
-        work for JSON, YAML, XML and Pickle. Since the data is not just
-        key-value (and maybe just a list), the data will be placed on
-        `request.data` instead, and the handler will have to read from
-        there.
-        
-        It will also set `request.content_type` so the handler has an easy
-        way to tell what's going on. `request.content_type` will always be
-        None for form-encoded and/or multipart form data (what your browser sends.)
+            Will look at the `Content-type` sent by the client, and maybe
+            deserialize the contents into the format they sent. This will
+            work for JSON, YAML, XML and Pickle. Since the data is not just
+            key-value (and maybe just a list), the data will be placed on
+            `request.data` instead, and the handler will have to read from
+            there.
+            
+            It will also set `request.content_type` so the handler has an easy
+            way to tell what's going on. `request.content_type` will always be
+            None for form-encoded and/or multipart form data (what your browser sends.)
         """    
         ctype = self.content_type()
         self.request.content_type = ctype
@@ -284,9 +283,9 @@ def translate_mime(request):
     
 def require_mime(*mimes):
     """
-    Decorator requiring a certain mimetype. There's a nifty
-    helper called `require_extended` below which requires everything
-    we support except for post-data via form.
+        Decorator requiring a certain mimetype. There's a nifty
+        helper called `require_extended` below which requires everything
+        we support except for post-data via form.
     """
     @decorator
     def wrap(f, self, request, *args, **kwargs):
@@ -311,7 +310,7 @@ require_extended = require_mime('json', 'yaml', 'xml', 'pickle')
     
 def send_consumer_mail(consumer):
     """
-    Send a consumer an email depending on what their status is.
+        Send a consumer an email depending on what their status is.
     """
     try:
         subject = settings.PISTON_OAUTH_EMAIL_SUBJECTS[consumer.status]
@@ -333,8 +332,8 @@ def send_consumer_mail(consumer):
             { 'consumer' : consumer, 'user' : consumer.user })
     except TemplateDoesNotExist:
         """ 
-        They haven't set up the templates, which means they might not want
-        these emails sent.
+            They haven't set up the templates, which means they might not want
+            these emails sent.
         """
         return 
 

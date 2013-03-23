@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-User-related Core templatetags
+    User-related Core templatetags
 """
 from coffin import template
 from django.core.context_processors import csrf
@@ -40,7 +40,7 @@ def user_block(context):
         response_format = context['response_format']
         
     trial = False
-    if getattr(settings, 'HARDTREE_SUBSCRIPTION_USER_LIMIT') == 3:
+    if getattr(settings, 'MAKER_SUBSCRIPTION_USER_LIMIT') == 3:
         trial = True
     
     active = context.get('active', None)
@@ -61,7 +61,7 @@ def demo_user(context):
 
     response_format = 'html'
     
-    demo = getattr(settings, 'HARDTREE_DEMO_MODE', False)
+    demo = getattr(settings, 'MAKER_DEMO_MODE', False)
         
     return Markup(render_to_string('core/tags/demo_user',
                   {'demo': demo},

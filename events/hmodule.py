@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Events: Hardtree module definition
+	Events: maker module definition
 """
 
 PROPERTIES = {
@@ -20,11 +20,7 @@ URL_PATTERNS = [
                 '^/calendar/',
                 ]
 
-
-#
 # Cron
-#
-
 from maker.events.cron import cron_integration
 
 CRON = [cron_integration]

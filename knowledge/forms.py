@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Knowledge base model forms
+    Knowledge base model forms
 """
 from django.forms import ModelForm, Form, ChoiceField
 from maker.knowledge.models import KnowledgeFolder, KnowledgeItem, KnowledgeCategory

@@ -1,15 +1,15 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
-
+# Copyright 2013 maker
+# License
 import oauth2 as oauth
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 
 
 def get_oauth_request(request):
-    """ Converts a Django request object into an `oauth2.Request` object. """
+    """ 
+        Converts a Django request object into an `oauth2.Request` object. 
+    """
     headers = {}
     if 'HTTP_AUTHORIZATION' in request.META:
         headers['Authorization'] = request.META['HTTP_AUTHORIZATION']
@@ -17,7 +17,9 @@ def get_oauth_request(request):
 
 
 def verify_oauth_request(request, oauth_request, consumer, token=None):
-    """ Helper function to verify requests. """
+    """ 
+        Helper function to verify requests. 
+    """
     from maker.core.api.auth.store import store
 
     # Check nonce

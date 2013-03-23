@@ -1,16 +1,17 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of Treeio.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 from useragents import search_strings
 
 class Middleware(object):
     @staticmethod
     def process_request(request):
-        """Adds a "mobile" attribute to the request which is True or False
+        """
+           Adds a "mobile" attribute to the request which is True or False
            depending on whether the request should be considered to come from a
-           small-screen device such as a phone or a PDA"""
+           small-screen device such as a phone or a PDA
+        """
 
         if request.META.has_key("HTTP_X_OPERAMINI_FEATURES"):
             #Then it's running opera mini. 'Nuff said.
@@ -42,9 +43,11 @@ class Middleware(object):
         return None
 
 def detect_mobile(view):
-    """View Decorator that adds a "mobile" attribute to the request which is
+    """
+       View Decorator that adds a "mobile" attribute to the request which is
        True or False depending on whether the request should be considered
-       to come from a small-screen device such as a phone or a PDA"""
+       to come from a small-screen device such as a phone or a PDA
+    """
 
     def detected(request, *args, **kwargs):
         Middleware.process_request(request)

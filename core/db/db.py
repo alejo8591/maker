@@ -1,12 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Database manipulations
-
-Dynamically identifies the correct database to use for the current domain
+    Database manipulations
+    Dynamically identifies the correct database to use for the current domain
 """
 from pandora import box
 from django.utils import simplejson as json
@@ -16,14 +14,16 @@ from os import path
 
 FILE_ROOT = path.abspath(path.dirname(__file__))
 
-HARDTREE_DB_SETTINGS_FILE = path.join(FILE_ROOT, 'dbsettings.json')
+MAKER_DB_SETTINGS_FILE = path.join(FILE_ROOT, 'dbsettings.json')
 NO_DEFAULT = False
 
 class DatabaseNotFound(Exception):
     pass
 
 class DatabaseDict(UserDict.DictMixin, dict):
-    """A dictionary which applies an arbitrary key-altering function before accessing the keys"""
+    """
+        A dictionary which applies an arbitrary key-altering function before accessing the keys
+    """
     
     def _ensure_defaults(self):
         for db in self.values():
@@ -43,13 +43,13 @@ class DatabaseDict(UserDict.DictMixin, dict):
         self._load_databases(*args, **kwargs)
 
     def _load_databases(self, *args, **kwargs):
-        dbfile = open(HARDTREE_DB_SETTINGS_FILE, 'r')
+        dbfile = open(MAKER_DB_SETTINGS_FILE, 'r')
         self.store = json.load(dbfile)
         self.update(dict(*args, **kwargs)) # use the free update to set keys
         self._ensure_defaults()
 
     def _save_databases(self):
-        f = open(HARDTREE_DB_SETTINGS_FILE, 'w')
+        f = open(MAKER_DB_SETTINGS_FILE, 'w')
         json.dump(self.store, f)
         f.close()
 
@@ -84,7 +84,9 @@ class DatabaseDict(UserDict.DictMixin, dict):
 
 
 class DBRouter(object):
-    """A router to control all database operations and dynamically select the correct database"""
+    """
+        A router to control all database operations and dynamically select the correct database
+    """
     
     def _get_current_database(self):
         "Returns the database that should be used for the current request"

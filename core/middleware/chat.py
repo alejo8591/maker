@@ -20,9 +20,9 @@ from django.contrib.messages.storage import default_storage
 
 def get_key(postfix=""):
     """
-    Return key for memcached
-    :param postfix: postfix key
-    :type postfix: basestring
+        Return key for memcached
+        :param postfix: postfix key
+        :type postfix: basestring
     """
     domain = getattr(settings, 'CURRENT_DOMAIN', 'default')
     key = "maker_%s_chat_%s" % (domain, postfix)
@@ -43,7 +43,7 @@ def delete_lock(key):
 
 def set_memcached(key, obj, lock=True):
     """
-    Serialization object and add his in memcached
+        Serialization object and add his in memcached
     """
     if lock:
         if create_lock(key):
@@ -54,7 +54,7 @@ def set_memcached(key, obj, lock=True):
 
 def get_memcached(key):
     """
-    Return deserialize object from memcached
+        Return deserialize object from memcached
     """
     data = cache.get(key)
     if not data:
@@ -64,8 +64,8 @@ def get_memcached(key):
 
 def get_notifications(user):
     """
-    Return list notifications
-    :param user: object user
+        Return list notifications
+        :param user: object user
     """
     notifications = []
     try:
@@ -73,7 +73,7 @@ def get_notifications(user):
     except:
         return []
     try:
-        if not getattr(settings, 'HARDTREE_ALLOW_GRITTER_NOTIFICATIONS', False):
+        if not getattr(settings, 'MAKER_ALLOW_GRITTER_NOTIFICATIONS', False):
             return notifications
         request = HttpRequest()
         request.user = user
@@ -88,7 +88,7 @@ def get_notifications(user):
 
 def get_user_profile(user):
     """
-    return user profile
+        return user profile
     """
     try:
         listeners = get_memcached(get_key("listeners"))
@@ -98,10 +98,10 @@ def get_user_profile(user):
 
 def update_user(user, location):
     """
-    update location and the last time request Users
-    :param user: object user
-    :param location: location user on site
-    :type location: basestring
+        update location and the last time request Users
+        :param user: object user
+        :param location: location user on site
+        :type location: basestring
     """
     try:
         listeners = get_memcached(get_key("listeners"))
@@ -114,10 +114,10 @@ def update_user(user, location):
 
 def remove_user(id, user):
     """
-    Remove user from conference
-    :param id: ID conference
-    :type id: basestring
-    :type user: basestring
+        Remove user from conference
+        :param id: ID conference
+        :type id: basestring
+        :type user: basestring
     """
     conferences = get_memcached(get_key("conferences"))
     if verification_user(id, user):
@@ -127,11 +127,11 @@ def remove_user(id, user):
 
 def verification_user(id, user):
     """
-    Verification user in conference
-    return True if the user is present in conference, else return False
-    :param id: ID conference
-    :type id: basestring
-    :type user: basestring
+        Verification user in conference
+        return True if the user is present in conference, else return False
+        :param id: ID conference
+        :type id: basestring
+        :type user: basestring
     """
     conferences = get_memcached(get_key("conferences"))
     if not user in conferences[id]["users"].keys():
@@ -140,9 +140,9 @@ def verification_user(id, user):
 
 def checking_conference(id_conference):
     """
-    Checking for the existence of the conference
-    :param id_conference: ID conference
-    :type id_conference: basestring
+        Checking for the existence of the conference
+        :param id_conference: ID conference
+        :type id_conference: basestring
     """
     conferences = get_memcached(get_key("conferences"))
     if id_conference in conferences.keys():
@@ -151,10 +151,10 @@ def checking_conference(id_conference):
 
 def is_owner_user(id, user):
     """
-    Checks whether user is owner of conferences
-    :param id: ID conference
-    :type id: basestring
-    :type user: basestring
+        Checks whether user is owner of conferences
+        :param id: ID conference
+        :type id: basestring
+        :type user: basestring
     """
     conferences = get_memcached(get_key("conferences"))
     if conferences[id]["info"]["creator"] == user:
@@ -163,10 +163,10 @@ def is_owner_user(id, user):
 
 def exit_from_conference(id, user):
     """
-    Remove user from conference if user exited from conference
-    :param id: ID conference
-    :type id: basestring
-    :type user: basestring
+        Remove user from conference if user exited from conference
+        :param id: ID conference
+        :type id: basestring
+        :type user: basestring
     """
     if checking_conference(id):
         if verification_user(id, user):
@@ -179,10 +179,10 @@ def exit_from_conference(id, user):
 
 def delete_conference(id, user):
     """
-    Delete conference (if user is owner conference)
-    :param id: ID conference
-    :type id: basestring
-    :type user: basestring
+        Delete conference (if user is owner conference)
+        :param id: ID conference
+        :type id: basestring
+        :type user: basestring
     """
     if is_owner_user(id, user):
         conferences = get_memcached(get_key("conferences"))
@@ -192,12 +192,12 @@ def delete_conference(id, user):
 
 def remove_users_in_conference(id, user, users):
     """
-    Remove users from conference (if user is owner conference)
-    :param id: ID conference
-    :type id: basestring
-    :type user: basestring
-    :type users: baselist
-    :param users: List of users to remove from conferences
+        Remove users from conference (if user is owner conference)
+        :param id: ID conference
+        :type id: basestring
+        :type user: basestring
+        :type users: baselist
+        :param users: List of users to remove from conferences
     """
     if checking_conference(id) and is_owner_user(id, user):
         conferences = get_memcached(get_key("conferences"))
@@ -208,12 +208,12 @@ def remove_users_in_conference(id, user, users):
 
 def add_users_in_conference(id, user, users):
     """
-    Add users in conference (if user is owner conference)
-    :param id: ID conference
-    :type id: basestring
-    :type user: basestring
-    :type users: baselist
-    :param users: List of users to add in conference
+        Add users in conference (if user is owner conference)
+        :param id: ID conference
+        :type id: basestring
+        :type user: basestring
+        :type users: baselist
+        :param users: List of users to add in conference
     """
     if checking_conference(id):
         conferences = get_memcached(get_key("conferences"))
@@ -224,11 +224,11 @@ def add_users_in_conference(id, user, users):
 
 def create_conference(user, users, title):
     """
-    Create conference
-    :type user: basestring
-    :type users: baselist
-    :param users: List of users to add in conference
-    :type title: basestring
+        Create conference
+        :type user: basestring
+        :type users: baselist
+        :param users: List of users to add in conference
+        :type title: basestring
     """
     id = md5()
     id.update(str(datetime.now()))
@@ -384,10 +384,10 @@ def disconnect(user):
 
 def cmd(message, user):
     """
-    Handler AJAX query
-    :param user: object user
-    :param message: content POST
-    :type message: basedict
+        Handler AJAX query
+        :param user: object user
+        :param message: content POST
+        :type message: basedict
     """
     try:
         user_obj = user
@@ -439,7 +439,7 @@ def cmd(message, user):
 
 class Search_Inactive_Users(threading.Thread):
     """
-    Delete inactive users
+        Delete inactive users
     """
     def __init__(self):
         threading.Thread.__init__(self)
@@ -459,7 +459,7 @@ class Search_Inactive_Users(threading.Thread):
 class ChatAjaxMiddleware(object):
 
     def __init__(self, *args, **kwargs):
-        if not settings.HARDTREE_CRON_DISABLED:
+        if not settings.MAKER_CRON_DISABLED:
             Search_Inactive_Users().start()
             pass
         #noinspection PyArgumentList

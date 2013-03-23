@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Infrastructure module forms
+    Infrastructure module forms
 """
 from django import forms
 from maker.core.conf import settings
@@ -99,9 +98,9 @@ class ItemForm(forms.Form):
         filepath = settings.MEDIA_ROOT + filepath
         try:
             img = Image.open(filepath)
-            expected_size = getattr(settings, 'HARDTREE_IMAGE_MAX_SIZE', [400, 300])
+            expected_size = getattr(settings, 'MAKER_IMAGE_MAX_SIZE', [400, 300])
             if img.size[0] > expected_size[0] or img.size[1] > expected_size[1]:
-                filter_name = getattr(settings, 'HARDTREE_IMAGE_RESIZE_FILTER', 'ANTIALIAS')
+                filter_name = getattr(settings, 'MAKER_IMAGE_RESIZE_FILTER', 'ANTIALIAS')
                 filter = getattr(Image, filter_name, Image.ANTIALIAS)
                 aspect = img.size[0] / float(img.size[1])
                 newsize = list(expected_size)

@@ -225,9 +225,9 @@ class User(InteractionEntity):
                 pass
 
         super(User, self).save(*args, **kwargs)
-        # Check Hardtree Subscription user limit
+        # Check MAKER Subscription user limit
         if not self.id:
-            user_limit = getattr(settings, 'HARDTREE_SUBSCRIPTION_USER_LIMIT', 0)
+            user_limit = getattr(settings, 'MAKER_SUBSCRIPTION_USER_LIMIT', 0)
             if user_limit > 0:
                 user_number = User.objects.all().count()
                 if user_number >= user_limit:
@@ -381,7 +381,7 @@ class User(InteractionEntity):
 
 # User signals
 def user_autocreate_handler(sender, instance, created, **kwargs):
-    "When a Django User is created, automatically create a Hardtree User"
+    "When a Django User is created, automatically create a MAKER User"
     if created:
         try:
             profile = instance.get_profile()
@@ -389,13 +389,13 @@ def user_autocreate_handler(sender, instance, created, **kwargs):
             profile = User(user=instance)
             profile.save()
 
-# Autocreate a Hardtree user when Django user is created
-if getattr(settings, 'HARDTREE_SIGNALS_AUTOCREATE_USER', False):
+# Autocreate a maker user when Django user is created
+if getattr(settings, 'MAKER_SIGNALS_AUTOCREATE_USER', False):
     models.signals.post_save.connect(user_autocreate_handler, sender=django_auth.User)
 
 
 class Invitation(models.Model):
-    "Invitation to register on Hardtree"
+    "Invitation to register on maker"
     email = models.EmailField()
     key = models.CharField(max_length=256)
     sender = models.ForeignKey(User, blank=True, null=True)
@@ -759,7 +759,7 @@ class Object(models.Model):
                     # Skip ManyToMany fields - they handled differently
                     continue
 
-                if field in getattr(settings, 'HARDTREE_UPDATE_BLACKLIST', []):
+                if field in getattr(settings, 'MAKER_UPDATE_BLACKLIST', []):
                     # Skip blacklisted items
                     continue
 
@@ -829,7 +829,7 @@ class Object(models.Model):
             conf = ModuleSetting.get_for_module('maker.core', 'default_permissions')[0]
             default_permissions = conf.value
         except:
-            default_permissions = settings.HARDTREE_DEFAULT_PERMISSIONS
+            default_permissions = settings.MAKER_DEFAULT_PERMISSIONS
 
         if hasattr(user, 'get_profile'):
             user = user.get_profile()
@@ -915,9 +915,9 @@ class Object(models.Model):
         return self
 
     def set_default_user(self):
-        "Sets the user defined in settings.HARDTREE_DEFAULT_USER_ID and default mode"
+        "Sets the user defined in settings.MAKER_DEFAULT_USER_ID and default mode"
         try:
-            user = User.objects.get(pk=settings.HARDTREE_DEFAULT_USER_ID)
+            user = User.objects.get(pk=settings.MAKER_DEFAULT_USER_ID)
         except:
             try:
                 user = User.objects.all()[0]
@@ -946,16 +946,16 @@ class Object(models.Model):
 
     def get_fields(self):
         "Returns list of fields for given object"
-        return filter(lambda f: f.name not in settings.HARDTREE_OBJECT_BLACKLIST, self._meta.fields)
+        return filter(lambda f: f.name not in settings.MAKER_OBJECT_BLACKLIST, self._meta.fields)
 
     def get_field_names(self):
         "Returns list of field names for given object"
         x = []
         for f in self._meta.fields:
-            if f.name not in settings.HARDTREE_OBJECT_BLACKLIST:
+            if f.name not in settings.MAKER_OBJECT_BLACKLIST:
                 x.append(f.name)
         for f in self._meta.many_to_many:
-            if f.name not in settings.HARDTREE_OBJECT_BLACKLIST:
+            if f.name not in settings.MAKER_OBJECT_BLACKLIST:
                 x.append(f.name)
         return x
 
@@ -1124,8 +1124,8 @@ class UpdateRecord(models.Model):
             for recipient in self.recipients.all():
                 if author and author.id == recipient.id:
                     continue
-                email_notifications = getattr(settings, 'HARDTREE_ALLOW_EMAIL_NOTIFICATIONS', False)
-                gritter_notifications = getattr(settings, 'HARDTREE_ALLOW_GRITTER_NOTIFICATIONS', False)
+                email_notifications = getattr(settings, 'MAKER_ALLOW_EMAIL_NOTIFICATIONS', False)
+                gritter_notifications = getattr(settings, 'MAKER_ALLOW_GRITTER_NOTIFICATIONS', False)
                 try:
                     conf = ModuleSetting.get('email_notifications', user=recipient)[0]
                     email_notifications = conf.value

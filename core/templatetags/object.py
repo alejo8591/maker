@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Object-related Core templatetags
+    Object-related Core templatetags
 """
 from coffin import template
 from django.template import RequestContext
@@ -367,7 +366,7 @@ def help_link(context, link=''):
         if match:
             link = match.group('url') + "/"
     
-    link = getattr(settings, 'HARDTREE_HELP_LINK_PREFIX', '/help/') + link
+    link = getattr(settings, 'MAKER_HELP_LINK_PREFIX', '/help/') + link
     
     return Markup(render_to_string('core/tags/help_link_block',
                                    {'link': link},

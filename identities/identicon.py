@@ -1,21 +1,25 @@
+# encoding: utf-8
+# Copyright 2013 maker
+# License
+
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 """
-identicon.py
-identicon python implementation.
-by Shin Adachi <shn@glucose.jp>
+    identicon.py
+    identicon python implementation.
+    by Shin Adachi <shn@glucose.jp>
 
-= usage =
+    = usage =
 
-== commandline ==
->>> python identicon.py [code]
+    == commandline ==
+    >>> python identicon.py [code]
 
-== python ==
->>> import identicon
->>> identicon.render_identicon(code, size)
+    == python ==
+    >>> import identicon
+    >>> identicon.render_identicon(code, size)
 
-Return a PIL Image class instance which have generated identicon image.
-```size``` specifies `patch size`. Generated image size is 3 * ```size```.
+    Return a PIL Image class instance which have generated identicon image.
+    ```size``` specifies `patch size`. Generated image size is 3 * ```size```.
 """
 # g
 # PIL Modules
@@ -24,7 +28,9 @@ import Image, ImageDraw, ImagePath, ImageColor
 __all__ = ['render_identicon', 'IdenticonRendererBase']
 
 class Matrix2D(list):
-    """Matrix for Patch rotation"""
+    """
+        Matrix for Patch rotation
+    """
     def __init__(self, initial = [0.] * 9):
         assert isinstance(initial, list) and len(initial)==9
         list.__init__(self, initial)
@@ -70,16 +76,16 @@ class Matrix2D(list):
                     0.0, 0.0, 1.0])
 
     """
-    # need `import math`
-    @classmethod
-    def rotate(kls, theta, pivot=None):
-        c = math.cos(theta)
-        s = math.sin(theta)
+        # need `import math`
+        @classmethod
+        def rotate(kls, theta, pivot=None):
+            c = math.cos(theta)
+            s = math.sin(theta)
 
-        matR = kls([c, -s, 0., s, c, 0., 0., 0., 1.])
-        if not pivot:
-            return matR
-        return kls.translate(-pivot[0], -pivot[1]) * matR * kls.translate(*pivot)
+            matR = kls([c, -s, 0., s, c, 0., 0., 0., 1.])
+            if not pivot:
+                return matR
+            return kls.translate(-pivot[0], -pivot[1]) * matR * kls.translate(*pivot)
     """
     
     @classmethod

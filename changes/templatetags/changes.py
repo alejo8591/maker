@@ -4,7 +4,7 @@
 # License www.tree.io/license
 
 """
-Changes templatetags
+	Changes templatetags
 """
 from coffin import template
 from maker.core.rendering import render_to_string

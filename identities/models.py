@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Identities module objects
+    Identities module objects
 """
 
 from django.db import models
@@ -169,6 +168,6 @@ def contact_autocreate_handler(sender, instance, created, **kwargs):
 
 
 # Autocreate a Contact when Hardtree user is created
-if getattr(settings, 'HARDTREE_SIGNALS_AUTOCREATE_CONTACT', True):
+if getattr(settings, 'MAKER_SIGNALS_AUTOCREATE_CONTACT', True):
     post_save.connect(contact_autocreate_handler, sender=User)
 

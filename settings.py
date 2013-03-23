@@ -1,12 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
-
+# Copyright 2013 maker
+# License
 # coding=utf-8
 
 """
-Django settings for maker project.
+    Django settings for maker project.
 """
 
 from os import path
@@ -32,11 +30,11 @@ DATABASES = DatabaseDict()
 # although not all choices may be available on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Europe/London'
+TIME_ZONE = 'America/Bogota'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-GB'
+LANGUAGE_CODE = 'es-ES'
 
 SITE_ID = 1
 
@@ -45,12 +43,12 @@ SITE_ID = 1
 USE_I18N = True
 FORMAT_MODULE_PATH = 'maker.formats'
 
-HARDTREE_API_CONSUMER_DB = 'gis'
+MAKER_API_CONSUMER_DB = 'gis'
 # OAUTH_DATA_STORE is needed for correct database setting up
 OAUTH_DATA_STORE = 'maker.core.api.auth.store.store'
 
 
-# Static files location for Hardtree
+# Static files location for MAKER
 STATIC_DOC_ROOT = path.join(PROJECT_ROOT, 'static')
 
 # Absolute path to the directory that holds media.
@@ -173,22 +171,22 @@ AUTHENTICATION_BACKENDS = (
 #AUTH_LDAP_START_TLS = True
 
 #
-# Hardtree configuration
+# MAKER configuration
 #
-HARDTREE_MODULE_IDENTIFIER = 'hmodule'
+MAKER_MODULE_IDENTIFIER = 'hmodule'
 
-HARDTREE_DEFAULT_USER_ID = 1
+MAKER_DEFAULT_USER_ID = 1
 
-HARDTREE_DEFAULT_PERMISSIONS = 'everyone'
+MAKER_DEFAULT_PERMISSIONS = 'everyone'
 
-HARDTREE_SEND_EMAIL_TO_CALLER = True
+MAKER_SEND_EMAIL_TO_CALLER = True
 
-HARDTREE_ALLOW_EMAIL_NOTIFICATIONS = True
-HARDTREE_ALLOW_GRITTER_NOTIFICATIONS = True
+MAKER_ALLOW_EMAIL_NOTIFICATIONS = True
+MAKER_ALLOW_GRITTER_NOTIFICATIONS = True
 
-HARDTREE_PASSWORD_LENGTH_MIN = 4
+MAKER_PASSWORD_LENGTH_MIN = 4
 
-HARDTREE_RESPONSE_FORMATS = {
+MAKER_RESPONSE_FORMATS = {
                              'html': 'text/html',
                              'mobile': 'text/html',
                              'json': 'text/plain',
@@ -201,54 +199,55 @@ HARDTREE_RESPONSE_FORMATS = {
                              'rss': 'application/rss+xml',
                              }
 
-HARDTREE_IMAGE_MAX_SIZE = (300, 400)
-HARDTREE_IMAGE_RESIZE_FILTER = 'ANTIALIAS'
+MAKER_IMAGE_MAX_SIZE = (300, 400)
+MAKER_IMAGE_RESIZE_FILTER = 'ANTIALIAS'
 
-HARDTREE_MINIFY_JSON = False
+MAKER_MINIFY_JSON = False
 
-HARDTREE_PAGINATOR_LENGTH = 20
-HARDTREE_PAGINATOR_PAGES = 15
+MAKER_PAGINATOR_LENGTH = 20
+MAKER_PAGINATOR_PAGES = 15
 
 #
 # CRON Fine-tuning
 #
 
 # How often should we loop through jobs, add/remove from pool, recycle jobs:
-HARDTREE_CRON_PERIOD = 10 # seconds, default 60
+MAKER_CRON_PERIOD = 10 # seconds, default 60
 
 # Number of cycles to keep HIGH priority jobs before forcefully terminating
-#HARDTREE_CRON_HIGH_PRIORITY = 10 # defualt 10 cycles
+#MAKER_CRON_HIGH_PRIORITY = 10 # defualt 10 cycles
 
 # Number of cycles to keep LOW priority jobs before forcefully terminating
-#HARDTREE_CRON_LOW_PRIORITY = 3 # default 3 cycles
+#MAKER_CRON_LOW_PRIORITY = 3 # default 3 cycles
 
 # Number of seconds since last access to domain to give the job HIGH priority
-#HARDTREE_CRON_QUALIFY_HIGH = 10 # default 10 cycles
+#MAKER_CRON_QUALIFY_HIGH = 10 # default 10 cycles
 
 # Number of seconds since last access to domain to run cron jobs for the domain
-#HARDTREE_CRON_QUALIFY_RUN = 86400 # seconds, default 86400, i.e. 1 day
+#MAKER_CRON_QUALIFY_RUN = 86400 # seconds, default 86400, i.e. 1 day
 
 # Number of jobs to keep in the pool at the same time
-#HARDTREE_CRON_POOL_SIZE = 10 # default 10
+#MAKER_CRON_POOL_SIZE = 10 # default 10
 
 # Priority value at which we should try to gracefully end a job
-#HARDTREE_CRON_SOFT_KILL = 0 # defualt 0
+#MAKER_CRON_SOFT_KILL = 0 # defualt 0
 
 # Priority value at which we must kill a job using any possible means (kill -9 job)
-#HARDTREE_CRON_HARD_KILL = -1 # defualt -1
+#MAKER_CRON_HARD_KILL = -1 # defualt -1
 
 # Seconds to wait between SIGKILL signals to a dead job
-#HARDTREE_CRON_GRACE_WAIT = 5 # default 5
+#MAKER_CRON_GRACE_WAIT = 5 # default 5
 
 # CHAT CRON!
-HARDTREE_CRON_DISABLED = True # Run chat?
+MAKER_CRON_DISABLED = True # Run chat?
 
 ### CRON config ends here
 
-HARDTREE_MULTIPLE_LOGINS_DISABLED = False
+MAKER_MULTIPLE_LOGINS_DISABLED = False
 
-HARDTREE_SERVER_DEFAULT_TIMEZONE = 49 # (GMT+00:00) UTC
-HARDTREE_SERVER_TIMEZONE =  (('0', u'(GMT-11:00) International Date Line West'),
+# (GMT+00:00) UTC
+MAKER_SERVER_DEFAULT_TIMEZONE = 21
+MAKER_SERVER_TIMEZONE =  (('0', u'(GMT-11:00) International Date Line West'),
                              ('1', u'(GMT-11:00) Midway Island'), ('2', u'(GMT-11:00) Samoa'),
                              ('3', u'(GMT-10:00) Hawaii'), ('4', u'(GMT-09:00) Alaska'),
                              ('5', u'(GMT-08:00) Tijuana'), ('6', u'(GMT-08:00) Pacific Time (US & Canada)'),
@@ -326,61 +325,61 @@ HARDTREE_SERVER_TIMEZONE =  (('0', u'(GMT-11:00) International Date Line West'),
 #
 # Messaging
 #
-HARDTREE_MESSAGING_POP3_LIMIT = 100 # number of emails
-HARDTREE_MESSAGING_IMAP_LIMIT = 200 # number of emails
+MAKER_MESSAGING_POP3_LIMIT = 100 # number of emails
+MAKER_MESSAGING_IMAP_LIMIT = 200 # number of emails
 
-HARDTREE_MESSAGING_UNSAFE_BLOCKS = ('head', 'object', 'embed', 'applet', 'noframes',
+MAKER_MESSAGING_UNSAFE_BLOCKS = ('head', 'object', 'embed', 'applet', 'noframes',
                                     'noscript', 'noembed', 'iframe', 'frame', 'frameset')
 
-HARDTREE_MESSAGING_IMAP_DEFAULT_FOLDER_NAME = 'UNSEEN'
+MAKER_MESSAGING_IMAP_DEFAULT_FOLDER_NAME = 'UNSEEN'
 
-HARDTREE_SIGNALS_AUTOCREATE_USER = False
+MAKER_SIGNALS_AUTOCREATE_USER = False
 
-HARDTREE_HELP_LINK_PREFIX = '/help/'
-HARDTREE_HELP_SOURCE = 'http://www.maker.com/help'
+MAKER_HELP_LINK_PREFIX = '/help/'
+MAKER_HELP_SOURCE = 'http://www.maker.com/help'
 
-HARDTREE_LANGUAGES = (('en', u'English'), ('ru', u'Русский'), ('es', u'Español'), ('de', u'Deutsche'), ('zh_CN', u'简体中文'), ('fr', u'Français'), ('el', u'ελληνικά'), ('pt_BR', u'português'))
-HARDTREE_LANGUAGES_DEFAULT = 'es'
+MAKER_LANGUAGES = (('en', u'English'), ('ru', u'Русский'), ('es', u'Español'), ('de', u'Deutsche'), ('zh_CN', u'简体中文'), ('fr', u'Français'), ('el', u'ελληνικά'), ('pt_BR', u'português'))
+MAKER_LANGUAGES_DEFAULT = 'es'
 
-HARDTREE_AJAX_RELOAD_ON_REDIRECT = ('home',
+MAKER_AJAX_RELOAD_ON_REDIRECT = ('home',
                                     'user_login',
                                     'account_settings_view',
                                     'core_admin_index_perspectives',
                                     'core_admin_perspective_view',
                                     'core_settings_view')
 
-HARDTREE_FORCE_AJAX_RENDERING = True
+MAKER_FORCE_AJAX_RENDERING = True
 
 #
 # htsafe settings
 #
 
 # Replace unsafe tags
-HARDTREE_SAFE_TAGS = ('div', 'ul', 'li', 'label', 'span', 'strong', 'em', 'p', 'input',
+MAKER_SAFE_TAGS = ('div', 'ul', 'li', 'label', 'span', 'strong', 'em', 'p', 'input',
                       'select', 'textarea', 'br')
-HARDTREE_UNSAFE_TAGS = ('script', 'object', 'embed',
+MAKER_UNSAFE_TAGS = ('script', 'object', 'embed',
                         'applet', 'noframes', 'noscript', 'noembed', 'iframe',
                         'frame', 'frameset')
 
 
 #
-# Hardtree Subcription settings
+# MAKER Subcription settings
 #
 
 EVERGREEN_FREE_USERS = 3
 
 USER_PRICE = 15
 
-HARDTREE_SUBSCRIPTION_CUSTOMIZATION = True
+MAKER_SUBSCRIPTION_CUSTOMIZATION = True
 
-HARDTREE_SUBSCRIPTION_USER_LIMIT = 0
+MAKER_SUBSCRIPTION_USER_LIMIT = 0
 
-HARDTREE_SUBSCRIPTION_BLOCKED = False
+MAKER_SUBSCRIPTION_BLOCKED = False
 
-HARDTREE_SUBSCRIPTION_SSL_ENABLED = False
-HARDTREE_SUBSCRIPTION_SSL_ENFORCE = False
+MAKER_SUBSCRIPTION_SSL_ENABLED = False
+MAKER_SUBSCRIPTION_SSL_ENFORCE = False
 
-HARDTREE_DEMO_MODE = False
+MAKER_DEMO_MODE = False
 
 
 #
@@ -446,15 +445,15 @@ JOHNNY_MIDDLEWARE_KEY_PREFIX = 'jc_maker'
 
 DISABLE_QUERYSET_CACHE = False
 
-HARDTREE_OBJECT_BLACKLIST = ['id', 'creator', 'object_name', 'object_type',
+MAKER_OBJECT_BLACKLIST = ['id', 'creator', 'object_name', 'object_type',
                              'trash', 'full_access', 'read_access', 'nuvius_resource',
                              'object_ptr', 'comments', 'likes', 'dislikes', 'tags',
                              'links', 'subscribers','read_by']
 
-HARDTREE_UPDATE_BLACKLIST = ['likes', 'dislikes', 'tags', 'reference', 'total',
+MAKER_UPDATE_BLACKLIST = ['likes', 'dislikes', 'tags', 'reference', 'total',
                              'links', 'subscribers', 'read_by', 'date_created', 'last_updated']
 
-HARDTREE_TIMEZONE_BLACKLIST = ['date_created', 'last_updated', 'time_from', 'time_to']
+MAKER_TIMEZONE_BLACKLIST = ['date_created', 'last_updated', 'time_from', 'time_to']
 
 WKPATH = path.join(PROJECT_ROOT, 'bin/wkhtmltopdf')
 WKCWD = PROJECT_ROOT

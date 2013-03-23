@@ -1,7 +1,6 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 #-*- coding: utf-8 -*-
 
@@ -32,9 +31,9 @@ def get_module(mdl):
 
 def generate_doc(handler_cls):
     """
-    Returns a `HandlerDocumentation` object
-    for the given handler. Use this to generate
-    documentation for your API.
+        Returns a `HandlerDocumentation` object
+        for the given handler. Use this to generate
+        documentation for your API.
     """
     if not (type(handler_cls) is ObjectHandlerMetaClass \
         or type(handler_cls) is handler.HandlerMetaClass):

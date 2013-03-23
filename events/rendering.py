@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Events module wrappers to be used for rendering
+    Events module wrappers to be used for rendering
 """
 from jinja2 import Markup
 from datetime import datetime

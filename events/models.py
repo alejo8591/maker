@@ -1,12 +1,11 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Events module objects.
-
-Depends on: maker.core, maker.identities
+    Events module objects.
+    Depends on: maker.core, maker.identities
 """
 
 from django.db import models
@@ -15,7 +14,9 @@ from maker.identities.models import Contact
 from maker.core.models import Object, Location
 
 class Event(Object):
-    """ Single Event """
+    """ 
+        Single Event 
+    """
     name = models.CharField(max_length=255)
     location = models.ForeignKey(Location, blank=True, null=True, on_delete=models.SET_NULL)
     details = models.TextField(max_length=255, null=True, blank=True)
@@ -38,7 +39,9 @@ class Event(Object):
     
 
 class Invitation(models.Model):
-    """ Invitation to an Event """
+    """ 
+        Invitation to an Event 
+    """
     contact = models.ForeignKey(Contact)
     event = models.ForeignKey(Event)
     status = models.CharField(max_length=255, choices=(('attending', 'Attending'),

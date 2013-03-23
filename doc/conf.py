@@ -1,7 +1,6 @@
 # encoding: utf-8
-# Copyright 2012 maker Limited
-# This file is part of maker.
-# License 
+# Copyright 2013 maker
+# License
 
 # -*- coding: utf-8 -*-
 #

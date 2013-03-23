@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Project Management module views
+    Project Management module views
 """
 
 from django.shortcuts import get_object_or_404
@@ -1232,4 +1231,4 @@ def task_ajax(request, response_format='html'):
     if request.POST:
         print request.POST
         
-    #return HttpResponse(options, mimetype=settings.HARDTREE_RESPONSE_FORMATS['json'])
+    #return HttpResponse(options, mimetype=settings.MAKER_RESPONSE_FORMATS['json'])

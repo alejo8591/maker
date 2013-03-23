@@ -1,10 +1,7 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
-
-# encoding: utf-8
-import datetime
+# Copyright 2013 maker
+# License
+ 
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models

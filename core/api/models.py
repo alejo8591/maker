@@ -1,7 +1,6 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 import urllib, time, urlparse
 
@@ -53,14 +52,14 @@ class Consumer(models.Model):
 
     def generate_random_codes(self):
         """
-        Used to generate random key/secret pairings. Use this after you've
-        added the other data in place of save(). 
+            Used to generate random key/secret pairings. Use this after you've
+            added the other data in place of save(). 
 
-        c = Consumer()
-        c.name = "My consumer" 
-        c.description = "An app that makes ponies from the API."
-        c.user = some_user_object
-        c.generate_random_codes()
+            c = Consumer()
+            c.name = "My consumer" 
+            c.description = "An app that makes ponies from the API."
+            c.user = some_user_object
+            c.generate_random_codes()
         """
         key = User.objects.make_random_password(length=KEY_SIZE)
         secret = generate_random(SECRET_SIZE)

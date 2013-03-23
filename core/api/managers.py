@@ -10,12 +10,12 @@ from maker.core.conf import settings
 KEY_SIZE = 18
 SECRET_SIZE = 32
 
-CONSUMER_DB = getattr(settings, 'HARDTREE_API_CONSUMER_DB', 'default')
+CONSUMER_DB = getattr(settings, 'MAKER_API_CONSUMER_DB', 'default')
 
 class KeyManager(models.Manager):
-    '''
+    """
         Add support for random key/secret generation
-    '''
+    """
     def generate_random_codes(self):
         key = User.objects.make_random_password(length=KEY_SIZE)
         secret = User.objects.make_random_password(length=SECRET_SIZE)
@@ -29,7 +29,7 @@ class KeyManager(models.Manager):
 class ConsumerManager(KeyManager):
     def create_consumer(self, name, description=None, user=None, using=CONSUMER_DB):
         """
-        Shortcut to create a consumer with random key/secret.
+            Shortcut to create a consumer with random key/secret.
         """
         consumer, created = self.using(using).get_or_create(name=name)
 
@@ -52,7 +52,7 @@ class ResourceManager(models.Manager):
 
     def get_default_resource(self, name):
         """
-        Add cache if you use a default resource.
+            Add cache if you use a default resource.
         """
         if not self._default_resource:
             self._default_resource = self.get(name=name)

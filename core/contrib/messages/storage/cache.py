@@ -1,7 +1,6 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 # -*- coding:utf-8 -*-
 
@@ -20,7 +19,7 @@ def unlock(key):
 
 class CacheStorage(BaseStorage):
     """
-    Stores messages in a cache.
+        Stores messages in a cache.
     """
     def __init__(self, request, *args, **kwargs):
         super(CacheStorage, self).__init__(request, *args, **kwargs)
@@ -31,10 +30,10 @@ class CacheStorage(BaseStorage):
 
     def _get(self, *args, **kwargs):
         """
-        Retrieves a list of stored messages. Returns a tuple of the messages
-        and a flag indicating whether or not all the messages originally
-        intended to be stored in this storage were, in fact, stored and
-        retrieved; e.g., ``(messages, all_retrieved)``.
+            Retrieves a list of stored messages. Returns a tuple of the messages
+            and a flag indicating whether or not all the messages originally
+            intended to be stored in this storage were, in fact, stored and
+            retrieved; e.g., ``(messages, all_retrieved)``.
         """
         lock(self.key)
         try:

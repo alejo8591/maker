@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Hardtree support authentication backend
+    maker support authentication backend
 """
 from maker.core.conf import settings
 from django.contrib.auth.models import User

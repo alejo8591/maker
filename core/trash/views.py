@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Core module: Trash views
+    Core module: Trash views
 """
 from django.template import RequestContext
 from django.http import HttpResponseRedirect

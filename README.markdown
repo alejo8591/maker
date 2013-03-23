@@ -1,16 +1,16 @@
 [![Build Status](https://secure.travis-ci.org/treeio/treeio.png?branch=master)](http://travis-ci.org/treeio/treeio)
 
 ==========================
-Tree.io Business Management Platform
+Maker CRM
 ==========================
 
-Tree.io is a powerful business management platform with tons of great features including integrated Project Management, Help Desk (support ticketing) and CRM modules. For a full list of features please see http://www.tree.io 
+Maker a powerful business management platform with tons of great features including integrated Project Management, Help Desk (support ticketing) and CRM modules. For a full list of features please see http://www.maker 
 
 Click here to watch a [video](http://klewel.com/conferences/djangocon-2012/index.php?talkID=15) of our lightning talk presentation at Djangocon Europe 2012.
 
-For FAQ see the Tree.io community site http://www.tree.io/community/
+For FAQ see the Tree.io community site http://www.maker/community/
 
-There is also a pre-built micro [Amazon AMI Image](https://console.aws.amazon.com/ec2/home?region=us-east-1#launchAmi=ami-6af22f03&source=tree.io) available which will run on [Amazon's Free Usage Tier](http://aws.amazon.com/free/) for 1 year.
+There is also a pre-built micro [Amazon AMI Image](https://console.aws.amazon.com/ec2/home?region=us-east-1#launchAmi=ami-6af22f03&source=maker) available which will run on [Amazon's Free Usage Tier](http://aws.amazon.com/free/) for 1 year.
 
 License
 =======
@@ -42,7 +42,7 @@ Install services (In Production)
 1.  Install database `sudo apt-get install mysql-server` (Aside from MySQL you can also use Postgre, SQLite or OracleDB)
 1.  Install web server `sudo apt-get install nginx` 
 
-Alternatively you can use Apache, see this [community post](http://tree.io/en/community/questions/186/treeio-with-wsgi-for-apache-deploy) for an example configuration.
+Alternatively you can use Apache, see this [community post](http://maker/en/community/questions/186/treeio-with-wsgi-for-apache-deploy) for an example configuration.
 
 Create a clone of this repository
 ------------------------
@@ -83,8 +83,8 @@ Support
 =======
 
 Commercial installation and support is available from Tree.io Ltd, London, UK.
-Our community support forum is the first stop for any questions http://www.tree.io/community
-Please see http://www.tree.io/ or contact info@tree.io for more details.
+Our community support forum is the first stop for any questions http://www.maker/community
+Please see http://www.maker/ or contact info@maker for more details.
 
 Acknowledgements
 ================

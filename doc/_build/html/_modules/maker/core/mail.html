@@ -1,0 +1,596 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>maker.core.mail &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for maker.core.mail</h1><div class="highlight"><pre>
+<span class="c"># encoding: utf-8</span>
+<span class="c"># Copyright 2013 maker</span>
+<span class="c"># License</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Core Mail Framework</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">maker.core.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">smtplib</span>
+<span class="kn">import</span> <span class="nn">imaplib</span><span class="o">,</span> <span class="nn">email</span><span class="o">,</span> <span class="nn">poplib</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">email.MIMEText</span> <span class="kn">import</span> <span class="n">MIMEText</span>
+<span class="kn">from</span> <span class="nn">email.header</span> <span class="kn">import</span> <span class="n">decode_header</span>
+<span class="kn">from</span> <span class="nn">email.MIMEMultipart</span> <span class="kn">import</span> <span class="n">MIMEMultipart</span>
+
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">from</span> <span class="nn">django.utils.encoding</span> <span class="kn">import</span> <span class="n">smart_unicode</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.template.defaultfilters</span> <span class="kn">import</span> <span class="n">removetags</span>
+
+<span class="n">EMAIL_SERVER</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;EMAIL_SERVER&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+<span class="n">IMAP_SERVER</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;IMAP_SERVER&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+<span class="n">EMAIL_USERNAME</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;EMAIL_USERNAME&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+<span class="n">EMAIL_PASSWORD</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;EMAIL_PASSWORD&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+<span class="n">EMAIL_FROM</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;EMAIL_FROM&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+<span class="n">DEFAULT_SIGNATURE</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;DEFAULT_SIGNATURE&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+
+            
+<div class="viewcode-block" id="BaseEmail"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.BaseEmail">[docs]</a><span class="k">class</span> <span class="nc">BaseEmail</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="s">&quot;Generic e-mail class to send any emails&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">fromaddr</span><span class="p">,</span> 
+                 <span class="n">toaddr</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">html</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ssl</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">Thread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl</span> <span class="o">=</span> <span class="n">ssl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toaddr</span> <span class="o">=</span> <span class="n">toaddr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fromaddr</span> <span class="o">=</span> <span class="n">fromaddr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signature</span> <span class="o">=</span> <span class="n">signature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="n">html</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">multipart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">html</span>
+        
+<div class="viewcode-block" id="BaseEmail.run"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.BaseEmail.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Run&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_email</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="BaseEmail.send_email"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.BaseEmail.send_email">[docs]</a>    <span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Send email&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="BaseEmail.get_smtp_port"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.BaseEmail.get_smtp_port">[docs]</a>    <span class="k">def</span> <span class="nf">get_smtp_port</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">):</span>
+        <span class="s">&quot;Returns appropriate SMTP port number depending on incoming server name and boolean ssl&quot;</span>
+        <span class="c"># http://www.emailaddressmanager.com/tips/mail-settings.html</span>
+        
+        <span class="n">port</span> <span class="o">=</span> <span class="mi">25</span> <span class="c"># default</span>
+        <span class="n">ssl</span> <span class="o">=</span> <span class="bp">False</span>
+        
+        <span class="k">if</span> <span class="s">&quot;gmail.com&quot;</span> <span class="ow">in</span> <span class="n">server</span> <span class="ow">or</span> <span class="s">&quot;googlemail.com&quot;</span> <span class="ow">in</span> <span class="n">server</span><span class="p">:</span>
+            <span class="n">port</span> <span class="o">=</span> <span class="mi">587</span>
+            <span class="n">ssl</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="n">server</span> <span class="o">==</span> <span class="s">&quot;plus.smtp.mail.yahoo.com&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">smtplib</span><span class="p">,</span> <span class="s">&#39;SMTP_SSL&#39;</span><span class="p">):</span>
+                <span class="n">port</span> <span class="o">=</span> <span class="mi">465</span>
+            <span class="n">ssl</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">server</span> <span class="o">==</span> <span class="s">&quot;smtp.live.com&quot;</span> <span class="ow">or</span> <span class="n">server</span> <span class="o">==</span> <span class="s">&quot;smtp.isp.netscape.com&quot;</span><span class="p">:</span>
+            <span class="n">ssl</span> <span class="o">=</span> <span class="bp">True</span>
+ 
+        <span class="k">return</span> <span class="n">port</span><span class="p">,</span> <span class="n">ssl</span>
+        </div>
+<div class="viewcode-block" id="BaseEmail.process_email"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.BaseEmail.process_email">[docs]</a>    <span class="k">def</span> <span class="nf">process_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+        <span class="s">&quot;Create a message and send it&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEMultipart</span><span class="p">(</span><span class="s">&#39;alternative&#39;</span><span class="p">)</span>
+            
+            <span class="n">msg</span><span class="p">[</span><span class="s">&#39;From&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fromaddr</span>
+            <span class="n">msg</span><span class="p">[</span><span class="s">&#39;To&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">toaddr</span>
+            <span class="n">msg</span><span class="p">[</span><span class="s">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span>
+    
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">html</span>
+            
+            <span class="c"># adding signature           </span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">signature</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signature</span>
+                            
+            <span class="c"># Record the MIME types of both parts - text/plain and text/html.</span>
+            <span class="n">part1</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">),</span> <span class="s">&#39;plain&#39;</span><span class="p">,</span> <span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">part1</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">html</span><span class="p">:</span>
+                <span class="n">part2</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">),</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+                <span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">part2</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_smtp_port</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">smtplib</span><span class="p">,</span> <span class="s">&#39;SMTP_SSL&#39;</span><span class="p">):</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP_SSL</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">set_debuglevel</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">ehlo</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">starttls</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTPException</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">ehlo</span><span class="p">()</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fromaddr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">toaddr</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="kn">import</span> <span class="nn">traceback</span>
+                <span class="kn">import</span> <span class="nn">sys</span>
+                <span class="kn">from</span> <span class="nn">maker</span> <span class="kn">import</span> <span class="n">core</span>
+                <span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">mail_admins</span>
+                <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">exc_traceback</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+                <span class="n">domain</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;CURRENT_DOMAIN&#39;</span><span class="p">,</span> <span class="s">&#39;default&#39;</span><span class="p">)</span>
+                <span class="n">subject</span> <span class="o">=</span> <span class="s">&quot;Exception for </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">exc_type</span><span class="p">),</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">exc_value</span><span class="p">))</span>
+                <span class="n">body</span> <span class="o">=</span> <span class="n">subject</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+                <span class="n">body</span> <span class="o">+=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">__file__</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+                <span class="n">body</span> <span class="o">+=</span> <span class="s">u&quot;Server: </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span>
+                <span class="n">body</span> <span class="o">+=</span> <span class="s">u&quot;Port: </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+                <span class="n">body</span> <span class="o">+=</span> <span class="s">u&quot;Username: </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span>
+                <span class="n">body</span> <span class="o">+=</span> <span class="s">u&quot;From: </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">fromaddr</span>
+                <span class="n">body</span> <span class="o">+=</span> <span class="s">u&quot;To: </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">toaddr</span>
+                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_tb</span><span class="p">(</span><span class="n">exc_traceback</span><span class="p">):</span>
+                    <span class="n">body</span> <span class="o">+=</span> <span class="n">s</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+                <span class="n">mail_admins</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+        
+    
+</div></div>
+<div class="viewcode-block" id="SystemEmail"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.SystemEmail">[docs]</a><span class="k">class</span> <span class="nc">SystemEmail</span><span class="p">(</span><span class="n">BaseEmail</span><span class="p">):</span>
+    <span class="s">&quot;E-mail class to send messages on behalf of Tree.io team&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toaddr</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">html</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">signature</span><span class="p">:</span>
+            <span class="n">signature</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">DEFAULT_SIGNATURE</span><span class="p">)</span>
+
+        <span class="n">BaseEmail</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">EMAIL_SERVER</span><span class="p">,</span> <span class="n">EMAIL_USERNAME</span><span class="p">,</span> <span class="n">EMAIL_PASSWORD</span><span class="p">,</span> <span class="n">EMAIL_FROM</span><span class="p">,</span>
+                          <span class="n">toaddr</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+
+<span class="c">#</span>
+<span class="c"># Specific email classes</span>
+<span class="c">#</span>
+</div>
+<div class="viewcode-block" id="EmailInvitation"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailInvitation">[docs]</a><span class="k">class</span> <span class="nc">EmailInvitation</span><span class="p">(</span><span class="n">SystemEmail</span><span class="p">):</span>
+    <span class="s">&quot;Email Invitation&quot;</span>
+    
+    <span class="n">invitation</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">sender</span> <span class="o">=</span> <span class="bp">None</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">invitation</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">invitation</span> <span class="o">=</span> <span class="n">invitation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="n">sender</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
+        
+        <span class="n">subject</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> has invited you to Tree.io&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="p">)</span>
+        
+        <span class="n">toaddr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invitation</span><span class="o">.</span><span class="n">email</span>
+        
+        <span class="n">signature</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="se">\r\n</span><span class="s"></span>
+<span class="s">- </span><span class="si">%s</span><span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="p">)</span>
+
+        <span class="n">body</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">Hi!</span>
+<span class="se">\r\n</span><span class="s"></span>
+<span class="s">I&#39;ve invited you to Tree.io.</span>
+<span class="se">\r\n</span><span class="s"></span>
+<span class="s">Tree.io is a new online service that helps you manage your business online.</span>
+<span class="se">\r\n</span><span class="s"></span>
+<span class="s">Use this link to join me:</span>
+<span class="se">\r\n</span><span class="s"></span>
+<span class="s">http://</span><span class="si">%s</span><span class="s">/accounts/invitation/?email=</span><span class="si">%s</span><span class="s">&amp;key=</span><span class="si">%s</span><span class="s"></span>
+<span class="s">        &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">),</span>
+               <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">invitation</span><span class="o">.</span><span class="n">email</span><span class="p">),</span>
+               <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">invitation</span><span class="o">.</span><span class="n">key</span><span class="p">))</span>
+        
+        <span class="nb">super</span><span class="p">(</span><span class="n">EmailInvitation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">toaddr</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">signature</span><span class="p">)</span>
+        
+</div>
+<div class="viewcode-block" id="EmailPassword"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailPassword">[docs]</a><span class="k">class</span> <span class="nc">EmailPassword</span><span class="p">(</span><span class="n">SystemEmail</span><span class="p">):</span>
+    <span class="s">&quot;Email Message&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toaddr</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        
+        <span class="n">subject</span> <span class="o">=</span> <span class="s">&quot;Password reset on Tree.io&quot;</span>
+         
+        <span class="n">body</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">Hello!</span>
+<span class="se">\r\n</span><span class="s"></span>
+<span class="s">You have requested a password reset for your Tree.io account.</span>
+<span class="se">\r\n</span><span class="s"></span>
+<span class="s">New password for: </span><span class="si">%s</span><span class="se">\r\n\r\n</span><span class="s"> Password: </span><span class="si">%s</span><span class="se">\r\n\r\n</span><span class="s"></span>
+<span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+        
+        <span class="nb">super</span><span class="p">(</span><span class="n">EmailPassword</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">toaddr</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+
+
+<span class="c">#</span>
+<span class="c"># Abstract email receiver</span>
+<span class="c">#</span>
+</div>
+<div class="viewcode-block" id="intcmp"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.intcmp">[docs]</a><span class="k">def</span> <span class="nf">intcmp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">cmp</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">cmp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver">[docs]</a><span class="k">class</span> <span class="nc">EmailReceiver</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">       EmailReceiver fetches email from imap and pop email servers.</span>
+<span class="sd">       This class can be used only as parent. You should redefine</span>
+<span class="sd">       the process_msg method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_type</span><span class="p">,</span> <span class="n">server_name</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">folder_name</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="n">Thread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_type</span> <span class="o">=</span> <span class="n">server_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_name</span> <span class="o">=</span> <span class="n">server_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_username</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">incoming_password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">folder_name</span> <span class="o">=</span> <span class="n">folder_name</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;MAKER_MESSAGING_IMAP_DEFAULT_FOLDER_NAME&#39;</span><span class="p">,</span> <span class="s">&#39;UNSEEN&#39;</span><span class="p">)</span>
+
+        <span class="n">default_timezone</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAKER_SERVER_DEFAULT_TIMEZONE</span>
+        <span class="n">all_timezones</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;MAKER_SERVER_TIMEZONE&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;(GMT-11:00) International Date Line West&#39;</span><span class="p">)])</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">all_timezones</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">default_timezone</span><span class="p">)][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">GMT</span> <span class="o">=</span> <span class="n">title</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="c"># with sign e.g. +06:00</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="n">GMT</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="c"># + or -</span>
+        <span class="n">hours</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">GMT</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span> <span class="c"># e.g. 06</span>
+        <span class="n">mins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">GMT</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tzoffset</span> <span class="o">=</span> <span class="n">hours</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">+</span> <span class="n">mins</span> <span class="o">*</span> <span class="mi">60</span>
+        <span class="k">if</span> <span class="n">sign</span> <span class="o">==</span> <span class="s">&quot;-&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tzoffset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tzoffset</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+
+<div class="viewcode-block" id="EmailReceiver.run"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Run&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_emails</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.get_pop_port"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.get_pop_port">[docs]</a>    <span class="k">def</span> <span class="nf">get_pop_port</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns appropriate POP port number depending on incoming server name&quot;</span>
+
+        <span class="n">port</span> <span class="o">=</span> <span class="mi">110</span> <span class="c"># default</span>
+        <span class="n">ssl</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_type</span> <span class="o">==</span> <span class="s">&#39;POP3-SSL&#39;</span><span class="p">:</span>
+            <span class="n">port</span> <span class="o">=</span> <span class="mi">995</span>
+            <span class="n">ssl</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">return</span> <span class="n">port</span><span class="p">,</span> <span class="n">ssl</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.get_imap_port"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.get_imap_port">[docs]</a>    <span class="k">def</span> <span class="nf">get_imap_port</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns appropriate IMAP port number depending on incoming server name&quot;</span>
+
+        <span class="n">port</span> <span class="o">=</span> <span class="mi">143</span> <span class="c"># default</span>
+        <span class="n">ssl</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_type</span> <span class="o">==</span> <span class="s">&#39;IMAP-SSL&#39;</span><span class="p">:</span>
+            <span class="n">port</span> <span class="o">=</span> <span class="mi">993</span>
+            <span class="n">ssl</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">return</span> <span class="n">port</span><span class="p">,</span> <span class="n">ssl</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.get_emails"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.get_emails">[docs]</a>    <span class="k">def</span> <span class="nf">get_emails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Fetches emails&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_type</span> <span class="o">==</span> <span class="s">&#39;IMAP&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_type</span> <span class="o">==</span> <span class="s">&#39;IMAP-SSL&#39;</span><span class="p">:</span>
+
+            <span class="n">MAKER_MESSAGING_IMAP_LIMIT</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;MAKER_MESSAGING_IMAP_LIMIT&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="c"># connect to the server</span>
+            <span class="n">port</span><span class="p">,</span> <span class="n">ssl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_imap_port</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">ssl</span><span class="p">:</span>
+                <span class="n">M</span> <span class="o">=</span> <span class="n">imaplib</span><span class="o">.</span><span class="n">IMAP4_SSL</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_name</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">M</span> <span class="o">=</span> <span class="n">imaplib</span><span class="o">.</span><span class="n">IMAP4</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_name</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+            <span class="n">M</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_username</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">incoming_password</span><span class="p">)</span>
+            <span class="n">M</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+
+            <span class="n">msgnums</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">typ</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s">&#39;REVERSE DATE&#39;</span><span class="p">,</span> <span class="s">&#39;UTF-8&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">folder_name</span><span class="p">)</span> <span class="c"># fetch mail from ALL or UNSEEN]</span>
+                <span class="n">msgnums</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="p">[]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">typ</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">folder_name</span><span class="p">)</span> <span class="c"># fetch mail from ALL or UNSEEN]</span>
+                <span class="n">msgnums</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="p">[]</span>
+                <span class="n">msgnums</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">msgnums</span><span class="p">,</span> <span class="nb">cmp</span><span class="o">=</span><span class="n">intcmp</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">msgnums</span><span class="p">[:</span><span class="n">MAKER_MESSAGING_IMAP_LIMIT</span><span class="p">]:</span>
+                <span class="n">resp</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="s">&#39;(RFC822)&#39;</span><span class="p">)</span>
+                <span class="n">mail</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">message_from_string</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">process_mail</span><span class="p">(</span><span class="n">mail</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">folder_name</span> <span class="o">==</span> <span class="s">&#39;UNSEEN&#39;</span><span class="p">:</span> 
+                    <span class="n">M</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="s">&#39;+FLAGS&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">Seen&#39;</span><span class="p">)</span>
+        
+            <span class="n">M</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">M</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_type</span> <span class="o">==</span> <span class="s">&#39;POP3&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_type</span> <span class="o">==</span> <span class="s">&#39;POP3-SSL&#39;</span><span class="p">:</span>
+
+            <span class="n">MAKER_MESSAGING_POP3_LIMIT</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;MAKER_MESSAGING_POP3_LIMIT&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="c"># connect to the server</span>
+            <span class="n">port</span><span class="p">,</span> <span class="n">ssl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pop_port</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">ssl</span><span class="p">:</span>
+                <span class="n">M</span> <span class="o">=</span> <span class="n">poplib</span><span class="o">.</span><span class="n">POP3_SSL</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_name</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">M</span> <span class="o">=</span> <span class="n">poplib</span><span class="o">.</span><span class="n">POP3</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_name</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+            <span class="n">M</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">incoming_server_username</span><span class="p">)</span>
+            <span class="n">M</span><span class="o">.</span><span class="n">pass_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">incoming_password</span><span class="p">)</span>
+
+            <span class="n">numMessages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">list</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="c"># Select correct limit for range(limit, numMessages)</span>
+            <span class="k">if</span> <span class="n">numMessages</span> <span class="o">&gt;=</span> <span class="n">MAKER_MESSAGING_POP3_LIMIT</span><span class="p">:</span>
+                <span class="n">limit</span> <span class="o">=</span> <span class="n">numMessages</span> <span class="o">-</span> <span class="n">MAKER_MESSAGING_POP3_LIMIT</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">limit</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c"># select new emails</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">limit</span><span class="p">,</span> <span class="n">numMessages</span><span class="p">):</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">i</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">mail</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">message_from_string</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">process_mail</span><span class="p">(</span><span class="n">mail</span><span class="p">)</span>
+            <span class="n">M</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.process_mail"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.process_mail">[docs]</a>    <span class="k">def</span> <span class="nf">process_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mail</span><span class="p">):</span>
+        <span class="c"># process message</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">attachments</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">mail</span><span class="o">.</span><span class="n">is_multipart</span><span class="p">():</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">mail</span><span class="o">.</span><span class="n">walk</span><span class="p">():</span>
+                <span class="c"># multipart are just containers, so we skip them</span>
+                <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">get_content_maintype</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;multipart&#39;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span> <span class="ow">and</span> <span class="n">part</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;Content-Transfer-Encoding&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;base64&#39;</span><span class="p">:</span>
+                    <span class="n">attachments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">get_content_type</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;text/plain&#39;</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">get_payload</span><span class="p">(</span><span class="n">decode</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">get_content_type</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;text/html&#39;</span><span class="p">:</span>
+                    <span class="n">html</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">get_payload</span><span class="p">(</span><span class="n">decode</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+            <span class="n">body</span> <span class="o">=</span> <span class="n">html</span> <span class="k">if</span> <span class="n">html</span> <span class="k">else</span> <span class="n">text</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">mail</span><span class="o">.</span><span class="n">get_payload</span><span class="p">(</span><span class="n">decode</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="k">class</span> <span class="nc">MailAttrs</span> <span class="p">:</span> <span class="k">pass</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="n">MailAttrs</span><span class="p">()</span>
+        <span class="n">attrs</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_subject</span><span class="p">(</span><span class="n">mail</span><span class="p">[</span><span class="s">&#39;subject&#39;</span><span class="p">])</span>
+        <span class="c"># replace annoying characters</span>
+        <span class="n">attrs</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mail</span><span class="o">.</span><span class="n">is_multipart</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">mail</span><span class="o">.</span><span class="n">get_content_type</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+            <span class="n">attrs</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&amp;&#39;</span><span class="p">,</span> <span class="s">&#39;&amp;amp;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s">&#39;&amp;lt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&amp;gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s">&#39;&amp;quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s">&#39;&amp;#39;&#39;</span><span class="p">)</span>
+        <span class="n">attrs</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_email_body</span><span class="p">(</span> <span class="n">attrs</span><span class="o">.</span><span class="n">body</span> <span class="p">)</span>
+        <span class="n">attrs</span><span class="o">.</span><span class="n">author_name</span><span class="p">,</span> <span class="n">attrs</span><span class="o">.</span><span class="n">author_email</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_email_author</span><span class="p">(</span><span class="n">mail</span><span class="p">)</span>
+
+        <span class="n">attrs</span><span class="o">.</span><span class="n">email_date</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">date_tuple</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">parsedate_tz</span><span class="p">(</span><span class="n">mail</span><span class="p">[</span><span class="s">&#39;Date&#39;</span><span class="p">])</span>
+            <span class="n">email_ts</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">date_tuple</span><span class="p">[:</span><span class="mi">9</span><span class="p">])</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">date_tuple</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tzoffset</span>
+            <span class="n">attrs</span><span class="o">.</span><span class="n">email_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">email_ts</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_msg</span><span class="p">(</span><span class="n">mail</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">attachments</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.process_msg"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.process_msg">[docs]</a>    <span class="k">def</span> <span class="nf">process_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">attachments</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.decode"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.decode">[docs]</a>    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">encoding</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">smart_unicode</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">&#39;ignore&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_unicode</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.make_unicode"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.make_unicode">[docs]</a>    <span class="k">def</span> <span class="nf">make_unicode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="s">&quot;Detects string encoding and make it unicode&quot;</span>
+
+        <span class="n">utf8_detector</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;&quot;&quot;^(?:</span>
+<span class="s">            [\x09\x0A\x0D\x20-\x7E]            # ASCII</span>
+<span class="s">          | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte</span>
+<span class="s">          |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs</span>
+<span class="s">          | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte</span>
+<span class="s">          |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates</span>
+<span class="s">          |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3</span>
+<span class="s">          | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15</span>
+<span class="s">          |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16</span>
+<span class="s">         )*$&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="n">cp1252_detector</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^(?:[\x80-\xBF])*$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">xa4_detector</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^(?:\xA4)*$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">utf8_detector</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s">&#39;utf_8&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">cp1252_detector</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">xa4_detector</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">smart_unicode</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s">&#39;iso8859_15&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">smart_unicode</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s">&#39;cp1252&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">smart_unicode</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s">&#39;koi8-r&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">&#39;ignore&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">smart_unicode</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">&#39;ignore&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.decode_subject"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.decode_subject">[docs]</a>    <span class="k">def</span> <span class="nf">decode_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">):</span>
+        <span class="s">&quot;Decodes email subjects&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">subject</span><span class="p">:</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="s">&#39;No subject&#39;</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subject</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">decode_header</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">subject</span><span class="p">,</span> <span class="n">encoding</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.decode_body"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.decode_body">[docs]</a>    <span class="k">def</span> <span class="nf">decode_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
+        <span class="s">&quot;Decodes Base64-encoded string&quot;</span>
+        <span class="k">if</span> <span class="n">body</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="s">&#39;No message&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">body</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.parse_email_body"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.parse_email_body">[docs]</a>    <span class="k">def</span> <span class="nf">parse_email_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
+        <span class="s">&quot;Removes all the dangerous and useless staff&quot;</span>
+
+        <span class="c"># Replace annoying characters</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\r</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;=</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;=</span><span class="se">\n\r</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;=20</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+        <span class="n">MAKER_MESSAGING_UNSAFE_BLOCKS</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;MAKER_MESSAGING_UNSAFE_BLOCKS&#39;</span><span class="p">,</span>
+                                                   <span class="p">(</span><span class="s">&#39;head&#39;</span><span class="p">,</span> <span class="s">&#39;object&#39;</span><span class="p">,</span> <span class="s">&#39;embed&#39;</span><span class="p">,</span> <span class="s">&#39;applet&#39;</span><span class="p">,</span> <span class="s">&#39;noframes&#39;</span><span class="p">,</span>
+                                                    <span class="s">&#39;noscript&#39;</span><span class="p">,</span> <span class="s">&#39;noembed&#39;</span><span class="p">,</span> <span class="s">&#39;iframe&#39;</span><span class="p">,</span> <span class="s">&#39;frame&#39;</span><span class="p">,</span> <span class="s">&#39;frameset&#39;</span><span class="p">))</span>
+
+        <span class="c"># Strip unsafe tags</span>
+        <span class="n">tags_str</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MAKER_MESSAGING_UNSAFE_BLOCKS</span><span class="p">)</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">removetags</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">tags_str</span><span class="p">)</span>
+
+        <span class="c"># Remove multiple &lt;br /&gt; tags</span>
+        <span class="n">rules</span> <span class="o">=</span> <span class="p">[</span>
+          <span class="p">{</span> <span class="s">r&#39;\s*&lt;br\s*/?&gt;\s*&#39;</span> <span class="p">:</span> <span class="s">u&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">}</span>
+        <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">:</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">rule</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                <span class="n">body</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+
+        <span class="c"># displaying messages correctly</span>
+        <span class="k">if</span> <span class="n">body</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;&lt;!DOCTYPE&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">body</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;&lt;html&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">body</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;&lt;meta&#39;</span><span class="p">):</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n\n\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&gt;</span><span class="se">\n</span><span class="s">&lt;&#39;</span><span class="p">,</span> <span class="s">&#39;&gt;&lt;&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="s">&#39;&lt;html&#39;</span> <span class="ow">in</span> <span class="n">body</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;&lt;br /&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">body</span>
+</div>
+<div class="viewcode-block" id="EmailReceiver.get_email_author"><a class="viewcode-back" href="../../../development/core.html#maker.core.mail.EmailReceiver.get_email_author">[docs]</a>    <span class="k">def</span> <span class="nf">get_email_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="s">&quot;Returns author&#39;s name and email if any&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">header_from</span> <span class="o">=</span> <span class="n">msg</span><span class="p">[</span><span class="s">&#39;From&#39;</span><span class="p">]</span>
+            <span class="n">splits</span> <span class="o">=</span> <span class="n">header_from</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">email</span> <span class="o">=</span> <span class="n">splits</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">header_from</span><span class="p">)</span>
+            <span class="n">email</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">decode_header</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39; &quot;</span><span class="se">\&#39;</span><span class="s">&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39; </span><span class="se">\&#39;</span><span class="s">&quot;&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">email</span> <span class="o">=</span> <span class="n">name</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">email</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">email</span> <span class="o">=</span> <span class="n">msg</span><span class="p">[</span><span class="s">&#39;Return-path&#39;</span><span class="p">]</span>
+                <span class="n">email</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39; </span><span class="se">\&#39;</span><span class="s">&quot;&lt;&gt;&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">email</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">email</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

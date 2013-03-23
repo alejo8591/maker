@@ -1,12 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Reports models
+    Reports models
 """
-
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _

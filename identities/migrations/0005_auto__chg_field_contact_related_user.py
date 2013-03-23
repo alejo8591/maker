@@ -1,4 +1,7 @@
-# -*- coding: utf-8 -*-
+# encoding: utf-8
+# Copyright 2013 maker
+# License
+
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration

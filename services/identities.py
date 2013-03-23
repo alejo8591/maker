@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Handle objects from this module relevant to a Contact or a User
+    Handle objects from this module relevant to a Contact or a User
 """
 from maker.core.models import Object
 from maker.services.models import Ticket
@@ -31,8 +30,8 @@ USER_OBJECTS['serviceagent_set'] = {'label': 'Assigned Tickets',
 
 def get_contact_objects(current_user, contact):
     """
-    Returns a dictionary with keys specified as contact attributes
-    and values as dictionaries with labels and set of relevant objects.
+        Returns a dictionary with keys specified as contact attributes
+        and values as dictionaries with labels and set of relevant objects.
     """
     
     objects = dict(CONTACT_OBJECTS)
@@ -51,8 +50,8 @@ def get_contact_objects(current_user, contact):
 
 def get_user_objects(current_user, user):
     """
-    Returns a dictionary with keys specified as contact attributes
-    and values as dictionaries with labels and set of relevant objects.
+        Returns a dictionary with keys specified as contact attributes
+        and values as dictionaries with labels and set of relevant objects.
     """
     
     objects = dict(USER_OBJECTS)

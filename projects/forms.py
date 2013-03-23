@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Project management forms
+    Project management forms
 """
 from django.forms import ModelForm, CharField, TextInput, Form, ModelChoiceField, IntegerField, ChoiceField
 from maker.projects.models import Project, Milestone, Task, TaskTimeSlot, TaskStatus
@@ -17,7 +16,9 @@ from maker.core.decorators import preprocess_form
 preprocess_form()
 
 class SettingsForm(Form):
-    """ Administration settings form """
+    """ 
+        Administration settings form 
+    """
 
     default_task_status = ModelChoiceField(label='Default Task Status', queryset=[])
 

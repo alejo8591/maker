@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Nuvius profile views
+    Nuvius profile views
 """
 from maker.core.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect

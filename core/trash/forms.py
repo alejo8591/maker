@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Core Trash module forms
+    Core Trash module forms
 """
 from django import forms
 from django.utils.translation import ugettext as _

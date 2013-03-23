@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Service Support: Hardtree module definition
+Service Support: maker module definition
 """
 
 PROPERTIES = {
@@ -19,10 +18,7 @@ URL_PATTERNS = [
                 '^/services/',
                 ]
 
-#
 # Cron
-#
-
 from maker.services.cron import tickets_escalate
 
 CRON = [tickets_escalate]

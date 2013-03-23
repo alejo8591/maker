@@ -1,8 +1,14 @@
+# encoding: utf-8
+# Copyright 2013 maker
+# License
+
 from django.test.simple import DjangoTestSuiteRunner
 from django.conf import settings
 
 class CustomTestRunner(DjangoTestSuiteRunner):
-    """Custom DjangoTestSuiteRunner to remove Django modules from tests"""
+    """
+    	Custom DjangoTestSuiteRunner to remove Django modules from tests
+    """
     def __init__(self, *args, **kwargs):
         super(CustomTestRunner, self).__init__(*args, **kwargs)
 

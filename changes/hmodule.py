@@ -4,7 +4,7 @@
 # License www.tree.io/license
 
 """
-Change Control: Hardtree module definition
+	Change Control: maker module definition
 """
 
 """

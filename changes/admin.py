@@ -4,17 +4,21 @@
 # License www.tree.io/license
 
 """
-Change management: admin page
+	Change management: admin page
 """
 from maker.changes.models import Change, ChangeSet
 from django.contrib import admin
 
 class ChangeAdmin(admin.ModelAdmin):
-    """ Change admin """
+    """ 
+    	Change admin 
+    """
     list_display = ('change_set', 'change_type', 'field', 'change_from', 'change_to')
     
 class ChangeSetAdmin(admin.ModelAdmin):
-    """ Change request admin """
+    """ 
+    	Change request admin 
+    """
     list_display = ('object', 'author', 'resolved_by', 'resolved_on', 'status', 'name')
     list_filter = ['status']
     

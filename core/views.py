@@ -51,7 +51,7 @@ def user_login(request, response_format='html'):
         password = request.POST['password']
 
         user = authenticate(username=username, password=password)
-        if user and getattr(settings, 'HARDTREE_DISABLE_EVERGREEN_USERS', False) and 'evergreen_' in user.username[:10]:
+        if user and getattr(settings, 'MAKER_DISABLE_EVERGREEN_USERS', False) and 'evergreen_' in user.username[:10]:
             user = None
         if form.is_valid():
             if user is not None:
@@ -76,7 +76,7 @@ def user_login(request, response_format='html'):
                 if user.is_active and profile:
                     
                     # Disable account with overdue payment
-                    if getattr(settings, "HARDTREE_SUBSCRIPTION_BLOCKED", False):
+                    if getattr(settings, "MAKER_SUBSCRIPTION_BLOCKED", False):
                         return render_to_response('core/user_login', {
                         'error_message': 'We are sorry to inform you but your account has been deactivated. Please login to your <a href="https://www.tree.io/login/">control panel</a> to see details.', 'form': Markup(form)},
                         context_instance=RequestContext(request), response_format=response_format)
@@ -84,7 +84,7 @@ def user_login(request, response_format='html'):
                     login(request, user)
                     
                     # Prevent same user from logging in at 2 different machines
-                    if getattr(settings, "HARDTREE_MULTIPLE_LOGINS_DISABLED", False):
+                    if getattr(settings, "MAKER_MULTIPLE_LOGINS_DISABLED", False):
                         for ses in Session.objects.all():
                             if ses != request.session:
                                 try:
@@ -189,7 +189,7 @@ def ajax_popup(request, popup_id='', url='/'):
     active = None
     for module in modules:
         try:
-            import_name = module.name + "." + settings.HARDTREE_MODULE_IDENTIFIER
+            import_name = module.name + "." + settings.MAKER_MODULE_IDENTIFIER
             hmodule = __import__(import_name, fromlist=[str(module.name)])
             urls = hmodule.URL_PATTERNS
             for regexp in urls:
@@ -245,13 +245,13 @@ def ajax_popup(request, popup_id='', url='/'):
     context['popup_id'] = popup_id
     context['url']      = request.path
 
-    if settings.HARDTREE_RESPONSE_FORMATS['json'] in response.get('Content-Type', 'text/html'):
+    if settings.MAKER_RESPONSE_FORMATS['json'] in response.get('Content-Type', 'text/html'):
         new_response = render_to_response('core/ajax_popup', context,
                                           context_instance=RequestContext(request), response_format='json')
     else:
         new_response = HttpResponse(json.dumps({'popup': context}))
 
-    new_response.mimetype = settings.HARDTREE_RESPONSE_FORMATS['json']
+    new_response.mimetype = settings.MAKER_RESPONSE_FORMATS['json']
     try:
         jsonresponse = json.loads(response.content)
         if 'redirect' in jsonresponse:
@@ -312,7 +312,7 @@ def database_setup(request, response_format='html'):
 def help_page(request, url='/', response_format='html'):
     "Returns a Help page from Evergreen"
     
-    source = getattr(settings, 'HARDTREE_HELP_SOURCE', 'http://127.0.0.1:7000/help')
+    source = getattr(settings, 'MAKER_HELP_SOURCE', 'http://127.0.0.1:7000/help')
     
     if not url:
         url = '/'
@@ -374,10 +374,10 @@ def widget_welcome(request, response_format='html'):
     "Quick start widget, which users see when they first log in"
     
     trial = False
-    if getattr(settings, 'HARDTREE_SUBSCRIPTION_USER_LIMIT') == 3:
+    if getattr(settings, 'MAKER_SUBSCRIPTION_USER_LIMIT') == 3:
         trial = True
         
-    customization = getattr(settings, 'HARDTREE_SUBSCRIPTION_CUSTOMIZATION', True)
+    customization = getattr(settings, 'MAKER_SUBSCRIPTION_CUSTOMIZATION', True)
     
     return render_to_response('core/widgets/welcome', {'trial': trial, 'customization': customization},
                               context_instance=RequestContext(request), response_format=response_format)

@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>maker.core.rendering &mdash; Maker 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Maker 0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for maker.core.rendering</h1><div class="highlight"><pre>
+<span class="c"># encoding: utf-8</span>
+<span class="c"># Copyright 2013 maker</span>
+<span class="c"># License</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rendering routines for Hardtree</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span> <span class="nn">django.contrib.sites.models</span> <span class="kn">import</span> <span class="n">RequestSite</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">BaseForm</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
+<span class="kn">from</span> <span class="nn">coffin.template</span> <span class="kn">import</span> <span class="n">loader</span>
+<span class="kn">from</span> <span class="nn">maker.core.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">maker.core.models</span> <span class="kn">import</span> <span class="n">UpdateRecord</span>
+<span class="kn">from</span> <span class="nn">maker.core.ajax.converter</span> <span class="kn">import</span> <span class="n">preprocess_context</span> <span class="k">as</span> <span class="n">preprocess_context_ajax</span><span class="p">,</span> <span class="n">convert_to_ajax</span>
+<span class="kn">import</span> <span class="nn">hashlib</span><span class="o">,</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">codecs</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">simplejson</span> <span class="kn">as</span> <span class="nn">json</span>
+
+
+<span class="k">def</span> <span class="nf">_preprocess_context_html</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="s">&quot;Prepares context to be rendered for HTML&quot;</span>
+    
+    <span class="c"># Process popuplink fields</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">context</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">context</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">BaseForm</span><span class="p">):</span>
+            <span class="n">form</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+                <span class="n">field</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c"># find popuplink fields</span>
+                    <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">attrs</span> <span class="ow">and</span> <span class="s">&#39;popuplink&#39;</span> <span class="ow">in</span> <span class="n">field</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+                        <span class="n">field</span><span class="o">.</span><span class="n">help_text</span> <span class="o">+=</span>  <span class="s">&#39;&lt;a href=&quot;</span><span class="si">%s</span><span class="s">&quot; field=&quot;id_</span><span class="si">%s</span><span class="s">&quot; id=&quot;link-</span><span class="si">%s</span><span class="s">&quot; class=&quot;inline-link add-link popup-link&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/a&gt;&#39;</span> <span class="o">%</span> \
+                                            <span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&#39;popuplink&#39;</span><span class="p">],</span> <span class="n">fname</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;New&quot;</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">pass</span>
+    
+    <span class="k">return</span> <span class="n">context</span>
+
+
+<div class="viewcode-block" id="render_to_string"><a class="viewcode-back" href="../../../development/core.html#maker.core.rendering.render_to_string">[docs]</a><span class="k">def</span> <span class="nf">render_to_string</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{},</span> <span class="n">context_instance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Picks up the appropriate template to render to string&quot;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response_format</span> <span class="ow">or</span> <span class="s">&#39;pdf&#39;</span> <span class="ow">in</span> <span class="n">response_format</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">response_format</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAKER_RESPONSE_FORMATS</span><span class="p">:</span>
+        <span class="n">response_format</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">response_format</span><span class="p">)</span> <span class="ow">in</span> <span class="n">template_name</span><span class="p">:</span>
+        <span class="n">template_name</span> <span class="o">+=</span> <span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">response_format</span>
+    
+    <span class="n">template_name</span> <span class="o">=</span> <span class="n">response_format</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">template_name</span>
+    
+    <span class="n">context</span><span class="p">[</span><span class="s">&#39;response_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_format</span>
+    <span class="k">if</span> <span class="n">context_instance</span><span class="p">:</span>
+        <span class="n">context</span><span class="p">[</span><span class="s">&#39;site_domain&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RequestSite</span><span class="p">(</span><span class="n">context_instance</span><span class="p">[</span><span class="s">&#39;request&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">domain</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="n">_preprocess_context_html</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    
+    <span class="n">rendered_string</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">render_to_string</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">context_instance</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rendered_string</span>
+
+</div>
+<div class="viewcode-block" id="render_to_ajax"><a class="viewcode-back" href="../../../development/core.html#maker.core.rendering.render_to_ajax">[docs]</a><span class="k">def</span> <span class="nf">render_to_ajax</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{},</span> <span class="n">context_instance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="s">&quot;Render request into JSON object to be handled by AJAX on the server-side&quot;</span>
+    
+    <span class="n">response_format</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;response_format_tags&#39;</span> <span class="ow">in</span> <span class="n">context</span><span class="p">:</span>
+        <span class="n">context</span><span class="p">[</span><span class="s">&#39;response_format_tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;ajax&#39;</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="n">preprocess_context_ajax</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">render_to_string</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">context_instance</span><span class="p">,</span> <span class="n">response_format</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">convert_to_ajax</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">context_instance</span><span class="p">)</span>
+    <span class="n">context</span><span class="p">[</span><span class="s">&#39;content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    
+    <span class="n">notifications</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">context_instance</span> <span class="ow">and</span> <span class="s">&#39;request&#39;</span> <span class="ow">in</span> <span class="n">context_instance</span><span class="p">:</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">context_instance</span><span class="p">[</span><span class="s">&#39;request&#39;</span><span class="p">]</span>
+        <span class="n">maxmsgs</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">get_messages</span><span class="p">(</span><span class="n">request</span><span class="p">))[:</span><span class="n">maxmsgs</span><span class="p">]:</span>
+                <span class="n">msgtext</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s">&#39;updaterecord:&#39;</span> <span class="ow">in</span> <span class="n">msgtext</span><span class="p">[:</span><span class="mi">13</span><span class="p">]:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">update_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">msgtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="n">update</span> <span class="o">=</span> <span class="n">UpdateRecord</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">update_id</span><span class="p">)</span>
+                        <span class="n">message</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;message&#39;</span><span class="p">:</span> <span class="n">update</span><span class="o">.</span><span class="n">get_full_message</span><span class="p">(),</span>
+                                   <span class="s">&#39;tags&#39;</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">tags</span><span class="p">}</span>
+                        <span class="k">if</span> <span class="n">update</span><span class="o">.</span><span class="n">author</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">update</span><span class="o">.</span><span class="n">record_type</span> <span class="o">==</span> <span class="s">&#39;manual&#39;</span> <span class="ow">or</span> <span class="n">update</span><span class="o">.</span><span class="n">record_type</span> <span class="o">==</span> <span class="s">&#39;share&#39;</span><span class="p">:</span>
+                                <span class="k">try</span><span class="p">:</span>
+                                    <span class="n">message</span><span class="p">[</span><span class="s">&#39;image&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">update</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">get_contact</span><span class="p">()</span><span class="o">.</span><span class="n">get_picture</span><span class="p">()</span>
+                                <span class="k">except</span><span class="p">:</span>
+                                    <span class="k">pass</span> 
+                            <span class="n">message</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">update</span><span class="o">.</span><span class="n">author</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">update</span><span class="o">.</span><span class="n">about</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                            <span class="n">message</span><span class="p">[</span><span class="s">&#39;message&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;(</span><span class="si">%s</span><span class="s">) </span><span class="si">%s</span><span class="s">:&lt;br /&gt;</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_human_type</span><span class="p">(),</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">message</span><span class="p">[</span><span class="s">&#39;message&#39;</span><span class="p">])</span>
+                        <span class="n">notifications</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">notifications</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;message&#39;</span><span class="p">:</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
+                                          <span class="s">&#39;tags&#39;</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">tags</span><span class="p">})</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="n">context</span><span class="p">[</span><span class="s">&#39;notifications&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">notifications</span><span class="p">)</span>
+    
+    <span class="n">rendered_string</span> <span class="o">=</span> <span class="n">render_to_string</span><span class="p">(</span><span class="s">&#39;ajax_base&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">context_instance</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">rendered_string</span>
+
+</div>
+<div class="viewcode-block" id="render_to_response"><a class="viewcode-back" href="../../../development/core.html#maker.core.rendering.render_to_response">[docs]</a><span class="k">def</span> <span class="nf">render_to_response</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{},</span> <span class="n">context_instance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Extended render_to_response to support different formats&quot;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response_format</span><span class="p">:</span>
+        <span class="n">response_format</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response_format</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAKER_RESPONSE_FORMATS</span><span class="p">:</span>
+        <span class="n">response_format</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span>
+    
+    <span class="n">mimetype</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAKER_RESPONSE_FORMATS</span><span class="p">[</span><span class="n">response_format</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="s">&#39;pdf&#39;</span> <span class="ow">in</span> <span class="n">response_format</span><span class="p">:</span>
+        <span class="n">pdf_name</span> <span class="o">=</span> <span class="s">&quot;report.pdf&quot;</span>
+        
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">hasher</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">()</span>
+            <span class="n">hasher</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()))</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="s">u&quot;pdfs/&quot;</span> <span class="o">+</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">MEDIA_ROOT</span> <span class="o">+</span> <span class="n">filepath</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output</span> <span class="o">+</span> <span class="s">&quot;.pdf&quot;</span><span class="p">):</span>
+                <span class="k">break</span>
+            
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">hasher</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">()</span>
+            <span class="n">hasher</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()))</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;.html&quot;</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;WKCWD&#39;</span><span class="p">,</span> <span class="s">&#39;./&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">filepath</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+                <span class="k">break</span>
+        
+        <span class="n">page_size</span> <span class="o">=</span> <span class="s">&quot;A4&quot;</span>
+        <span class="n">orientation</span> <span class="o">=</span> <span class="s">&quot;portrait&quot;</span>
+
+        <span class="n">rendered_string</span> <span class="o">=</span> <span class="n">render_to_string</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">context_instance</span><span class="p">,</span> <span class="n">response_format</span><span class="p">)</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">pdf_string</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">rendered_string</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">context_instance</span> <span class="ow">and</span> <span class="n">context_instance</span><span class="p">[</span><span class="s">&#39;request&#39;</span><span class="p">]:</span>
+            <span class="n">pdf_string</span> <span class="o">=</span> <span class="n">pdf_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;a href=</span><span class="se">\&quot;</span><span class="s">/&quot;</span><span class="p">,</span><span class="s">&quot;a href=</span><span class="se">\&quot;</span><span class="s">http://&quot;</span> <span class="o">+</span> <span class="n">RequestSite</span><span class="p">(</span><span class="n">context_instance</span><span class="p">[</span><span class="s">&#39;request&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">domain</span> <span class="o">+</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+        
+        <span class="n">pdf_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;href=</span><span class="se">\&quot;</span><span class="s">/&quot;</span><span class="p">,</span><span class="s">&quot;href=</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span>
+
+        <span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;Content-Type: text/html|&lt;td&gt;</span><span class="se">\n</span><span class="s">\W*&lt;div class=&quot;content-list-tick&quot;&gt;</span><span class="se">\n</span><span class="s">\W.*</span><span class="se">\n</span><span class="s">.*&lt;/div&gt;&lt;/td&gt;|&lt;th scope=&quot;col&quot;&gt;Select&lt;/th&gt;&quot;&quot;&quot;</span>
+        <span class="n">pdf_string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">pdf_string</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;/static/&#39;</span><span class="p">,</span><span class="s">&#39;static/&#39;</span><span class="p">)</span>
+        
+            
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pdf_string</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+     
+        <span class="n">wkpath</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;WKPATH&#39;</span><span class="p">,</span><span class="s">&#39;./bin/wkhtmltopdf-i386&#39;</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> --print-media-type --orientation </span><span class="si">%s</span><span class="s"> --page-size </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span> 
+                             <span class="p">(</span><span class="n">wkpath</span><span class="p">,</span>
+                              <span class="n">orientation</span><span class="p">,</span>
+                              <span class="n">page_size</span><span class="p">,</span>
+                              <span class="n">source</span><span class="p">,</span>
+                              <span class="n">output</span><span class="p">),</span>
+                              <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                              <span class="n">cwd</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;WKCWD&#39;</span><span class="p">,</span> <span class="s">&#39;./&#39;</span><span class="p">))</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">mimetype</span><span class="o">=</span><span class="s">&#39;application/pdf&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        
+        <span class="c">#response[&#39;Content-Disposition&#39;] = &#39;attachment; filename=%s&#39;%(pdf_name)</span>
+        
+        <span class="k">return</span> <span class="n">response</span>
+    
+    <span class="k">if</span> <span class="s">&#39;ajax&#39;</span> <span class="ow">in</span> <span class="n">response_format</span><span class="p">:</span>
+        <span class="n">rendered_string</span> <span class="o">=</span> <span class="n">render_to_ajax</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">context_instance</span><span class="p">)</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        
+        <span class="k">if</span> <span class="n">response_format</span> <span class="o">==</span> <span class="s">&#39;html&#39;</span> <span class="ow">and</span> <span class="n">context_instance</span> <span class="ow">and</span> <span class="n">context_instance</span><span class="p">[</span><span class="s">&#39;request&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;/m/&#39;</span><span class="p">:</span>
+            <span class="n">context</span><span class="p">[</span><span class="s">&#39;response_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_format</span> <span class="o">=</span> <span class="s">&#39;mobile&#39;</span>
+            
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;MAKER_FORCE_AJAX_RENDERING&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="n">preprocess_context_ajax</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+            
+        <span class="n">rendered_string</span> <span class="o">=</span> <span class="n">render_to_string</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">context_instance</span><span class="p">,</span> <span class="n">response_format</span><span class="p">)</span>
+        
+    <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">rendered_string</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="n">mimetype</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span>
+
+</div>
+<div class="viewcode-block" id="render_string_template"><a class="viewcode-back" href="../../../development/core.html#maker.core.rendering.render_string_template">[docs]</a><span class="k">def</span> <span class="nf">render_string_template</span><span class="p">(</span><span class="n">template_string</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{},</span> <span class="n">context_instance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performs rendering using template_string instead of a file, and context.</span>
+<span class="sd">    context_instance is only used to feed user into context (unless already defined)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">template_string</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;user&#39;</span> <span class="ow">in</span> <span class="n">context</span> <span class="ow">and</span> <span class="n">context_instance</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">&#39;request&#39;</span> <span class="ow">in</span> <span class="n">context_instance</span><span class="p">:</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">context_instance</span><span class="p">[</span><span class="s">&#39;request&#39;</span><span class="p">]})</span>
+    
+    <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_template_source"><a class="viewcode-back" href="../../../development/core.html#maker.core.rendering.get_template_source">[docs]</a><span class="k">def</span> <span class="nf">get_template_source</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">response_format</span><span class="o">=</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+    <span class="s">&quot;Returns source of the template file&quot;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response_format</span> <span class="ow">or</span> <span class="s">&#39;pdf&#39;</span> <span class="ow">in</span> <span class="n">response_format</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">response_format</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAKER_RESPONSE_FORMATS</span><span class="p">:</span>
+        <span class="n">response_format</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">response_format</span><span class="p">)</span> <span class="ow">in</span> <span class="n">template_name</span><span class="p">:</span>
+        <span class="n">template_name</span> <span class="o">+=</span> <span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">response_format</span>
+    
+    <span class="n">template_name</span> <span class="o">=</span> <span class="n">response_format</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">template_name</span>
+    
+    <span class="n">t</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">template_name</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    </div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Maker 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, maker Limited.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

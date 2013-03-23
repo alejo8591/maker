@@ -1,3 +1,7 @@
+# encoding: utf-8
+# Copyright 2013 maker
+# License
+
 # -*- coding: utf-8 -*-
 import datetime
 from south.db import db

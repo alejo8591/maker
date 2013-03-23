@@ -1,16 +1,12 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
-
+# Copyright 2013 maker
+# License
 """
-Everpick connector for Nuvius
-
-Processes data requests to Nuvius and provides
-convenience method to simplify data manipulations via
-Nuvius data points.
-
-See NUVIUS_URL in settings to configure where Nuvius instance is located
+    Everpick connector for Nuvius
+    Processes data requests to Nuvius and provides
+    convenience method to simplify data manipulations via
+    Nuvius data points.
+    See NUVIUS_URL in settings to configure where Nuvius instance is located
 """
 
 from maker.core.conf import settings
@@ -20,10 +16,10 @@ import urllib
 
 class DataBlock():
     """
-    DataBlock class to provide easier manipulation on the data returned from Nuvius
-    
-    Allows both, attribute manipulation and key-value manipulation.
-    When initialized, recursively build data model from Nuvius JSON-sourced data.
+        DataBlock class to provide easier manipulation on the data returned from Nuvius
+        
+        Allows both, attribute manipulation and key-value manipulation.
+        When initialized, recursively build data model from Nuvius JSON-sourced data.
     """
     
     multiblock = ""

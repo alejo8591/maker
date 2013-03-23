@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Messaging module views
+    Messaging module views
 """
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
@@ -657,7 +656,7 @@ def settings_view(request, response_format='html'):
         conf = ModuleSetting.get_for_module('maker.messaging', 'default_imap_folder')[0]
         default_imap_folder = conf.value
     except:
-        default_imap_folder = getattr(settings, 'HARDTREE_MESSAGING_IMAP_DEFAULT_FOLDER_NAME', 'UNSEEN')
+        default_imap_folder = getattr(settings, 'MAKER_MESSAGING_IMAP_DEFAULT_FOLDER_NAME', 'UNSEEN')
                 
     # signature
     try:

@@ -4,7 +4,7 @@
 # License www.tree.io/license
 
 """
-Change Control module views
+    Change Control module views
 """
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext

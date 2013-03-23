@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Core module views
+    Core module views
 """
 
 from maker.core.views import user_denied
@@ -101,7 +100,7 @@ def settings_view(request, response_format='html'):
         conf = ModuleSetting.get_for_module('maker.core', 'default_permissions', user=user)[0]
         default_permissions = conf.value
     except:
-        default_permissions = settings.HARDTREE_DEFAULT_PERMISSIONS
+        default_permissions = settings.MAKER_DEFAULT_PERMISSIONS
 
     # default perspective
     try:
@@ -111,16 +110,16 @@ def settings_view(request, response_format='html'):
         default_perspective = None
 
     # language
-    language = getattr(settings, 'HARDTREE_LANGUAGES_DEFAULT', '')
+    language = getattr(settings, 'MAKER_LANGUAGES_DEFAULT', '')
     try:
         conf = ModuleSetting.get('language', user=user)[0]
         language = conf.value
     except IndexError:
         pass
-    all_languages = getattr(settings, 'HARDTREE_LANGUAGES', [('en', 'English')])
+    all_languages = getattr(settings, 'MAKER_LANGUAGES', [('en', 'English')])
     
     # time zone    
-    default_timezone = settings.HARDTREE_SERVER_DEFAULT_TIMEZONE
+    default_timezone = settings.MAKER_SERVER_DEFAULT_TIMEZONE
     try:
         conf = ModuleSetting.get('default_timezone')[0]
         default_timezone = conf.value
@@ -131,12 +130,12 @@ def settings_view(request, response_format='html'):
         conf = ModuleSetting.get('default_timezone', user=user)[0]
         default_timezone = conf.value
     except:
-        default_timezone = getattr(settings, 'HARDTREE_SERVER_TIMEZONE')[default_timezone][0]
+        default_timezone = getattr(settings, 'MAKER_SERVER_TIMEZONE')[default_timezone][0]
     
-    all_timezones = getattr(settings, 'HARDTREE_SERVER_TIMEZONE')
+    all_timezones = getattr(settings, 'MAKER_SERVER_TIMEZONE')
         
     # email notifications e.g. new task assigned to you
-    email_notifications = getattr(settings, 'HARDTREE_ALLOW_EMAIL_NOTIFICATIONS', False)
+    email_notifications = getattr(settings, 'MAKER_ALLOW_EMAIL_NOTIFICATIONS', False)
     try:
         conf = ModuleSetting.get('email_notifications', user=user)[0]
         email_notifications = conf.value

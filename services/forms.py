@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Services module forms
+    Services module forms
 """
 from django import forms
 from django.db.models import Q
@@ -64,7 +63,7 @@ class SettingsForm(forms.Form):
             conf = ModuleSetting.get_for_module('maker.services', 'send_email_to_caller')[0]
             self.fields['send_email_to_caller'].initial = conf.value
         except:
-            self.fields['send_email_to_caller'].initial = settings.HARDTREE_SEND_EMAIL_TO_CALLER
+            self.fields['send_email_to_caller'].initial = settings.MAKER_SEND_EMAIL_TO_CALLER
         
         # notification template
         try:
@@ -96,7 +95,9 @@ class SettingsForm(forms.Form):
 
 
 class MassActionForm(forms.Form):
-    """ Mass action form for Tickets """
+    """ 
+        Mass action form for Tickets 
+    """
     
     status = forms.ModelChoiceField(queryset=[], required=False)
     service = forms.ModelChoiceField(queryset=[], required=False)
@@ -143,7 +144,9 @@ class MassActionForm(forms.Form):
 
 
 class TicketForm(forms.ModelForm):
-    """ Ticket form """
+    """ 
+        Ticket form
+    """
     name = forms.CharField(label='Title', widget=forms.TextInput(attrs={'size':'50'}))
     
     def __init__(self, user, queue, agent, *args, **kwargs):
@@ -258,7 +261,9 @@ class TicketStatusForm(forms.ModelForm):
 
 
 class TicketRecordForm(forms.ModelForm):
-    """ TicketRecord form """
+    """ 
+        TicketRecord form 
+    """
     
     def __init__(self, agent, ticket, *args, **kwargs):
         super(TicketRecordForm, self).__init__(*args, **kwargs)
@@ -312,7 +317,9 @@ class TicketRecordForm(forms.ModelForm):
 
 
 class QueueForm(forms.ModelForm):
-    """ Queue form """
+    """ 
+        Queue form 
+    """
     name = forms.CharField(widget=forms.TextInput(attrs={'size':'50'}))
     
     def __init__(self, user, *args, **kwargs):
@@ -352,7 +359,9 @@ class QueueForm(forms.ModelForm):
 
 
 class ServiceForm(forms.ModelForm):
-    """ Service form """
+    """ 
+        Service form 
+    """
     name = forms.CharField(widget=forms.TextInput(attrs={'size':'50'}))
     
     def __init__(self, user, *args, **kwargs):
@@ -376,7 +385,9 @@ class ServiceForm(forms.ModelForm):
         fields = ('name', 'parent', 'details')
 
 class ServiceLevelAgreementForm(forms.ModelForm):
-    """ ServiceLevelAgreement form """
+    """ 
+        ServiceLevelAgreement form 
+    """
     name = forms.CharField(widget=forms.TextInput(attrs={'size':'50'}))
     
     def __init__(self, user, *args, **kwargs):
@@ -427,7 +438,9 @@ class ServiceLevelAgreementForm(forms.ModelForm):
 
 
 class AgentForm(forms.ModelForm):
-    """ Agent form """
+    """ 
+        Agent form 
+    """
     
     def __init__(self, user, *args, **kwargs):
         "Sets allowed values"
@@ -448,7 +461,9 @@ class AgentForm(forms.ModelForm):
         
 
 class FilterForm(forms.ModelForm):
-    """ Ticket Filters definition """
+    """ 
+        Ticket Filters definition 
+    """
     
     def __init__(self, user, skip=[], *args, **kwargs):
         "Sets allowed values"
@@ -526,7 +541,9 @@ class SLAFilterForm(forms.ModelForm):
 
 
 class AgentFilterForm(forms.ModelForm):
-    """ Agent Filters definition """
+    """ 
+        Agent Filters definition 
+    """
     
     def __init__(self, user, skip=[], *args, **kwargs):
         "Sets allowed values"

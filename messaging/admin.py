@@ -1,10 +1,8 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
-
+# Copyright 2013 maker
+# License
 """
-Messaging module: Admin page
+	Messaging module: Admin page
 """
 from maker.messaging.models import Message, MessageStream
 from django.contrib import admin

@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-News module: views
+    News module: views
 """
 from django.shortcuts import Http404
 from django.template import RequestContext

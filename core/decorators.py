@@ -1,7 +1,7 @@
 # encoding: utf-8
 # Copyright 2013 maker
-# This file is part of maker.
-# License www.tree.io/license
+# License
+
 
 """
     maker Core decorators for views
@@ -18,8 +18,9 @@ import simplejson as json
 import re
 
 def maker_login_required(f):
-    """ Check that the user has write access to the maker.core module """
-    
+    """ 
+        Check that the user has write access to the maker.core module 
+    """
     def wrap(request, *args, **kwargs):
         "Wrap"
         if request.user.is_authenticated():
@@ -29,7 +30,7 @@ def maker_login_required(f):
             active = None
             for module in all_modules:
                 try:
-                    import_name = module.name + "." + settings.HARDTREE_MODULE_IDENTIFIER
+                    import_name = module.name + "." + settings.MAKER_MODULE_IDENTIFIER
                     hmodule = __import__(import_name, fromlist=[str(module.name)])
                     urls = hmodule.URL_PATTERNS
                     for regexp in urls:
@@ -91,7 +92,7 @@ def module_admin_required(module_name=None):
 
 def _is_full_redirect(redirect_url):
     "Returns True if this page requires full reload with AJAX enabled"
-    redirect_views = getattr(settings, 'HARDTREE_AJAX_RELOAD_ON_REDIRECT', ['user_login'])
+    redirect_views = getattr(settings, 'MAKER_AJAX_RELOAD_ON_REDIRECT', ['user_login'])
     for view in redirect_views:
         url = ''
         try:
@@ -121,22 +122,22 @@ def handle_response_format(f):
                         location = response['Location']
                         if not _is_full_redirect(location):
                             response = HttpResponse(json.dumps({'redirect': location}), 
-                                                    mimetype=settings.HARDTREE_RESPONSE_FORMATS['ajax'])
+                                                    mimetype=settings.MAKER_RESPONSE_FORMATS['ajax'])
                         else:
                             if '.ajax' in location:
                                 location = str(location).replace('.ajax', '')
                             response = HttpResponse(json.dumps({'redirect_out': location}), 
-                                                    mimetype=settings.HARDTREE_RESPONSE_FORMATS['ajax'])
+                                                    mimetype=settings.MAKER_RESPONSE_FORMATS['ajax'])
                     elif hasattr(request, 'redirect'):
                         location = request.redirect
                         response = HttpResponse(json.dumps({'redirect': location}), 
-                                                mimetype=settings.HARDTREE_RESPONSE_FORMATS['ajax'])
-                    elif 'Content-Disposition' in response and not response['Content-Type'] in settings.HARDTREE_RESPONSE_FORMATS.values():
+                                                mimetype=settings.MAKER_RESPONSE_FORMATS['ajax'])
+                    elif 'Content-Disposition' in response and not response['Content-Type'] in settings.MAKER_RESPONSE_FORMATS.values():
                         location = request.get_full_path()
                         if '.ajax' in location:
                             location = str(location).replace('.ajax', '')
                         response = HttpResponse(json.dumps({'redirect_out': location}), 
-                                                mimetype=settings.HARDTREE_RESPONSE_FORMATS['ajax'])
+                                                mimetype=settings.MAKER_RESPONSE_FORMATS['ajax'])
                         
                  
                 return response

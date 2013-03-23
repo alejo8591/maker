@@ -1,5 +1,9 @@
+# encoding: utf-8
+# Copyright 2013 maker
+# License
+
 """
-Rendering routines for Hardtree
+    Rendering routines for Hardtree
 """
 
 from django.http import HttpResponse
@@ -39,7 +43,7 @@ def _preprocess_context_html(context):
 def render_to_string(template_name, context={}, context_instance=None, response_format='html'):
     "Picks up the appropriate template to render to string"
     
-    if not response_format or 'pdf' in response_format or not response_format in settings.HARDTREE_RESPONSE_FORMATS:
+    if not response_format or 'pdf' in response_format or not response_format in settings.MAKER_RESPONSE_FORMATS:
         response_format = 'html'
 
     if not ("." + response_format) in template_name:
@@ -112,10 +116,10 @@ def render_to_response(template_name, context={}, context_instance=None, respons
     if not response_format:
         response_format = 'html'
     
-    if not response_format in settings.HARDTREE_RESPONSE_FORMATS:
+    if not response_format in settings.MAKER_RESPONSE_FORMATS:
         response_format = 'html'
     
-    mimetype = settings.HARDTREE_RESPONSE_FORMATS[response_format]
+    mimetype = settings.MAKER_RESPONSE_FORMATS[response_format]
     
     if 'pdf' in response_format:
         pdf_name = "report.pdf"
@@ -186,7 +190,7 @@ def render_to_response(template_name, context={}, context_instance=None, respons
         if response_format == 'html' and context_instance and context_instance['request'].path[:3] == '/m/':
             context['response_format'] = response_format = 'mobile'
             
-        if getattr(settings, 'HARDTREE_FORCE_AJAX_RENDERING', False):
+        if getattr(settings, 'MAKER_FORCE_AJAX_RENDERING', False):
             context = preprocess_context_ajax(context)
             
         rendered_string = render_to_string(template_name, context, context_instance, response_format)
@@ -215,7 +219,7 @@ def render_string_template(template_string, context={}, context_instance=None):
 def get_template_source(template_name, response_format='html'):
     "Returns source of the template file"
     
-    if not response_format or 'pdf' in response_format or not response_format in settings.HARDTREE_RESPONSE_FORMATS:
+    if not response_format or 'pdf' in response_format or not response_format in settings.MAKER_RESPONSE_FORMATS:
         response_format = 'html'
 
     if not ("." + response_format) in template_name:

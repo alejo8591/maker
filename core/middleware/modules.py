@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Modules middleware: handles modular behavior of the system
+    Modules middleware: handles modular behavior of the system
 """
 
 from maker.core.conf import settings
@@ -13,13 +13,13 @@ from maker.core.models import Module
 # This must be fired after Django processes request
 # i.e. after Django's own middleware has been fired
 class ModuleDetect():
-    "Handles Hardtree automatic modules detection"
+    "Handles maker automatic modules detection"
     
     def process_request(self, request):
         "Process request"
         hmodules = dict()
         for module in settings.INSTALLED_APPS:
-            import_name = str(module) + "." + settings.HARDTREE_MODULE_IDENTIFIER
+            import_name = str(module) + "." + settings.MAKER_MODULE_IDENTIFIER
             try:
                 hmodule = __import__(import_name, fromlist=[str(module)])
                 hmodules[str(module)] = hmodule.PROPERTIES

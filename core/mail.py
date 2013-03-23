@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Core Mail Framework
+    Core Mail Framework
 """
 from maker.core.conf import settings
 
@@ -24,11 +23,11 @@ from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext as _
 from django.template.defaultfilters import removetags
 
-EMAIL_SERVER = getattr(settings, 'EMAIL_SERVER', '127.0.0.1')
+EMAIL_SERVER = getattr(settings, 'EMAIL_SERVER', '')
 IMAP_SERVER = getattr(settings, 'IMAP_SERVER', '')
 EMAIL_USERNAME = getattr(settings, 'EMAIL_USERNAME', '')
 EMAIL_PASSWORD = getattr(settings, 'EMAIL_PASSWORD', '')
-EMAIL_FROM = getattr(settings, 'EMAIL_FROM', 'noreply@tree.io')
+EMAIL_FROM = getattr(settings, 'EMAIL_FROM', '')
 DEFAULT_SIGNATURE = getattr(settings, 'DEFAULT_SIGNATURE', '')
 
             
@@ -225,7 +224,8 @@ def intcmp(a,b):
         return cmp(a,b)
 
 class EmailReceiver(Thread):
-    """EmailReceiver fetches email from imap and pop email servers.
+    """
+       EmailReceiver fetches email from imap and pop email servers.
        This class can be used only as parent. You should redefine
        the process_msg method.
     """
@@ -236,10 +236,10 @@ class EmailReceiver(Thread):
         self.incoming_server_name = server_name
         self.incoming_server_username = username
         self.incoming_password = password
-        self.folder_name = folder_name or getattr(settings, 'HARDTREE_MESSAGING_IMAP_DEFAULT_FOLDER_NAME', 'UNSEEN')
+        self.folder_name = folder_name or getattr(settings, 'MAKER_MESSAGING_IMAP_DEFAULT_FOLDER_NAME', 'UNSEEN')
 
-        default_timezone = settings.HARDTREE_SERVER_DEFAULT_TIMEZONE
-        all_timezones = getattr(settings, 'HARDTREE_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
+        default_timezone = settings.MAKER_SERVER_DEFAULT_TIMEZONE
+        all_timezones = getattr(settings, 'MAKER_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
         title = all_timezones[int(default_timezone)][1]
         GMT = title[4:10] # with sign e.g. +06:00
         sign = GMT[0:1] # + or -
@@ -282,7 +282,7 @@ class EmailReceiver(Thread):
 
         if self.incoming_server_type == 'IMAP' or self.incoming_server_type == 'IMAP-SSL':
 
-            HARDTREE_MESSAGING_IMAP_LIMIT = getattr(settings, 'HARDTREE_MESSAGING_IMAP_LIMIT', 100)
+            MAKER_MESSAGING_IMAP_LIMIT = getattr(settings, 'MAKER_MESSAGING_IMAP_LIMIT', 100)
             # connect to the server
             port, ssl = self.get_imap_port()
 
@@ -302,7 +302,7 @@ class EmailReceiver(Thread):
                 msgnums = data[0].split() if data[0] else []
                 msgnums = sorted(msgnums, cmp=intcmp, reverse=True)
 
-            for num in msgnums[:HARDTREE_MESSAGING_IMAP_LIMIT]:
+            for num in msgnums[:MAKER_MESSAGING_IMAP_LIMIT]:
                 resp, msg = M.fetch(num, '(RFC822)')
                 mail = email.message_from_string(msg[0][1])
                 self.process_mail(mail)
@@ -314,7 +314,7 @@ class EmailReceiver(Thread):
 
         if self.incoming_server_type == 'POP3' or self.incoming_server_type == 'POP3-SSL':
 
-            HARDTREE_MESSAGING_POP3_LIMIT = getattr(settings, 'HARDTREE_MESSAGING_POP3_LIMIT', 100)
+            MAKER_MESSAGING_POP3_LIMIT = getattr(settings, 'MAKER_MESSAGING_POP3_LIMIT', 100)
             # connect to the server
             port, ssl = self.get_pop_port()
 
@@ -328,8 +328,8 @@ class EmailReceiver(Thread):
             numMessages = len(M.list()[1])
 
             # Select correct limit for range(limit, numMessages)
-            if numMessages >= HARDTREE_MESSAGING_POP3_LIMIT:
-                limit = numMessages - HARDTREE_MESSAGING_POP3_LIMIT
+            if numMessages >= MAKER_MESSAGING_POP3_LIMIT:
+                limit = numMessages - MAKER_MESSAGING_POP3_LIMIT
             else:
                 limit = 0
 
@@ -452,12 +452,12 @@ class EmailReceiver(Thread):
         body = body.replace('\r', '').replace('=\n', '').replace('=\n\r', '')
         body = body.replace('=20\n', '\n\n')
 
-        HARDTREE_MESSAGING_UNSAFE_BLOCKS = getattr(settings, 'HARDTREE_MESSAGING_UNSAFE_BLOCKS',
+        MAKER_MESSAGING_UNSAFE_BLOCKS = getattr(settings, 'MAKER_MESSAGING_UNSAFE_BLOCKS',
                                                    ('head', 'object', 'embed', 'applet', 'noframes',
                                                     'noscript', 'noembed', 'iframe', 'frame', 'frameset'))
 
         # Strip unsafe tags
-        tags_str = ' '.join(HARDTREE_MESSAGING_UNSAFE_BLOCKS)
+        tags_str = ' '.join(MAKER_MESSAGING_UNSAFE_BLOCKS)
         body = removetags(body, tags_str)
 
         # Remove multiple <br /> tags

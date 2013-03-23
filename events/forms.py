@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Events module forms
+    Events module forms
 """
 from django import forms
 from django.utils.translation import ugettext as _
@@ -16,7 +16,9 @@ import datetime
 preprocess_form()
 
 class MassActionForm(forms.Form):
-    """ Mass action form for Reports """
+    """ 
+        Mass action form for Reports 
+    """
     
     delete = forms.ChoiceField(label=_("Delete"), choices=(('', '-----'), ('delete', _('Delete Completely')), 
                                                     ('trash', _('Move to Trash'))), required=False)
@@ -116,7 +118,9 @@ class EventForm(forms.ModelForm):
         fields = ('name', 'location', 'start', 'end', 'details')
 
 class GoToDateForm(forms.Form):
-    """ Go to date form definition """
+    """ 
+        Go to date form definition 
+    """
     
     def __init__(self, date, *args, **kwargs):
         super(GoToDateForm, self).__init__(*args, **kwargs)
@@ -125,7 +129,9 @@ class GoToDateForm(forms.Form):
         self.fields['goto'].widget.attrs.update({'class': 'datepicker'})
 
 class FilterForm(forms.Form):
-    """ Filters for Events """
+    """ 
+        Filters for Events 
+    """
     
     def __init__(self, *args, **kwargs):
         super(FilterForm, self).__init__(*args, **kwargs)

@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-News module forms
+    News module forms
 """
 
 from django import forms
@@ -15,7 +14,9 @@ from maker.core.models import UpdateRecord, ModuleSetting, Object
 
 
 class UpdateRecordForm(forms.ModelForm):
-    """ UpdateRecord form """
+    """ 
+        UpdateRecord form 
+    """
     
     def __init__(self, *args, **kwargs):
         
@@ -35,7 +36,7 @@ class UpdateRecordForm(forms.ModelForm):
             conf = ModuleSetting.get_for_module('maker.core', 'default_permissions')[0]
             default_permissions = conf.value
         except:
-            default_permissions = settings.HARDTREE_DEFAULT_PERMISSIONS
+            default_permissions = settings.MAKER_DEFAULT_PERMISSIONS
             
         if self.user and 'userallgroups' in default_permissions:
             self.fields['recipients'].initial = [i.id for i in self.user.other_groups.all().only('id')]

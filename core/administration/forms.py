@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Administration module forms
+    Administration module forms
 """
 from django import forms
 from django.forms import ModelChoiceField
@@ -41,7 +40,9 @@ PERMISSION_CHOICES = (
 )
 
 class SettingsForm(forms.Form):
-    """ Global settings form """
+    """ 
+        Global settings form 
+    """
 
     default_perspective = forms.ModelChoiceField(label='Default Perspective', queryset=[])
     default_permissions = forms.ChoiceField(label='Default Permissions',
@@ -66,10 +67,10 @@ class SettingsForm(forms.Form):
             conf = ModuleSetting.get_for_module('maker.core', 'default_permissions')[0]
             self.fields['default_permissions'].initial = conf.value
         except:
-            self.fields['default_permissions'].initial = getattr(settings, 'HARDTREE_DEFAULT_PERMISSIONS', 'everyone')
+            self.fields['default_permissions'].initial = getattr(settings, 'MAKER_DEFAULT_PERMISSIONS', 'everyone')
         
-        self.fields['default_timezone'].choices = getattr(settings, 'HARDTREE_SERVER_TIMEZONE')
-        timezone = settings.HARDTREE_SERVER_DEFAULT_TIMEZONE
+        self.fields['default_timezone'].choices = getattr(settings, 'MAKER_SERVER_TIMEZONE')
+        timezone = settings.MAKER_SERVER_DEFAULT_TIMEZONE
         try:
             conf = ModuleSetting.get_for_module('maker.core', 'default_timezone')[0]
             timezone = conf.value
@@ -77,8 +78,8 @@ class SettingsForm(forms.Form):
             pass
         self.fields['default_timezone'].initial = timezone
         
-        self.fields['language'].choices = getattr(settings, 'HARDTREE_LANGUAGES', [('en', 'English')])
-        language = getattr(settings, 'HARDTREE_LANGUAGES_DEFAULT', '')
+        self.fields['language'].choices = getattr(settings, 'MAKER_LANGUAGES', [('en', 'English')])
+        language = getattr(settings, 'MAKER_LANGUAGES_DEFAULT', '')
         try:
             conf = ModuleSetting.get_for_module('maker.core', 'language')[0]
             language = conf.value
@@ -86,7 +87,7 @@ class SettingsForm(forms.Form):
             pass
         self.fields['language'].initial = language
         
-        if getattr(settings, 'HARDTREE_SUBSCRIPTION_CUSTOMIZATION', True):
+        if getattr(settings, 'MAKER_SUBSCRIPTION_CUSTOMIZATION', True):
             logopath = ''
             try:
                 conf = ModuleSetting.get_for_module('maker.core', 'logopath')[0]
@@ -151,7 +152,7 @@ class SettingsForm(forms.Form):
             ModuleSetting.set_for_module('language',
                                          self.cleaned_data['language'],
                                          'maker.core')
-            if getattr(settings, 'HARDTREE_SUBSCRIPTION_CUSTOMIZATION', True):
+            if getattr(settings, 'MAKER_SUBSCRIPTION_CUSTOMIZATION', True):
                 if isinstance(self.fields['logo'], forms.FileField):
                     logopath = self._handle_uploaded_file('logo')
                     ModuleSetting.set_for_module('logopath', logopath, 'maker.core')
@@ -225,8 +226,8 @@ class UserForm(forms.ModelForm):
         if existing:
             raise forms.ValidationError(_("User with username %s already exists.") % data)
         if self.instance and not self.instance.id:
-            # Check Hardtree Subscription user limit
-            user_limit = getattr(settings, 'HARDTREE_SUBSCRIPTION_USER_LIMIT', 0)
+            # Check MAKER Subscription user limit
+            user_limit = getattr(settings, 'MAKER_SUBSCRIPTION_USER_LIMIT', 0)
             if user_limit > 0:
                 user_number = User.objects.filter(disabled=False).count()
                 if user_number >= user_limit:
@@ -245,7 +246,7 @@ class UserForm(forms.ModelForm):
         "Ensure the admin does not go over subscription limit by re-enabling users"
         enable = not self.cleaned_data['disabled']
         if self.instance and self.instance.id and enable and self.instance.disabled:            
-            user_limit = getattr(settings, 'HARDTREE_SUBSCRIPTION_USER_LIMIT', 0)
+            user_limit = getattr(settings, 'MAKER_SUBSCRIPTION_USER_LIMIT', 0)
             if user_limit > 0:
                 user_number = User.objects.filter(disabled=False).count()
                 if user_number >= user_limit:

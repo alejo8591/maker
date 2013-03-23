@@ -1,13 +1,13 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 #-*- coding: utf-8 -*-
 
 from __future__ import absolute_import, with_statement
 
-__all__ = ['KnowledgeFolderHandler',
+__all__ = [
+           'KnowledgeFolderHandler',
            'KnowledgeCategoryHandler',
            'KnowledgeItemHandler',
            ]

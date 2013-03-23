@@ -4,7 +4,7 @@
 # License www.tree.io/license
 
 """
-Changes module forms
+    Changes module forms
 """
 from django import forms
 from django.core.urlresolvers import reverse
@@ -17,7 +17,9 @@ from datetime import datetime
 preprocess_form()
 
 class MassActionForm(forms.Form):
-    """ Mass action form for Reports """
+    """ 
+        Mass action form for Reports 
+    """
     
     delete = forms.ChoiceField(label=_("Delete"), choices=(('', '-----'), ('delete', _('Delete Completely')),
                                                            ), required=False)

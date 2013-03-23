@@ -4,7 +4,7 @@
 # License www.tree.io/license
 
 """
-News: Hardtree module definition
+	News: maker module definition
 """
 
 PROPERTIES = {

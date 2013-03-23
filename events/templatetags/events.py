@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Events templatetags
+	Events templatetags
 """
 from coffin import template
 from maker.core.rendering import render_to_string

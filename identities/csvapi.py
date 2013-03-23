@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Import/Export Contacts API
+    Import/Export Contacts API
 """
 
 import csv
@@ -18,34 +17,34 @@ class ProcessContacts():
     "Import/Export Contacts"
     
     """
-    def export_contacts(self, contacts):
-        "Export contacts into CSV file"
-        
-        response = HttpResponse(mimetype='text/csv')
-        response['Content-Disposition'] = 'attachment; filename=Contacts.csv'
-        
-        writer = csv.writer(response)
-        headers = ['name', 'type']
+        def export_contacts(self, contacts):
+            "Export contacts into CSV file"
+            
+            response = HttpResponse(mimetype='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=Contacts.csv'
+            
+            writer = csv.writer(response)
+            headers = ['name', 'type']
 
-        fields = ContactField.objects.filter(trash=False)
-        for field in fields:
-            headers.append(field.name)
-        writer.writerow(headers)
-        for contact in contacts:
-            row = []
-            row.append(contact)
-            row.append(contact.contact_type)
-            vals = contact.contactvalue_set.all()
+            fields = ContactField.objects.filter(trash=False)
             for field in fields:
-                inserted = False
-                for val in vals:
-                    if val.field == field:
-                        row.append(val.value)
-                        inserted = True
-                if not inserted:
-                    row.append('')    
-            writer.writerow(row)
-        return response
+                headers.append(field.name)
+            writer.writerow(headers)
+            for contact in contacts:
+                row = []
+                row.append(contact)
+                row.append(contact.contact_type)
+                vals = contact.contactvalue_set.all()
+                for field in fields:
+                    inserted = False
+                    for val in vals:
+                        if val.field == field:
+                            row.append(val.value)
+                            inserted = True
+                    if not inserted:
+                        row.append('')    
+                writer.writerow(row)
+            return response
     """
     
     def import_contacts(self, content):

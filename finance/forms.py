@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Finance module forms
+    Finance module forms
 """
 from django.shortcuts import get_object_or_404
 from django import forms
@@ -20,7 +19,9 @@ from maker.sales.forms import standard_currencies
 preprocess_form()
 
 class MassActionForm(forms.Form):
-    """ Mass action form for Transactions & Liabilities """
+    """ 
+        Mass action form for Transactions & Liabilities 
+    """
     
     category = forms.ModelChoiceField(queryset=[], required=False)
     delete = forms.ChoiceField(label=_("Delete"), choices=(('', '-----'), ('delete', _('Delete Completely')), 

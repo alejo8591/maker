@@ -1,10 +1,8 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
-
+# Copyright 2013 maker
+# License
 """
-Nuvius middleware: saves nuvius_id for the session when specified
+    Nuvius middleware: saves nuvius_id for the session when specified
 """
 from maker.core.conf import settings
 from nuconnector.connector import Connector

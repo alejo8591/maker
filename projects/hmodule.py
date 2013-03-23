@@ -4,7 +4,7 @@
 # License www.tree.io/license
 
 """
-Project Management: Hardtree module definition
+	Project Management: maker module definition
 """
 
 PROPERTIES = {

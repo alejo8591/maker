@@ -4,7 +4,7 @@
 # License www.tree.io/license
 
 """
-Change Control models
+    Change Control models
 """
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -33,7 +33,9 @@ class ChangeSetStatus(Object):
 
 # ChangeSet model
 class ChangeSet(models.Model):
-    """ Change Set model"""
+    """ 
+        Change Set model
+    """
     name = models.CharField(max_length=255)
     object = models.ForeignKey(Object, related_name='changeset_object_set')
     author = models.ForeignKey(User, null=True, blank=True, related_name='author', on_delete=models.SET_NULL)
@@ -56,7 +58,9 @@ class ChangeSet(models.Model):
 
 # Change Model
 class Change(models.Model):
-    """ Change model """
+    """ 
+        Change model
+    """
     change_set = models.ForeignKey(ChangeSet)
     change_type = models.CharField(max_length=255, null=True, blank=True)
     field = models.CharField(max_length=255, null=True, blank=True)

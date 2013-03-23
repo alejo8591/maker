@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Core templatetags
+    Core templatetags
 """
 from coffin import template, shortcuts as coffinshortcuts
 from jinja2 import contextfunction, contextfilter, Markup
@@ -48,7 +47,7 @@ def _get_modules(request):
     for module in modules:
         module.type = 'minor'
         try:
-            import_name = module.name + "." + settings.HARDTREE_MODULE_IDENTIFIER
+            import_name = module.name + "." + settings.MAKER_MODULE_IDENTIFIER
             hmodule = __import__(import_name, fromlist=[str(module.name)])
             urls = hmodule.URL_PATTERNS
             for regexp in urls:
@@ -124,7 +123,7 @@ def paginate(context, items, plength=None):
             pass
     
     if not plength:
-        plength = getattr(settings, 'HARDTREE_PAGINATOR_LENGTH', 10)
+        plength = getattr(settings, 'MAKER_PAGINATOR_LENGTH', 10)
     length = skip + plength
     
     return items[skip:length]
@@ -148,7 +147,7 @@ def pager(context, items, plength=None):
             pass
     
     if not plength:
-        plength = getattr(settings, 'HARDTREE_PAGINATOR_LENGTH', 10)
+        plength = getattr(settings, 'MAKER_PAGINATOR_LENGTH', 10)
     if hasattr(items, 'count'):
         try:
             items_length = items.count()
@@ -161,7 +160,7 @@ def pager(context, items, plength=None):
     if items_length % plength:
         pagenum += 1
         
-    maxpages = getattr(settings, 'HARDTREE_PAGINATOR_PAGES', 20)
+    maxpages = getattr(settings, 'MAKER_PAGINATOR_PAGES', 20)
     
     current = skip // plength
     start = current - (maxpages // 2)
@@ -316,7 +315,7 @@ def htform(context, form):
             pass
         
     # timezone
-    default_timezone = settings.HARDTREE_SERVER_DEFAULT_TIMEZONE
+    default_timezone = settings.MAKER_SERVER_DEFAULT_TIMEZONE
     try:
         conf = ModuleSetting.get('default_timezone')[0]
         default_timezone = conf.value
@@ -327,9 +326,9 @@ def htform(context, form):
         conf = ModuleSetting.get('default_timezone', user=user)[0]
         default_timezone = conf.value
     except Exception:
-        default_timezone = getattr(settings, 'HARDTREE_SERVER_TIMEZONE')[default_timezone][0]
+        default_timezone = getattr(settings, 'MAKER_SERVER_TIMEZONE')[default_timezone][0]
         
-    all_timezones = getattr(settings, 'HARDTREE_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
+    all_timezones = getattr(settings, 'MAKER_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
     title = all_timezones[int(default_timezone)][1]
     GMT = title[4:10] # with sign e.g. +06:00
     sign = GMT[0:1] # + or -
@@ -386,7 +385,7 @@ def htdate(context, date, dateformat='DATE_FORMAT'):
             pass
         
     # timezone
-    default_timezone = settings.HARDTREE_SERVER_DEFAULT_TIMEZONE
+    default_timezone = settings.MAKER_SERVER_DEFAULT_TIMEZONE
     try:
         conf = ModuleSetting.get('default_timezone')[0]
         default_timezone = conf.value
@@ -397,9 +396,9 @@ def htdate(context, date, dateformat='DATE_FORMAT'):
         conf = ModuleSetting.get('default_timezone', user=user)[0]
         default_timezone = conf.value
     except Exception:
-        default_timezone = getattr(settings, 'HARDTREE_SERVER_TIMEZONE')[default_timezone][0]
+        default_timezone = getattr(settings, 'MAKER_SERVER_TIMEZONE')[default_timezone][0]
         
-    all_timezones = getattr(settings, 'HARDTREE_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
+    all_timezones = getattr(settings, 'MAKER_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
     title = all_timezones[int(default_timezone)][1]
     GMT = title[4:10] # with sign e.g. +06:00
     sign = GMT[0:1] # + or -
@@ -445,7 +444,7 @@ def htdatetime(context, date, dateformat='DATETIME_FORMAT'):
             pass
         
     # timezone
-    default_timezone = settings.HARDTREE_SERVER_DEFAULT_TIMEZONE
+    default_timezone = settings.MAKER_SERVER_DEFAULT_TIMEZONE
     try:
         conf = ModuleSetting.get('default_timezone')[0]
         default_timezone = conf.value
@@ -456,9 +455,9 @@ def htdatetime(context, date, dateformat='DATETIME_FORMAT'):
         conf = ModuleSetting.get('default_timezone', user=user)[0]
         default_timezone = conf.value
     except Exception:
-        default_timezone = getattr(settings, 'HARDTREE_SERVER_TIMEZONE')[default_timezone][0]
+        default_timezone = getattr(settings, 'MAKER_SERVER_TIMEZONE')[default_timezone][0]
         
-    all_timezones = getattr(settings, 'HARDTREE_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
+    all_timezones = getattr(settings, 'MAKER_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
     title = all_timezones[int(default_timezone)][1]
     GMT = title[4:10] # with sign e.g. +06:00
     sign = GMT[0:1] # + or -
@@ -505,7 +504,7 @@ def httime(context, time, timeformat='TIME_FORMAT'):
             pass
         
     # timezone
-    default_timezone = settings.HARDTREE_SERVER_DEFAULT_TIMEZONE
+    default_timezone = settings.MAKER_SERVER_DEFAULT_TIMEZONE
     try:
         conf = ModuleSetting.get('default_timezone')[0]
         default_timezone = conf.value
@@ -516,9 +515,9 @@ def httime(context, time, timeformat='TIME_FORMAT'):
         conf = ModuleSetting.get('default_timezone', user=user)[0]
         default_timezone = conf.value
     except Exception:
-        default_timezone = getattr(settings, 'HARDTREE_SERVER_TIMEZONE')[default_timezone][0]
+        default_timezone = getattr(settings, 'MAKER_SERVER_TIMEZONE')[default_timezone][0]
         
-    all_timezones = getattr(settings, 'HARDTREE_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
+    all_timezones = getattr(settings, 'MAKER_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
     title = all_timezones[int(default_timezone)][1]
     GMT = title[4:10] # with sign e.g. +06:00
     sign = GMT[0:1] # + or -
@@ -597,7 +596,7 @@ def humanize_datetime(context, value):
             pass
         
     # timezone
-    default_timezone = settings.HARDTREE_SERVER_DEFAULT_TIMEZONE
+    default_timezone = settings.MAKER_SERVER_DEFAULT_TIMEZONE
     try:
         conf = ModuleSetting.get('default_timezone')[0]
         default_timezone = conf.value
@@ -608,9 +607,9 @@ def humanize_datetime(context, value):
         conf = ModuleSetting.get('default_timezone', user=user)[0]
         default_timezone = conf.value
     except Exception:
-        default_timezone = getattr(settings, 'HARDTREE_SERVER_TIMEZONE')[default_timezone][0]
+        default_timezone = getattr(settings, 'MAKER_SERVER_TIMEZONE')[default_timezone][0]
         
-    all_timezones = getattr(settings, 'HARDTREE_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
+    all_timezones = getattr(settings, 'MAKER_SERVER_TIMEZONE', [(1, '(GMT-11:00) International Date Line West')])
     title = all_timezones[int(default_timezone)][1]
     GMT = title[4:10] # with sign e.g. +06:00
     sign = GMT[0:1] # + or -
@@ -843,7 +842,7 @@ def rss_link(context, url=None):
     
     if not url:
         url = request.path
-    for ext in getattr(settings, 'HARDTREE_RESPONSE_FORMATS', {'html': 'text/html'}):
+    for ext in getattr(settings, 'MAKER_RESPONSE_FORMATS', {'html': 'text/html'}):
         url = url.replace('.' + ext, '')
     url += '.rss'
     try:

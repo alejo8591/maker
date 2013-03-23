@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Domain middleware: enables multi-tenancy in a single Tree.io process
+    Domain middleware: enables multi-tenancy in a single Tree.io process
 """
 from maker.core.domains import setup_domain, setup_domain_database
 from maker.core.db import DatabaseNotFound

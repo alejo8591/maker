@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Projects module widgets
+	Projects module widgets
 """
 
 WIDGETS = {'widget_tasks_assigned_to_me': {'title': 'Tasks Assigned To Me',

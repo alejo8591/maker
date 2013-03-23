@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Project management models
+    Project management models
 """
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -15,7 +14,9 @@ from datetime import datetime, timedelta
 
 # Project Model
 class Project(Object):
-    """ Project model """
+    """ 
+        Project model 
+    """
     name = models.CharField(max_length=255)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='child_set')
     manager = models.ForeignKey(Contact, related_name='manager', null=True, blank=True, on_delete=models.SET_NULL)
@@ -41,7 +42,9 @@ class Project(Object):
 
 # TaskStatus model
 class TaskStatus(Object):
-    """ Tasks and milestones have task statuses """
+    """ 
+        Tasks and milestones have task statuses 
+    """
     name = models.CharField(max_length=255)
     details = models.TextField(max_length=255, null=True, blank=True)
     active = models.BooleanField()
@@ -65,7 +68,9 @@ class TaskStatus(Object):
 
 # Milestone model
 class Milestone(Object):
-    """ Tasks may have milestones """
+    """ 
+        Tasks may have milestones 
+    """
     project = models.ForeignKey(Project)
     name = models.CharField(max_length=255)
     status = models.ForeignKey(TaskStatus)
@@ -107,7 +112,9 @@ class Milestone(Object):
 
 # Task model
 class Task(Object):
-    """ Single task """
+    """ 
+        Single task 
+    """
     parent = models.ForeignKey('self', blank=True, null=True, related_name='child_set')
     project = models.ForeignKey(Project)
     milestone = models.ForeignKey(Milestone, null=True, blank=True)
@@ -263,7 +270,9 @@ class Task(Object):
 
 # TaskTimeSlot model
 class TaskTimeSlot(Object):
-    """ Task time slot """
+    """ 
+        Task time slot 
+    """
     task = models.ForeignKey(Task)
     user = models.ForeignKey(User)
     time_from = models.DateTimeField()

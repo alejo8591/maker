@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Reports module views
+    Reports module views
 """
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
@@ -121,7 +120,7 @@ def _get_chart_ajax(request, chart_id=None, div_id=None):
               {'name':'hi','data':50}]
     })
     
-    return HttpResponse(options, mimetype=settings.HARDTREE_RESPONSE_FORMATS['json'])
+    return HttpResponse(options, mimetype=settings.MAKER_RESPONSE_FORMATS['json'])
 
 def _get_report_content(report, request=None):
     model = loads(report.model)

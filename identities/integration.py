@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Identities Integration library
+    Identities Integration library
 """
 from maker.core.models import Object, ModuleSetting
 from maker.identities.models import Contact, ContactType, ContactValue
@@ -87,7 +86,7 @@ def _find_duplicates(resource_id, item, user):
 
 def _get_contact_type(user):
     "Returns default contact_type for integration"
-    contact_type_name = getattr(settings, 'HARDTREE_IDENTITIES_DEFAULT_TYPE', 'person')
+    contact_type_name = getattr(settings, 'MAKER_IDENTITIES_DEFAULT_TYPE', 'person')
     contact_type = Object.filter_permitted(user, ContactType.objects).filter(name__iexact=contact_type_name)
     try:
         contact_type = contact_type[0]

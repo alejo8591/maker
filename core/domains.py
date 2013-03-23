@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Utilities to deal with multitenancy within a single Hardtree
+    Utilities to deal with multitenancy within a single Hardtree
 """
 from django.conf import settings
 from maker.core.models import ConfigSetting
@@ -14,7 +14,7 @@ def setup_domain(domain):
     box['CURRENT_DOMAIN'] = domain
     box['CURRENT_DATABASE_NAME'] = domain
     
-    word = getattr(settings, 'HARDTREE_MULTITENANCY_REPLACE_WORD', 'seed') 
+    word = getattr(settings, 'MAKER_MULTITENANCY_REPLACE_WORD', 'seed') 
     box['STATIC_DOC_ROOT'] = getattr(settings, 'STATIC_DOC_ROOT', './static').replace(word, domain)
     if hasattr(settings, 'MEDIA_ROOT_SEED'):
         box['MEDIA_ROOT'] = getattr(settings, 'MEDIA_ROOT_SEED').replace(word, domain)

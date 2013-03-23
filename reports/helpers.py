@@ -1,7 +1,6 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 import re
 import pickle, base64
@@ -20,10 +19,11 @@ def dumps(value):
     return base64.b64encode(pickle.dumps(value, pickle.HIGHEST_PROTOCOL))
 
 def average(values):
-    """Computes the arithmetic mean of a list of numbers.
+    """
+      Computes the arithmetic mean of a list of numbers.
 
-    >>> print average([20, 30, 70])
-    40.0
+      >>> print average([20, 30, 70])
+      40.0
     """
     return sum(values) / len(values) if values else 0
 

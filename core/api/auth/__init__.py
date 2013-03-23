@@ -1,12 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 import oauth2 as oauth
 from django.conf import settings
 from django.http import HttpResponse
-
 from maker.core.api.auth.store import store, InvalidConsumerError, InvalidTokenError
 from maker.core.api.auth.utils import get_oauth_request, verify_oauth_request, require_params
 
@@ -67,14 +65,14 @@ class OAuthAuthentication(object):
 
     def challenge(self):
         """
-        Returns a 401 response with a small bit on
-        what OAuth is, and where to learn more about it.
+            Returns a 401 response with a small bit on
+            what OAuth is, and where to learn more about it.
 
-        When this was written, browsers did not understand
-        OAuth authentication on the browser side, and hence
-        the helpful template we render. Maybe some day in the
-        future, browsers will take care of this stuff for us
-        and understand the 401 with the realm we give it.
+            When this was written, browsers did not understand
+            OAuth authentication on the browser side, and hence
+            the helpful template we render. Maybe some day in the
+            future, browsers will take care of this stuff for us
+            and understand the 401 with the realm we give it.
         """
         response = HttpResponse()
         response.status_code = 401
@@ -90,7 +88,7 @@ class OAuthAuthentication(object):
         return response
 
 
-auth_engine_name = getattr(settings, 'HARDTREE_API_AUTH_ENGINE', 'oauth')
+auth_engine_name = getattr(settings, 'MAKER_API_AUTH_ENGINE', 'oauth')
 if auth_engine_name == 'oauth':
     auth_engine = OAuthAuthentication()
 else:

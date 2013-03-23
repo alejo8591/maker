@@ -1,10 +1,10 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
+
 
 """
-Core: backend admin definitions
+    Core: backend admin definitions
 """
 
 from maker.core.models import User, Group, Object, Module, Perspective, ModuleSetting

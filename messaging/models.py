@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Messaging models
+    Messaging models
 """
 from django.db import models
 from maker.core.models import User, Object
@@ -48,7 +47,7 @@ class MailingList(Object):
 # MessageStream Model
 class MessageStream(Object):
     """ 
-    A Stream that contains a list of messages
+        A Stream that contains a list of messages
     """
     name = models.CharField(max_length=255)
    
@@ -97,7 +96,7 @@ class MessageStream(Object):
 # Message Model
 class Message(Object):
     """ 
-    A Single Message
+        A Single Message
     """
     title = models.CharField(max_length=255, null=True, blank=True)
     body = models.TextField()

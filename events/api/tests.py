@@ -1,10 +1,9 @@
 # encoding: utf-8
-# Copyright 2011 Tree.io Limited
-# This file is part of maker.
-# License www.tree.io/license
+# Copyright 2013 maker
+# License
 
 """
-Events: test api
+    Events: test api
 """
 import simplejson as json
 from django.test import TestCase
@@ -81,7 +80,9 @@ class EventsViewsTest(TestCase):
         self.assertEquals(response.status_code, 401)
 
     def test_get_events_list(self):
-        """ Test index page api/infrastructure/types """
+        """ 
+            Test index page api/infrastructure/types 
+        """
         response = self.client.get(path=reverse('api_events'), **self.authentication_headers)
         self.assertEquals(response.status_code, 200)
 
